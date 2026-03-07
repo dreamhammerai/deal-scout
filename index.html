@@ -20,13 +20,9 @@ body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFo
 .search-bar{padding:12px 24px;background:#1e293b;border-bottom:1px solid #334155}
 .search-bar input{width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:10px 16px;border-radius:8px;font-size:14px;outline:none}
 .search-bar input:focus{border-color:#38bdf8}
-.tabs{display:flex;gap:0;padding:0 24px;background:#1e293b;border-bottom:1px solid #334155}
-.tab{padding:12px 20px;font-size:13px;font-weight:600;color:#94a3b8;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
-.tab:hover{color:#e2e8f0}
-.tab.active{color:#38bdf8;border-bottom-color:#38bdf8}
 .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;padding:24px 24px 0}
 .cards{padding:0 24px 24px;display:flex;flex-direction:column;gap:16px}
-.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px 20px;transition:all .2s}
+.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px 20px;transition:all .2s;position:relative}
 .card:hover{border-color:#475569}
 .card.hot{border-color:#f59e0b}
 .card.top{border-color:#ef4444}
@@ -51,13 +47,38 @@ body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFo
 .signal-waterfront{background:rgba(56,189,248,.15);color:#38bdf8}
 .signal-tourism{background:rgba(167,139,250,.15);color:#a78bfa}
 .signal-value-add{background:rgba(251,191,36,.15);color:#fbbf24}
+.score-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0}
 .score{width:44px;height:44px;border-radius:50%;border:2px solid;text-align:center;line-height:44px;font-size:16px;font-weight:700;flex-shrink:0}
 .score-high{border-color:#ef4444;color:#ef4444;background:rgba(239,68,68,.15)}
 .score-hot{border-color:#f59e0b;color:#f59e0b;background:rgba(245,158,11,.15)}
 .score-mid{border-color:#64748b;color:#64748b;background:rgba(100,116,139,.15)}
-.card-actions{margin-top:16px;display:flex;gap:8px}
-.btn-view{display:inline-block;background:#38bdf8;color:#0f172a;font-size:12px;font-weight:600;padding:7px 16px;border-radius:6px;text-decoration:none}
-.btn-contact{display:inline-block;border:1px solid #334155;color:#94a3b8;font-size:12px;font-weight:500;padding:7px 16px;border-radius:6px;text-decoration:none}
+/* Score breakdown bar */
+.score-bar{display:flex;gap:1px;height:6px;border-radius:3px;overflow:hidden;width:44px;margin-top:2px}
+.score-bar span{flex:1;background:#1e293b;border-radius:1px}
+.score-bar span.filled-green{background:#22c55e}
+.score-bar span.filled-yellow{background:#f59e0b}
+.score-bar span.filled-red{background:#ef4444}
+/* Card action buttons */
+.card-actions{margin-top:16px;display:flex;gap:8px;align-items:center}
+.btn-view{display:inline-block;background:#38bdf8;color:#0f172a;font-size:12px;font-weight:600;padding:7px 16px;border-radius:6px;text-decoration:none;transition:all .2s}
+.btn-view:hover{background:#7dd3fc}
+.btn-inquiry{display:inline-block;background:rgba(34,197,94,.15);border:1px solid #22c55e;color:#22c55e;font-size:12px;font-weight:600;padding:6px 14px;border-radius:6px;text-decoration:none;cursor:pointer;transition:all .2s}
+.btn-inquiry:hover{background:rgba(34,197,94,.3)}
+.btn-contact{display:inline-block;border:1px solid #334155;color:#94a3b8;font-size:12px;font-weight:500;padding:6px 14px;border-radius:6px;text-decoration:none;cursor:pointer;transition:all .2s}
+.btn-contact:hover{border-color:#94a3b8;color:#e2e8f0}
+/* Card toolbar (dismiss + bookmark) */
+.card-toolbar{position:absolute;top:12px;right:12px;display:flex;gap:6px}
+.card-toolbar button{width:28px;height:28px;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#64748b;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;padding:0;line-height:1}
+.card-toolbar button:hover{border-color:#94a3b8;color:#e2e8f0}
+.card-toolbar .btn-bookmark.active{color:#f59e0b;border-color:#f59e0b;background:rgba(245,158,11,.1)}
+.card-toolbar .btn-dismiss:hover{color:#ef4444;border-color:#ef4444;background:rgba(239,68,68,.1)}
+.dismissed{display:none!important}
+/* Score detail tooltip */
+.score-detail{display:none;position:absolute;right:60px;top:12px;background:#0f172a;border:1px solid #334155;border-radius:8px;padding:10px 14px;font-size:11px;color:#94a3b8;z-index:10;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.score-detail .sd-row{display:flex;justify-content:space-between;margin-bottom:3px}
+.score-detail .sd-row .sd-pts{color:#38bdf8;font-weight:600}
+.score-wrap:hover .score-detail{display:block}
+/* Summary table */
 .table-section{padding:0 24px 24px}
 table{width:100%;border-collapse:collapse}
 th{text-align:left;padding:8px 0;font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;border-bottom:1px solid #334155}
@@ -65,8 +86,15 @@ td{padding:10px 0;border-bottom:1px solid #1e293b;font-size:13px}
 td a{color:#e2e8f0;text-decoration:none}
 td a:hover{color:#38bdf8}
 .archive-section{display:none;padding:24px}
+.bookmarks-section{display:none;padding:24px}
 .footer{background:#162032;border-top:1px solid #334155;padding:20px 24px;text-align:center;color:#94a3b8;font-size:12px}
-.dismissed{display:none!important}
+/* Responsive */
+@media(max-width:600px){
+  .stats{flex-wrap:wrap;gap:8px}
+  .stat{min-width:calc(50% - 8px)}
+  .card-actions{flex-wrap:wrap}
+  .score-detail{right:auto;left:12px;top:auto;bottom:60px}
+}
 </style>
 </head>
 <body>
@@ -76,8 +104,9 @@ td a:hover{color:#38bdf8}
     <div class="date">Saturday, March 7, 2026 · Daily Digest</div>
   </div>
   <div style="display:flex;gap:8px">
-    <button class="filter-btn" onclick="showTab('today')">Today's Deals</button>
-    <button class="filter-btn" onclick="showTab('archive')">Archive</button>
+    <button class="filter-btn" onclick="showTab('today')" id="tab-today">Today's Deals</button>
+    <button class="filter-btn" onclick="showTab('bookmarks')" id="tab-bookmarks">⭐ Saved</button>
+    <button class="filter-btn" onclick="showTab('archive')" id="tab-archive">Archive</button>
   </div>
 </div>
 
@@ -114,7 +143,11 @@ td a:hover{color:#38bdf8}
 <div class="section-title" style="color:#f59e0b">🔥 Hot Deals</div>
 <div class="cards">
 
-<div class="card hot" data-type="rv-park" data-state="FL" data-score="7">
+<div class="card hot" data-type="rv-park" data-state="FL" data-score="7" data-id="confidential-fl-koa">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">RV Park</div>
@@ -131,10 +164,22 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">KOA-branded RV park with 121 lots in Florida. Price recently reduced from previous listing — strong franchise value with established brand recognition and booking pipeline.</div>
     </div>
-    <div class="score score-hot">7</div>
+    <div class="score-wrap">
+      <div class="score score-hot">7</div>
+      <div class="score-bar"><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>Motivated seller</span><span class="sd-pts">+2</span></div>
+        <div class="sd-row"><span>Price reduced</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>121 lots (50+)</span><span class="sd-pts">+2</span></div>
+        <div class="sd-row"><span>KOA brand value</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Price drop signal</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#f59e0b;font-weight:700">7/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Confidential Florida KOA','$4,400,000','FL','RVParkStore')">✉ Send Inquiry</a>
   </div>
 </div>
 
@@ -144,7 +189,11 @@ td a:hover{color:#38bdf8}
 <div class="section-title" style="color:#ef4444">📉 Price Drops</div>
 <div class="cards">
 
-<div class="card" data-type="rv-park" data-state="LA" data-score="5">
+<div class="card" data-type="rv-park" data-state="LA" data-score="5" data-id="bayou-black-rv-park">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">RV Park</div>
@@ -160,19 +209,34 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">37-lot RV park in south Louisiana bayou country. Price recently reduced — potential motivated seller. Located near Houma/Thibodaux area.</div>
     </div>
-    <div class="score score-mid">5</div>
+    <div class="score-wrap">
+      <div class="score score-mid">5</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>Motivated seller</span><span class="sd-pts">+2</span></div>
+        <div class="sd-row"><span>Price reduced</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>37 lots (20-49)</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Price drop signal</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">5/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Bayou Black RV Park','$750,000','Gibson, LA','RVParkStore')">✉ Send Inquiry</a>
   </div>
 </div>
 
-<div class="card" data-type="campground" data-state="FL" data-score="5">
+<div class="card" data-type="campground" data-state="FL" data-score="5" data-id="seven-sisters-campground">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">Campground</div>
       <div class="card-name">Seven Sisters Campground & RV Park <span class="badge badge-new">NEW</span><span class="badge badge-price-drop">PRICE DROP</span></div>
-      <div class="card-location">📍 6544 W Miss Maggie Dr, Homosassa, FL 34448 · RVParkStore</div>
+      <div class="card-location">📍 8544 W Miss Maggie Dr, Homosassa, FL 34448 · RVParkStore</div>
       <div class="card-metrics">
         <span class="card-price">$2,850,000</span>
         <span class="card-lots">25 lots</span>
@@ -183,10 +247,21 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Campground and RV park on Florida's Nature Coast near Homosassa Springs. Price recently reduced. Near Crystal River and scalloping/manatee tourism.</div>
     </div>
-    <div class="score score-mid">5</div>
+    <div class="score-wrap">
+      <div class="score score-mid">5</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>Motivated seller</span><span class="sd-pts">+2</span></div>
+        <div class="sd-row"><span>Price reduced</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>25 lots (20-49)</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Price drop signal</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">5/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Seven Sisters Campground','$2,850,000','Homosassa, FL','RVParkStore')">✉ Send Inquiry</a>
   </div>
 </div>
 
@@ -196,7 +271,11 @@ td a:hover{color:#38bdf8}
 <div class="section-title" style="color:#94a3b8">📋 All Deals</div>
 <div class="cards">
 
-<div class="card" data-type="rv-park" data-state="FL" data-score="5">
+<div class="card" data-type="rv-park" data-state="FL" data-score="5" data-id="gainesville-rv-storage">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">RV Park / Self Storage</div>
@@ -212,14 +291,29 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Large value-add RV park with self-storage and commercial sites between Gainesville, Jacksonville and Ocala on the I-75 corridor.</div>
     </div>
-    <div class="score score-mid">5</div>
+    <div class="score-wrap">
+      <div class="score score-mid">5</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>237 lots (50+)</span><span class="sd-pts">+2</span></div>
+        <div class="sd-row"><span>Near interstate</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Value-add upside</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Multi-use asset</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">5/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.loopnet.com/Listing/17500-NE-US-Highway-301-Waldo-FL/33512019/" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Gainesville RV & Storage Park','$5,990,000','Waldo, FL','LoopNet')">✉ Send Inquiry</a>
   </div>
 </div>
 
-<div class="card" data-type="campground" data-state="FL" data-score="4">
+<div class="card" data-type="campground" data-state="FL" data-score="4" data-id="riverfront-campground-fl">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">Campground</div>
@@ -235,14 +329,29 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Scenic riverfront campground in Florida with a private boat ramp. 21 lots at an accessible $699K price point with waterfront premium.</div>
     </div>
-    <div class="score score-mid">4</div>
+    <div class="score-wrap">
+      <div class="score score-mid">4</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>21 lots (20-49)</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Waterfront access</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Private boat ramp</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">4/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Established Campground on Scenic Riverfront','$699,000','FL','RVParkStore')">✉ Send Inquiry</a>
   </div>
 </div>
 
-<div class="card" data-type="rv-park" data-state="TN" data-score="4">
+<div class="card" data-type="rv-park" data-state="TN" data-score="4" data-id="pebble-mountain-rv">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">RV Park</div>
@@ -256,14 +365,29 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Stabilized RV park investment in East Tennessee's outdoor recreation corridor. Sub-$800K entry point for a stabilized asset.</div>
     </div>
-    <div class="score score-mid">4</div>
+    <div class="score-wrap">
+      <div class="score score-mid">4</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>Near tourism area</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Near interstate</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Stabilized asset</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">4/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.loopnet.com/Listing/78-Pebble-Mountain-Cir-Chuckey-TN/33638791/" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Pebble Mountain RV Park','$795,000','Chuckey, TN','LoopNet')">✉ Send Inquiry</a>
   </div>
 </div>
 
-<div class="card" data-type="rv-park" data-state="TN" data-score="4">
+<div class="card" data-type="rv-park" data-state="TN" data-score="4" data-id="alpine-hideaway">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">RV Park / Campground</div>
@@ -277,14 +401,29 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">RV park/campground in Pigeon Forge, TN — prime tourism corridor near Dollywood and Great Smoky Mountains National Park.</div>
     </div>
-    <div class="score score-mid">4</div>
+    <div class="score-wrap">
+      <div class="score score-mid">4</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>Near Dollywood</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Near Smokies NP</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Tourism corridor</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Prime location</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">4/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.loopnet.com/Listing/251-Spring-Valley-Rd-Pigeon-Forge-TN/33570361/" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Alpine Hideaway Campground','Contact for Price','Pigeon Forge, TN','LoopNet')">✉ Send Inquiry</a>
   </div>
 </div>
 
-<div class="card" data-type="rv-park" data-state="GA" data-score="3">
+<div class="card" data-type="rv-park" data-state="GA" data-score="3" data-id="cave-spring-rv">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">RV Park</div>
@@ -299,14 +438,28 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Small 14-lot RV park near Rome, GA at an accessible sub-$450K price point. Good starter park opportunity.</div>
     </div>
-    <div class="score score-mid">3</div>
+    <div class="score-wrap">
+      <div class="score score-mid">3</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Operating asset</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Starter park</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">3/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.rvparkstore.com/rv-parks-for-sale/usa/page/2?order=create_desc" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('RV Park in Cave Spring','$449,900','Rome, GA','RVParkStore')">✉ Send Inquiry</a>
   </div>
 </div>
 
-<div class="card" data-type="self-storage" data-state="GA" data-score="3">
+<div class="card" data-type="self-storage" data-state="GA" data-score="3" data-id="economy-self-storage">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">Self Storage</div>
@@ -320,14 +473,28 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Value-add self-storage investment in the growing Augusta, GA market. Strategically located on busy road.</div>
     </div>
-    <div class="score score-mid">3</div>
+    <div class="score-wrap">
+      <div class="score score-mid">3</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>Value-add upside</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Growing market</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">3/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.loopnet.com/Listing/3661-Peach-Orchard-Rd-Augusta-GA/33555413/" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Economy Self-Storage','$595,000','Augusta, GA','LoopNet')">✉ Send Inquiry</a>
   </div>
 </div>
 
-<div class="card" data-type="campground" data-state="GA" data-score="3">
+<div class="card" data-type="campground" data-state="GA" data-score="3" data-id="pine-haven-campground">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">Campground</div>
@@ -339,14 +506,28 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">21-lot campground in south Georgia. Affordable acquisition in Baxley area.</div>
     </div>
-    <div class="score score-mid">3</div>
+    <div class="score-wrap">
+      <div class="score score-mid">3</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>21 lots (20-49)</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Operating asset</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">3/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.rvparkstore.com/rv-parks-for-sale/usa/page/2?order=create_desc" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Pine Haven Camp Ground','$700,000','Baxley, GA','RVParkStore')">✉ Send Inquiry</a>
   </div>
 </div>
 
-<div class="card" data-type="mhp" data-state="AL" data-score="3">
+<div class="card" data-type="mhp" data-state="AL" data-score="3" data-id="creek-trace-mhp">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">Mobile Home Park</div>
@@ -358,14 +539,28 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Clean 25-pad MHP in Russell County, Alabama. Marketed by The MHP Broker.</div>
     </div>
-    <div class="score score-mid">3</div>
+    <div class="score-wrap">
+      <div class="score score-mid">3</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>25 pads (20-49)</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Specialty broker</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Operating asset</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">3/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.crexi.com/properties/929-AL-165-Fort-Mitchell-AL" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Creek Trace MHP','Contact for Price','Fort Mitchell, AL','Crexi')">✉ Send Inquiry</a>
   </div>
 </div>
 
-<div class="card" data-type="mhp" data-state="NC" data-score="2">
+<div class="card" data-type="mhp" data-state="NC" data-score="2" data-id="southport-mhp">
+  <div class="card-toolbar">
+    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
+    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
+  </div>
   <div class="card-header">
     <div>
       <div class="card-type">Mobile Home Park</div>
@@ -379,34 +574,49 @@ td a:hover{color:#38bdf8}
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">MHP located 1.2 miles from historic downtown Southport waterfront on two parcels totaling ~1.79 acres.</div>
     </div>
-    <div class="score score-mid">2</div>
+    <div class="score-wrap">
+      <div class="score score-mid">2</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="score-detail">
+        <div class="sd-row"><span>Near waterfront</span><span class="sd-pts">+1</span></div>
+        <div class="sd-row"><span>Operating asset</span><span class="sd-pts">+1</span></div>
+        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">2/10</span></div>
+      </div>
+    </div>
   </div>
   <div class="card-actions">
     <a href="https://www.loopnet.com/Listing/1209-N-Howe-St-Southport-NC/33456789/" class="btn-view" target="_blank">View Listing ↗</a>
+    <a class="btn-inquiry" onclick="sendInquiry('Southport Waterfront MHP','Contact for Price','Southport, NC','LoopNet')">✉ Send Inquiry</a>
   </div>
 </div>
 
 </div>
 
-<!-- All Deals Table -->
+<!-- Summary Table -->
 <div class="table-section">
   <div class="section-title" style="color:#94a3b8;padding:0 0 16px">📊 Summary Table</div>
   <table>
-    <tr><th>Property</th><th style="text-align:center;width:100px">Price</th><th style="text-align:center;width:52px">Score</th></tr>
-    <tr><td><a href="#">Confidential Florida KOA</a> <span class="badge badge-price-drop">PRICE DROP</span><br><span style="font-size:11px;color:#64748b">RV Park · FL</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$4.4M</td><td style="text-align:center"><span style="color:#f59e0b;font-weight:700">7</span></td></tr>
-    <tr><td><a href="#">Bayou Black RV Park</a> <span class="badge badge-price-drop">PRICE DROP</span><br><span style="font-size:11px;color:#64748b">RV Park · Gibson, LA</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$750K</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">5</span></td></tr>
-    <tr><td><a href="#">Seven Sisters Campground</a> <span class="badge badge-price-drop">PRICE DROP</span><br><span style="font-size:11px;color:#64748b">Campground · Homosassa, FL</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$2.85M</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">5</span></td></tr>
-    <tr><td><a href="#">Gainesville RV & Storage</a><br><span style="font-size:11px;color:#64748b">RV Park/Storage · Waldo, FL</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$5.99M</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">5</span></td></tr>
-    <tr><td><a href="#">Riverfront Campground w/ Boat Ramp</a><br><span style="font-size:11px;color:#64748b">Campground · FL</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$699K</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">4</span></td></tr>
-    <tr><td><a href="#">Pebble Mountain RV Park</a><br><span style="font-size:11px;color:#64748b">RV Park · Chuckey, TN</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$795K</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">4</span></td></tr>
-    <tr><td><a href="#">Alpine Hideaway Campground</a><br><span style="font-size:11px;color:#64748b">RV Park · Pigeon Forge, TN</span></td><td style="text-align:center;color:#475569">Call</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">4</span></td></tr>
-    <tr><td><a href="#">RV Park in Cave Spring</a><br><span style="font-size:11px;color:#64748b">RV Park · Rome, GA</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$450K</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td></tr>
-    <tr><td><a href="#">Economy Self-Storage</a><br><span style="font-size:11px;color:#64748b">Self Storage · Augusta, GA</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$595K</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td></tr>
-    <tr><td><a href="#">Pine Haven Camp Ground</a><br><span style="font-size:11px;color:#64748b">Campground · Baxley, GA</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$700K</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td></tr>
-    <tr><td><a href="#">Creek Trace MHP</a><br><span style="font-size:11px;color:#64748b">MHP · Fort Mitchell, AL</span></td><td style="text-align:center;color:#475569">Call</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td></tr>
-    <tr><td><a href="#">Southport Waterfront MHP</a><br><span style="font-size:11px;color:#64748b">MHP · Southport, NC</span></td><td style="text-align:center;color:#475569">Call</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">2</span></td></tr>
+    <tr><th>Property</th><th style="text-align:center">Price</th><th style="text-align:center">Lots</th><th style="text-align:center">State</th><th style="text-align:center">Score</th><th style="text-align:center">Signals</th></tr>
+    <tr><td><a href="#">Confidential Florida KOA</a><br><span style="font-size:11px;color:#64748b">RV Park · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$4.4M</td><td style="text-align:center;color:#a78bfa">121</td><td style="text-align:center">FL</td><td style="text-align:center"><span style="color:#f59e0b;font-weight:700">7</span></td><td style="text-align:center"><span style="font-size:10px;color:#ef4444">PRICE DROP</span></td></tr>
+    <tr><td><a href="#">Gainesville RV & Storage Park</a><br><span style="font-size:11px;color:#64748b">RV Park / Self Storage · LoopNet</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$5.99M</td><td style="text-align:center;color:#a78bfa">237</td><td style="text-align:center">FL</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">5</span></td><td style="text-align:center"><span style="font-size:10px;color:#fbbf24">VALUE-ADD</span></td></tr>
+    <tr><td><a href="#">Bayou Black RV Park</a><br><span style="font-size:11px;color:#64748b">RV Park · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$750K</td><td style="text-align:center;color:#a78bfa">37</td><td style="text-align:center">LA</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">5</span></td><td style="text-align:center"><span style="font-size:10px;color:#ef4444">PRICE DROP</span></td></tr>
+    <tr><td><a href="#">Seven Sisters Campground</a><br><span style="font-size:11px;color:#64748b">Campground · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$2.85M</td><td style="text-align:center;color:#a78bfa">25</td><td style="text-align:center">FL</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">5</span></td><td style="text-align:center"><span style="font-size:10px;color:#ef4444">PRICE DROP</span></td></tr>
+    <tr><td><a href="#">Established Campground on Scenic Riverfront</a><br><span style="font-size:11px;color:#64748b">Campground · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$699K</td><td style="text-align:center;color:#a78bfa">21</td><td style="text-align:center">FL</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">4</span></td><td style="text-align:center"><span style="font-size:10px;color:#38bdf8">WATERFRONT</span></td></tr>
+    <tr><td><a href="#">Pebble Mountain RV Park</a><br><span style="font-size:11px;color:#64748b">RV Park · LoopNet</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$795K</td><td style="text-align:center;color:#64748b">—</td><td style="text-align:center">TN</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">4</span></td><td style="text-align:center"><span style="font-size:10px;color:#a78bfa">TOURISM</span></td></tr>
+    <tr><td><a href="#">Alpine Hideaway Campground</a><br><span style="font-size:11px;color:#64748b">RV Park · LoopNet</span></td><td style="text-align:center;color:#475569">Call</td><td style="text-align:center;color:#64748b">—</td><td style="text-align:center">TN</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">4</span></td><td style="text-align:center"><span style="font-size:10px;color:#a78bfa">SMOKIES</span></td></tr>
+    <tr><td><a href="#">RV Park in Cave Spring</a><br><span style="font-size:11px;color:#64748b">RV Park · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$450K</td><td style="text-align:center;color:#a78bfa">14</td><td style="text-align:center">GA</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td><td style="text-align:center">—</td></tr>
+    <tr><td><a href="#">Economy Self-Storage</a><br><span style="font-size:11px;color:#64748b">Self Storage · LoopNet</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$595K</td><td style="text-align:center;color:#64748b">—</td><td style="text-align:center">GA</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td><td style="text-align:center"><span style="font-size:10px;color:#fbbf24">VALUE-ADD</span></td></tr>
+    <tr><td><a href="#">Pine Haven Camp Ground</a><br><span style="font-size:11px;color:#64748b">Campground · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$700K</td><td style="text-align:center;color:#a78bfa">21</td><td style="text-align:center">GA</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td><td style="text-align:center">—</td></tr>
+    <tr><td><a href="#">Creek Trace MHP</a><br><span style="font-size:11px;color:#64748b">MHP · Crexi</span></td><td style="text-align:center;color:#475569">Call</td><td style="text-align:center;color:#a78bfa">25</td><td style="text-align:center">AL</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td><td style="text-align:center">—</td></tr>
+    <tr><td><a href="#">Southport Waterfront MHP</a><br><span style="font-size:11px;color:#64748b">MHP · LoopNet</span></td><td style="text-align:center;color:#475569">Call</td><td style="text-align:center;color:#64748b">—</td><td style="text-align:center">NC</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">2</span></td><td style="text-align:center"><span style="font-size:10px;color:#38bdf8">WATERFRONT</span></td></tr>
   </table>
 </div>
+</div>
+
+<div id="bookmarks-tab" class="bookmarks-section">
+  <h3 style="color:#f59e0b;margin-bottom:16px">⭐ Saved Deals</h3>
+  <p id="no-bookmarks" style="color:#64748b">No saved deals yet. Click the ☆ button on any deal card to save it here.</p>
+  <div id="bookmarks-list"></div>
 </div>
 
 <div id="archive-tab" class="archive-section">
@@ -451,32 +661,109 @@ td a:hover{color:#38bdf8}
 <!-- REPLIES_INDEX_END -->
 
 <script>
+// State management (in-memory, no localStorage)
+var _dismissed = {};
+var _bookmarks = {};
+
 function showTab(tab){
   document.getElementById('today-tab').style.display=tab==='today'?'block':'none';
   document.getElementById('archive-tab').style.display=tab==='archive'?'block':'none';
+  document.getElementById('bookmarks-tab').style.display=tab==='bookmarks'?'block':'none';
+  document.querySelectorAll('.header .filter-btn').forEach(function(b){b.classList.remove('active')});
+  var tabBtn=document.getElementById('tab-'+tab);
+  if(tabBtn) tabBtn.classList.add('active');
+  if(tab==='bookmarks') renderBookmarks();
 }
+
 function filterType(type,btn){
-  document.querySelectorAll('.filters:first-of-type .filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.filters:first-of-type .filter-btn').forEach(function(b){b.classList.remove('active')});
   btn.classList.add('active');
-  document.querySelectorAll('.card').forEach(c=>{
+  document.querySelectorAll('.card').forEach(function(c){
     if(type==='all'||c.dataset.type===type)c.style.display='';
     else c.style.display='none';
   });
 }
+
 function filterState(state,btn){
-  document.querySelectorAll('.filters:nth-of-type(2) .filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.filters:nth-of-type(2) .filter-btn').forEach(function(b){b.classList.remove('active')});
   btn.classList.add('active');
-  document.querySelectorAll('.card').forEach(c=>{
+  document.querySelectorAll('.card').forEach(function(c){
     if(state==='all'||c.dataset.state===state)c.style.display='';
     else c.style.display='none';
   });
 }
+
 function searchDeals(q){
   q=q.toLowerCase();
-  document.querySelectorAll('.card').forEach(c=>{
-    c.style.display=c.innerText.toLowerCase().includes(q)?'':'none';
+  document.querySelectorAll('.card').forEach(function(c){
+    c.style.display=c.innerText.toLowerCase().indexOf(q)>=0?'':'none';
   });
 }
+
+function dismissCard(btn){
+  var card=btn.closest('.card');
+  var id=card.dataset.id;
+  _dismissed[id]=true;
+  card.classList.add('dismissed');
+}
+
+function toggleBookmark(btn){
+  var card=btn.closest('.card');
+  var id=card.dataset.id;
+  if(_bookmarks[id]){
+    delete _bookmarks[id];
+    btn.classList.remove('active');
+    btn.textContent='☆';
+  } else {
+    _bookmarks[id]={
+      name:card.querySelector('.card-name').textContent.replace(/NEW|PRICE DROP|SEEN BEFORE/g,'').trim(),
+      price:card.querySelector('.card-price')?card.querySelector('.card-price').textContent:'',
+      location:card.querySelector('.card-location')?card.querySelector('.card-location').textContent:'',
+      type:card.querySelector('.card-type')?card.querySelector('.card-type').textContent:'',
+      score:card.dataset.score,
+      link:card.querySelector('.btn-view')?card.querySelector('.btn-view').href:''
+    };
+    btn.classList.add('active');
+    btn.textContent='★';
+  }
+}
+
+function renderBookmarks(){
+  var list=document.getElementById('bookmarks-list');
+  var noMsg=document.getElementById('no-bookmarks');
+  var keys=Object.keys(_bookmarks);
+  if(keys.length===0){
+    noMsg.style.display='block';
+    list.innerHTML='';
+    return;
+  }
+  noMsg.style.display='none';
+  var html='';
+  keys.forEach(function(id){
+    var b=_bookmarks[id];
+    html+='<div style="background:#1e293b;border:1px solid #f59e0b;border-radius:12px;padding:16px 20px;margin-bottom:12px">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center">';
+    html+='<div><div style="font-size:11px;color:#38bdf8;font-weight:700;text-transform:uppercase">'+b.type+'</div>';
+    html+='<div style="font-size:16px;font-weight:700;color:#e2e8f0">'+b.name+'</div>';
+    html+='<div style="font-size:12px;color:#94a3b8">'+b.location+'</div>';
+    html+='<div style="margin-top:6px"><span style="font-size:18px;font-weight:700;color:#38bdf8">'+b.price+'</span></div></div>';
+    html+='<div style="text-align:center"><div class="score score-mid" style="line-height:44px">'+b.score+'</div></div></div>';
+    html+='<div style="margin-top:12px;display:flex;gap:8px">';
+    if(b.link) html+='<a href="'+b.link+'" class="btn-view" target="_blank">View Listing ↗</a>';
+    html+='<button onclick="delete _bookmarks[\''+id+'\'];renderBookmarks();" class="btn-contact">Remove ✕</button>';
+    html+='</div></div>';
+  });
+  list.innerHTML=html;
+}
+
+function sendInquiry(name,price,location,source){
+  var subject=encodeURIComponent('Inquiry: '+name+' — '+price);
+  var body=encodeURIComponent('Hi,\n\nI\'m interested in learning more about the following property:\n\n• Property: '+name+'\n• Asking Price: '+price+'\n• Location: '+location+'\n• Source: '+source+'\n\nCould you please share additional details including:\n- Current financials (NOI, occupancy, cap rate)\n- Any seller financing options\n- Reason for selling\n- Timeline for closing\n\nI\'m an active investor in the Southeast US market and can close quickly on the right deal.\n\nBest regards,\nJace Perry\njace.investor@gmail.com');
+  window.open('mailto:jace.agentic@gmail.com?subject='+subject+'&body='+body,'_blank');
+}
+
+// Initialize — show today tab
+showTab('today');
 </script>
 </body>
 </html>
