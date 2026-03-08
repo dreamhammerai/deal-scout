@@ -1,5 +1,14 @@
 {
-  "bookmarks": {},
+  "bookmarks": {
+    "bayou-black-rv-park": {
+      "name": "Bayou Black RV Park",
+      "price": "$750,000",
+      "location": "📍 6111 Bayou Black Drive, Gibson, LA 70356 · RVParkStore",
+      "type": "RV Park",
+      "score": "5",
+      "link": "https://www.rvparkstore.com/rv-parks/6930997-bayou-black-rv-park-now-for-sale-for-sale-in-gibson-la"
+    }
+  },
   "dismissed": {
     "confidential-fl-koa": true
   }
