@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Summary Feature — UI Mockup</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#0f172a; color:#e2e8f0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; padding:24px; max-width:900px; margin:0 auto }
+
+h2 { color:#38bdf8; font-size:14px; margin:32px 0 16px; text-transform:uppercase; letter-spacing:1px }
+h2:first-of-type { margin-top:0 }
+.label { background:#1e293b; border:1px solid #334155; border-radius:8px; padding:12px 16px; margin-bottom:24px; font-size:13px; color:#94a3b8; line-height:1.6 }
+
+/* === Card styles (matching Deal Scout) === */
+.card { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:18px 20px; position:relative; margin-bottom:20px }
+.card.hot { border-color:#f59e0b }
+.card-toolbar { position:absolute; top:12px; right:12px; display:flex; gap:6px }
+.card-toolbar button { width:28px; height:28px; border-radius:6px; border:1px solid #334155; background:#0f172a; color:#64748b; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; padding:0; line-height:1 }
+.card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px }
+.card-type { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:#38bdf8; font-weight:600; margin-bottom:2px }
+.card-name { font-size:16px; font-weight:700; color:#e2e8f0; margin-bottom:3px }
+.card-location { font-size:12px; color:#94a3b8; margin-bottom:10px }
+.card-metrics { margin-bottom:8px }
+.card-price { font-size:20px; font-weight:800; color:#22c55e }
+.card-lots { font-size:13px; color:#94a3b8; margin-left:12px }
+.badge { display:inline-block; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:600 }
+.badge-new { background:#22c55e; color:#fff }
+.badge-price-drop { background:#ef4444; color:#fff }
+.signals { margin-bottom:4px }
+.signal { display:inline-block; font-size:11px; padding:3px 8px; border-radius:8px; margin-right:4px; margin-bottom:4px }
+.signal-reduced { background:rgba(239,68,68,.15); color:#ef4444 }
+.signal-motivated { background:rgba(245,158,11,.15); color:#f59e0b }
+.signal-value-add { background:rgba(251,191,36,.15); color:#fbbf24 }
+.signal-waterfront { background:rgba(56,189,248,.15); color:#38bdf8 }
+.card-desc { font-size:12px; color:#94a3b8; line-height:1.6; margin-top:10px }
+
+/* Score */
+.score-wrap { display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0 }
+.score { width:44px; height:44px; border-radius:50%; border:2px solid; text-align:center; line-height:44px; font-size:16px; font-weight:700 }
+.score-hot { border-color:#f59e0b; color:#f59e0b; background:rgba(245,158,11,.15) }
+.score-mid { border-color:#64748b; color:#64748b; background:rgba(100,116,139,.15) }
+.score-bar { display:flex; gap:1px; height:6px; border-radius:3px; overflow:hidden; width:44px; margin-top:2px }
+.score-bar span { flex:1; background:#1e293b; border-radius:1px }
+.score-bar span.filled-yellow { background:#f59e0b }
+.score-bar span.filled-green { background:#22c55e }
+
+/* Actions */
+.card-actions { margin-top:16px; display:flex; gap:8px; align-items:center }
+.btn-view { display:inline-block; background:#38bdf8; color:#0f172a; font-size:12px; font-weight:600; padding:7px 16px; border-radius:6px; text-decoration:none }
+.btn-inquiry { display:inline-block; background:rgba(34,197,94,.15); border:1px solid #22c55e; color:#22c55e; font-size:12px; font-weight:600; padding:6px 14px; border-radius:6px; cursor:pointer }
+
+/* ========================================= */
+/* AI SUMMARY — NEW FEATURE STYLES          */
+/* ========================================= */
+.ai-summary-toggle {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-size:11px;
+  color:#a78bfa;
+  cursor:pointer;
+  padding:4px 10px;
+  border-radius:6px;
+  background:rgba(167,139,250,.08);
+  border:1px solid rgba(167,139,250,.2);
+  transition:all .2s;
+  margin-top:10px;
+  user-select:none;
+}
+.ai-summary-toggle:hover {
+  background:rgba(167,139,250,.15);
+  border-color:rgba(167,139,250,.35);
+}
+.ai-summary-toggle .ai-icon {
+  font-size:12px;
+}
+.ai-summary-toggle .chevron {
+  font-size:9px;
+  transition:transform .2s;
+  display:inline-block;
+}
+.ai-summary-toggle.open .chevron {
+  transform:rotate(180deg);
+}
+
+.ai-summary-content {
+  display:none;
+  margin-top:10px;
+  padding:12px 14px;
+  background:rgba(167,139,250,.06);
+  border:1px solid rgba(167,139,250,.15);
+  border-radius:8px;
+  font-size:12px;
+  color:#cbd5e1;
+  line-height:1.7;
+}
+.ai-summary-content.open {
+  display:block;
+}
+.ai-summary-content strong {
+  color:#e2e8f0;
+  font-weight:600;
+}
+.ai-summary-content .ai-label {
+  font-size:10px;
+  color:#a78bfa;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:6px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.ai-summary-content p {
+  margin-bottom:8px;
+}
+.ai-summary-content p:last-child {
+  margin-bottom:0;
+}
+.ai-summary-content .highlight-row {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px;
+}
+.ai-summary-content .highlight-item {
+  font-size:11px;
+  padding:3px 8px;
+  border-radius:6px;
+  background:rgba(56,189,248,.08);
+  border:1px solid rgba(56,189,248,.15);
+  color:#7dd3fc;
+}
+</style>
+</head>
+<body>
+
+<h2>Card WITH AI Summary (rich listing data available)</h2>
+<div class="label">When the scraper visits the listing page and extracts meaningful property details (lot count, occupancy, waterfront, financials, etc.), the AI summary toggle appears. Click it to expand.</div>
+
+<div class="card hot">
+  <div class="card-toolbar">
+    <button title="Bookmark">☆</button>
+    <button title="Dismiss">✕</button>
+  </div>
+  <div class="card-header">
+    <div>
+      <div class="card-type">RV Park</div>
+      <div class="card-name">Confidential Florida KOA <span class="badge badge-new">NEW</span><span class="badge badge-price-drop">PRICE DROP</span></div>
+      <div class="card-location">📍 Confidential Location, FL · RVParkStore</div>
+      <div class="card-metrics">
+        <span class="card-price">$4,400,000</span>
+        <span class="card-lots">121 lots</span>
+      </div>
+      <div class="signals">
+        <span class="signal signal-reduced">Price Reduced</span>
+        <span class="signal signal-motivated">Motivated Seller</span>
+        <span class="signal signal-value-add">KOA Franchise</span>
+      </div>
+      <div class="card-desc">KOA-branded RV park with 121 lots in Florida. Price recently reduced from previous listing — strong franchise value with established brand recognition and booking pipeline.</div>
+
+      <!-- AI SUMMARY — COLLAPSED STATE -->
+      <div class="ai-summary-toggle" onclick="toggleAI(this)" id="demo1-toggle">
+        <span class="ai-icon">✦</span>
+        <span>AI Analysis</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="ai-summary-content" id="demo1-content">
+        <div class="ai-label">✦ AI Analysis</div>
+        <p><strong>Investment thesis:</strong> This KOA franchise benefits from a national reservation system and brand recognition that independent parks lack. At $36,364/lot, pricing is reasonable for a branded Florida park. The price reduction signals seller flexibility — worth probing for seller financing or further discount.</p>
+        <p><strong>Key details from listing:</strong> Full hookups on all 121 sites. Mix of pull-through and back-in. Park store, laundry, pool, and playground on-site. KOA franchise agreement transfers with sale.</p>
+        <div class="highlight-row">
+          <span class="highlight-item">$36.4K / lot</span>
+          <span class="highlight-item">Franchise transfers</span>
+          <span class="highlight-item">Full hookups</span>
+        </div>
+      </div>
+    </div>
+    <div class="score-wrap">
+      <div class="score score-hot">7</div>
+      <div class="score-bar"><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span></span><span></span><span></span></div>
+    </div>
+  </div>
+  <div class="card-actions">
+    <a href="#" class="btn-view">View Listing ↗</a>
+    <a class="btn-inquiry">✉ Send Inquiry</a>
+  </div>
+</div>
+
+<h2>Same card — AI Summary expanded</h2>
+<div class="label">This is what it looks like after clicking "AI Analysis". The purple styling keeps it visually distinct from the deal description above it.</div>
+
+<div class="card hot">
+  <div class="card-toolbar">
+    <button title="Bookmark">☆</button>
+    <button title="Dismiss">✕</button>
+  </div>
+  <div class="card-header">
+    <div>
+      <div class="card-type">RV Park</div>
+      <div class="card-name">Confidential Florida KOA <span class="badge badge-new">NEW</span><span class="badge badge-price-drop">PRICE DROP</span></div>
+      <div class="card-location">📍 Confidential Location, FL · RVParkStore</div>
+      <div class="card-metrics">
+        <span class="card-price">$4,400,000</span>
+        <span class="card-lots">121 lots</span>
+      </div>
+      <div class="signals">
+        <span class="signal signal-reduced">Price Reduced</span>
+        <span class="signal signal-motivated">Motivated Seller</span>
+        <span class="signal signal-value-add">KOA Franchise</span>
+      </div>
+      <div class="card-desc">KOA-branded RV park with 121 lots in Florida. Price recently reduced from previous listing — strong franchise value with established brand recognition and booking pipeline.</div>
+
+      <!-- AI SUMMARY — EXPANDED STATE -->
+      <div class="ai-summary-toggle open" onclick="toggleAI(this)">
+        <span class="ai-icon">✦</span>
+        <span>AI Analysis</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="ai-summary-content open">
+        <div class="ai-label">✦ AI Analysis</div>
+        <p><strong>Investment thesis:</strong> This KOA franchise benefits from a national reservation system and brand recognition that independent parks lack. At $36,364/lot, pricing is reasonable for a branded Florida park. The price reduction signals seller flexibility — worth probing for seller financing or further discount.</p>
+        <p><strong>Key details from listing:</strong> Full hookups on all 121 sites. Mix of pull-through and back-in. Park store, laundry, pool, and playground on-site. KOA franchise agreement transfers with sale.</p>
+        <div class="highlight-row">
+          <span class="highlight-item">$36.4K / lot</span>
+          <span class="highlight-item">Franchise transfers</span>
+          <span class="highlight-item">Full hookups</span>
+        </div>
+      </div>
+    </div>
+    <div class="score-wrap">
+      <div class="score score-hot">7</div>
+      <div class="score-bar"><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span></span><span></span><span></span></div>
+    </div>
+  </div>
+  <div class="card-actions">
+    <a href="#" class="btn-view">View Listing ↗</a>
+    <a class="btn-inquiry">✉ Send Inquiry</a>
+  </div>
+</div>
+
+<h2>Card WITHOUT AI Summary (limited listing data)</h2>
+<div class="label">When the listing page was too sparse (confidential location, no property details, just price and name), the AI summary is simply omitted. No empty state, no placeholder — just the card as it exists today.</div>
+
+<div class="card">
+  <div class="card-toolbar">
+    <button title="Bookmark">☆</button>
+    <button title="Dismiss">✕</button>
+  </div>
+  <div class="card-header">
+    <div>
+      <div class="card-type">Campground</div>
+      <div class="card-name">Established Campground on Scenic Riverfront <span class="badge badge-new">NEW</span></div>
+      <div class="card-location">📍 Confidential Location, FL · RVParkStore</div>
+      <div class="card-metrics">
+        <span class="card-price">$1,200,000</span>
+        <span class="card-lots">42 sites</span>
+      </div>
+      <div class="signals">
+        <span class="signal signal-waterfront">Waterfront</span>
+      </div>
+      <div class="card-desc">Campground on scenic riverfront in Florida with private boat ramp. Operating business with established clientele.</div>
+      <!-- No AI summary — not enough data from listing page -->
+    </div>
+    <div class="score-wrap">
+      <div class="score score-mid">4</div>
+      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+  </div>
+  <div class="card-actions">
+    <a href="#" class="btn-view">View Listing ↗</a>
+    <a class="btn-inquiry">✉ Send Inquiry</a>
+  </div>
+</div>
+
+<script>
+function toggleAI(btn) {
+  var content = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  content.classList.toggle('open');
+}
+</script>
+</body>
+</html>
