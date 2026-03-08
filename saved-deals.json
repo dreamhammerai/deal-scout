@@ -1,4 +1,13 @@
 {
-  "bookmarks": {},
+  "bookmarks": {
+    "confidential-fl-koa": {
+      "name": "Confidential Florida KOA",
+      "price": "$4,400,000",
+      "location": "📍 Confidential Location, FL · RVParkStore",
+      "type": "RV Park",
+      "score": "7",
+      "link": "https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc"
+    }
+  },
   "dismissed": {}
 }
