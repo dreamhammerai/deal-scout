@@ -908,7 +908,7 @@ function renderBookmarks(){
 function sendInquiry(name,price,location,source){
   var subject=encodeURIComponent('Inquiry: '+name+' — '+price);
   var body=encodeURIComponent('Hi,\n\nI\'m interested in learning more about the following property:\n\n• Property: '+name+'\n• Asking Price: '+price+'\n• Location: '+location+'\n• Source: '+source+'\n\nCould you please share additional details including:\n- Current financials (NOI, occupancy, cap rate)\n- Any seller financing options\n- Reason for selling\n- Timeline for closing\n\nI\'m an active investor in the Southeast US market and can close quickly on the right deal.\n\nBest regards,\nJace Perry\njace.investor@gmail.com');
-  window.location.href='mailto:jace.agentic@gmail.com?subject='+subject+'&body='+body;
+  window.open('https://mail.google.com/mail/?view=cm&fs=1&to=jace.agentic@gmail.com&su='+subject+'&body='+body,'_blank');
 }
 
 function toggleAI(btn){
