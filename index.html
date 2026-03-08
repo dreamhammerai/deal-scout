@@ -67,6 +67,17 @@ body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFo
 .btn-inquiry:hover{background:rgba(34,197,94,.3)}
 .btn-contact{display:inline-block;border:1px solid #334155;color:#94a3b8;font-size:12px;font-weight:500;padding:6px 14px;border-radius:6px;text-decoration:none;cursor:pointer;transition:all .2s}
 .btn-contact:hover{border-color:#94a3b8;color:#e2e8f0}
+/* AI Summary expandable */
+.ai-summary-toggle{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#a78bfa;cursor:pointer;padding:4px 10px;border-radius:6px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);transition:all .2s;margin-top:10px;user-select:none}
+.ai-summary-toggle:hover{background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.35)}
+.ai-summary-toggle .chevron{font-size:9px;transition:transform .2s;display:inline-block}
+.ai-summary-toggle.open .chevron{transform:rotate(180deg)}
+.ai-summary-content{display:none;margin-top:10px;padding:12px 14px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.15);border-radius:8px;font-size:12px;color:#cbd5e1;line-height:1.7}
+.ai-summary-content.open{display:block}
+.ai-summary-content strong{color:#e2e8f0;font-weight:600}
+.ai-summary-content .ai-label{font-size:10px;color:#a78bfa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.ai-summary-content .highlight-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.ai-summary-content .highlight-item{font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.15);color:#7dd3fc}
 /* Card toolbar (dismiss + bookmark) */
 .card-toolbar{position:absolute;top:12px;right:12px;display:flex;gap:6px}
 .card-toolbar button{width:28px;height:28px;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#64748b;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;padding:0;line-height:1}
@@ -164,6 +175,18 @@ td a:hover{color:#38bdf8}
         <span class="signal signal-value-add">KOA Franchise</span>
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">KOA-branded RV park with 121 lots in Florida. Price recently reduced from previous listing — strong franchise value with established brand recognition and booking pipeline.</div>
+      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
+      <div class="ai-summary-content">
+        <div class="ai-label">✦ AI Analysis</div>
+        <p><strong>Investment thesis:</strong> At $36,364/lot with a reported NOI of $422K, this KOA is trading at a 9.6% cap rate — strong for a branded Florida park. The 8 acres of expansion land with 26 additional sites already designed by KOA could push NOI well above $500K without repositioning risk. Seller financing is available, which combined with the price reduction signals negotiation room. The 50-amp power and 90-ft big-rig capability support premium nightly rates.</p>
+        <p><strong>Key details from listing:</strong> 121 sites on 20.9 acres. Year-round operation. Heated pool, hot tub/sauna, fitness center, clubhouse, Wi-Fi, and cable. Owner/manager quarters on-site. City water, septic sewer. KOA franchise transfers with sale.</p>
+        <div class="highlight-row">
+          <span class="highlight-item">9.6% Cap Rate</span>
+          <span class="highlight-item">$422K NOI</span>
+          <span class="highlight-item">Seller Financing</span>
+          <span class="highlight-item">26-Site Expansion</span>
+        </div>
+      </div>
     </div>
     <div class="score-wrap">
       <div class="score score-hot">7</div>
@@ -209,6 +232,18 @@ td a:hover{color:#38bdf8}
         <span class="signal signal-motivated">Motivated Seller</span>
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">37-lot RV park in south Louisiana bayou country. Price recently reduced — potential motivated seller. Located near Houma/Thibodaux area.</div>
+      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
+      <div class="ai-summary-content">
+        <div class="ai-label">✦ AI Analysis</div>
+        <p><strong>Investment thesis:</strong> The headline says 37 pads, but the listing reveals 47 total constructed pads (25 active + 10 offline needing TLC + 12 more possible with road extension and expansion permit). At $750K for 46 acres with bayou access, the per-acre cost is just $16,304 — exceptional for an income-producing property. 23 pads at $475/month = ~$131K gross today, with a clear path to $200K+ by restoring offline pads. Expansion application for 34 additional sites is pending. This is a deferred-maintenance value-add play, not a ground-up build.</p>
+        <p><strong>Key details from listing:</strong> 46 total acres (26 usable + 20 wetlands with direct bayou access). Two wastewater treatment plants already in place. Workforce-housing tenant base near Houma/Thibodaux energy corridor. Built 2004. Laundry on-site. City water. Someone has already inquired about leasing the back 20 acres.</p>
+        <div class="highlight-row">
+          <span class="highlight-item">$475/mo Rent</span>
+          <span class="highlight-item">46 Total Acres</span>
+          <span class="highlight-item">47 Pads (10 Offline)</span>
+          <span class="highlight-item">Bayou Access</span>
+        </div>
+      </div>
     </div>
     <div class="score-wrap">
       <div class="score score-mid">5</div>
@@ -247,6 +282,18 @@ td a:hover{color:#38bdf8}
         <span class="signal signal-motivated">Motivated Seller</span>
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Campground and RV park on Florida's Nature Coast near Homosassa Springs. Price recently reduced. Near Crystal River and scalloping/manatee tourism.</div>
+      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
+      <div class="ai-summary-content">
+        <div class="ai-label">✦ AI Analysis</div>
+        <p><strong>Investment thesis:</strong> This is more than an RV park — it's a diversified hospitality asset on the Chassahowitzka River. Reported 9.1% cap rate with $260K NOI on $498K gross revenue. The vacant 2,451 SF restaurant is a significant upside lever: leasing or reopening it could add $50-100K in revenue. Six cabins, 12 covered boat slips, and kayak rentals provide multiple income streams beyond pad rent. Seller is "very motivated" and offering financing. A larger portfolio deal ($5.5M) includes a hotel, 3 Airbnbs, and an MHP on the same street.</p>
+        <p><strong>Key details from listing:</strong> 25 RV sites (6 premium waterfront, 4 standard waterfront). 6 cabins (2 waterfront w/ full kitchens, 4 cozy). 2.76 acres on Chassahowitzka River with boat ramp. 15 miles south of Crystal River. 6 miles from Cabot Citrus Farms world-class golf destination. Laundry, store, bathhouse, Wi-Fi.</p>
+        <div class="highlight-row">
+          <span class="highlight-item">9.1% Cap Rate</span>
+          <span class="highlight-item">$260K NOI</span>
+          <span class="highlight-item">Seller Financing</span>
+          <span class="highlight-item">Vacant Restaurant</span>
+        </div>
+      </div>
     </div>
     <div class="score-wrap">
       <div class="score score-mid">5</div>
@@ -329,6 +376,18 @@ td a:hover{color:#38bdf8}
         <span class="signal signal-waterfront">Private Boat Ramp</span>
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Scenic riverfront campground in Florida with a private boat ramp. 21 lots at an accessible $699K price point with waterfront premium.</div>
+      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
+      <div class="ai-summary-content">
+        <div class="ai-label">✦ AI Analysis</div>
+        <p><strong>Investment thesis:</strong> At $699K this is a lifestyle-business entry point with real upside. The property grossed ~$100K in 2024 on modest marketing and basic amenities — room to grow revenue through better advertising, glamping-style cabin upgrades, and kayak rental expansion. The mix of 9 full-hookup RV sites, 5 water/electric sites, 2 cabins, 2 apartments, and 2 tiny homes provides diversified income. Ten years of continuous operation under current ownership proves the concept. Private boat ramp on a scenic river is a genuine differentiator.</p>
+        <p><strong>Key details from listing:</strong> 1.5 riverfront acres. 14 RV sites (9 full hookup, 5 W/E). 2 cabins, 2 apartments, 2 tiny homes. Kayak rentals. Private boat ramp. Well water, septic. Owner-operated 10+ years. Turn-key operation.</p>
+        <div class="highlight-row">
+          <span class="highlight-item">$33.3K/Lot</span>
+          <span class="highlight-item">~$100K Gross (2024)</span>
+          <span class="highlight-item">6 Rental Units</span>
+          <span class="highlight-item">Private Boat Ramp</span>
+        </div>
+      </div>
     </div>
     <div class="score-wrap">
       <div class="score score-mid">4</div>
@@ -438,6 +497,18 @@ td a:hover{color:#38bdf8}
         <span class="signal signal-value-add">Affordable Entry</span>
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Small 14-lot RV park near Rome, GA at an accessible sub-$450K price point. Good starter park opportunity.</div>
+      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
+      <div class="ai-summary-content">
+        <div class="ai-label">✦ AI Analysis</div>
+        <p><strong>Investment thesis:</strong> At $600/month rent across 14 full-hookup lots, this park generates ~$100K gross annually if fully occupied — a solid return on a $450K basis. The 2-bay shop with roll-up doors adds utility for maintenance or ancillary storage income. Creek-side setting in historic downtown Cave Spring is charming, though the 0.4-acre footprint limits expansion. Best suited as a cash-flowing starter park or add-on to an existing SE portfolio. Built 1971, so infrastructure age is a due-diligence item.</p>
+        <p><strong>Key details from listing:</strong> 14 full-hookup sites on Little Cedar Creek. 0.4 acres. $600/month lot rent. Built 1971. 2-bay shop with roll-up doors. On-site office. Downtown Cave Spring location. Cash or new loan.</p>
+        <div class="highlight-row">
+          <span class="highlight-item">$600/mo Rent</span>
+          <span class="highlight-item">$32.1K/Lot</span>
+          <span class="highlight-item">Full Hookups</span>
+          <span class="highlight-item">2-Bay Shop</span>
+        </div>
+      </div>
     </div>
     <div class="score-wrap">
       <div class="score score-mid">3</div>
@@ -506,6 +577,18 @@ td a:hover{color:#38bdf8}
         <span class="card-lots">21 lots</span>
       </div>
       <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">21-lot campground in south Georgia. Affordable acquisition in Baxley area.</div>
+      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
+      <div class="ai-summary-content">
+        <div class="ai-label">✦ AI Analysis</div>
+        <p><strong>Investment thesis:</strong> This is a dual-income asset: 21 full-hookup campsites at $450/month (~$113K gross annually if full) plus a restaurant under a 3-year lease providing stable, contractual income with zero operator overhead. At $700K for 4.6 acres, the per-acre cost is $152K — reasonable given the built-out infrastructure including asphalt roads, two deep wells, and pond amenities. The restaurant lease de-risks the investment and subsidizes debt service while campsite revenue scales.</p>
+        <p><strong>Key details from listing:</strong> 21 full-hookup sites (water & sewer). 4.6 acres with pond views. Asphalt-milled internal roads. Two deep wells. Washer/dryer facility. Restaurant under 3-year lease. Well water, septic.</p>
+        <div class="highlight-row">
+          <span class="highlight-item">$450/mo Rent</span>
+          <span class="highlight-item">Restaurant Lease</span>
+          <span class="highlight-item">4.6 Acres</span>
+          <span class="highlight-item">Dual Income</span>
+        </div>
+      </div>
     </div>
     <div class="score-wrap">
       <div class="score score-mid">3</div>
@@ -826,6 +909,11 @@ function sendInquiry(name,price,location,source){
   var subject=encodeURIComponent('Inquiry: '+name+' — '+price);
   var body=encodeURIComponent('Hi,\n\nI\'m interested in learning more about the following property:\n\n• Property: '+name+'\n• Asking Price: '+price+'\n• Location: '+location+'\n• Source: '+source+'\n\nCould you please share additional details including:\n- Current financials (NOI, occupancy, cap rate)\n- Any seller financing options\n- Reason for selling\n- Timeline for closing\n\nI\'m an active investor in the Southeast US market and can close quickly on the right deal.\n\nBest regards,\nJace Perry\njace.investor@gmail.com');
   window.open('mailto:jace.agentic@gmail.com?subject='+subject+'&body='+body,'_blank');
+}
+
+function toggleAI(btn){
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
 }
 
 // Initialize — show today tab
