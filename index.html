@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deal Scout â Monday, March 9</title>
+    <title>Deal Scout — Monday, March 9</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -439,16 +439,6 @@
             text-decoration: underline;
         }
 
-        .listing-date {
-            font-size: 0.8rem;
-            color: #666677;
-            margin-top: 4px;
-        }
-
-        .listing-date span {
-            color: #a0a0a0;
-        }
-
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -661,7 +651,7 @@
 
             <!-- Empty State -->
             <div class="empty-state" id="emptyState" style="display: none;">
-                <div class="empty-state-icon">ð</div>
+                <div class="empty-state-icon">🔍</div>
                 <div class="empty-state-text">No listings found</div>
                 <p style="color: #666677;">Try adjusting your filters</p>
             </div>
@@ -679,19 +669,19 @@
     <script>
         // SEEN_INDEX_START
         var SEEN_INDEX = [
-            {url: "https://www.loopnet.com/Listing/74-Cornerstone-Ln-Brunswick-GA/39688394/", name: "South Georgia Storage - AUCTION", price: 650000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", name: "South Georgia Storage - AUCTION", price: 650000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
             {url: "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida", name: "Confidential Florida KOA", price: 4400000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
             {url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/", name: "Lake Okeechobee Motel, RV & Fish Camp", price: 1399000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/Listing/109-Coleman-Dr-Eatonton-GA/38309380/", name: "Lender-Owned Self-Storage Facility", price: 395000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/search/rv-parks/usa/for-sale/Listing/496-County-Road-109-Daleville-AL/39639461/", name: "Red Oak MHP - 80 Units", price: 2000000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", name: "Lender-Owned Self-Storage Facility", price: 395000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/search/rv-parks/usa/for-sale/search/mobile-home-parks/al/for-sale/", name: "Red Oak MHP - 80 Units", price: 2000000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
             {url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl", name: "Dew Drop Inn & Okeechobee Lake RV Park", price: 5900000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/search/rv-parks/usa/for-sale/search/rv-parks/usa/for-sale/search/rv-parks/usa/for-sale/", name: "Hospitality / RV Park - 13.85% CAP", price: 1300000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/", name: "Hospitality / RV Park - 13.85% CAP", price: 1300000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
             {url: "https://www.rvparkstore.com/rv-parks/6945208-seven-sisters-campground-rv-park-for-sale-in-homosassa-fl", name: "Seven Sisters Campground & RV Park", price: 2850000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/Listing/115-Spring-Creek-Rd-Bainbridge-GA/38703975/", name: "Self Storage & Airbnb Combo", price: 450000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", name: "Self Storage & Airbnb Combo", price: 450000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
             {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Gated Boutique Coastal Florida RV Park", price: 1599000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
             {url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl", name: "Mary's Fish Camp", price: 3999995, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
             {url: "https://www.bizbuysell.com/business-asset/multi-family-trailer-park-for-sale/2363104/", name: "Multi-Family Trailer Park", price: 425000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/Listing/1206-E-4th-ave-York-AL/38661775/", name: "45-Lot MHP - City Water & Sewer", price: 699000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/mobile-home-parks/al/for-sale/", name: "45-Lot MHP - City Water & Sewer", price: 699000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
             {url: "https://www.bizbuysell.com/business-opportunity/south-florida-glamping-camping-5-5-acres-agritourism-orchard-farm/2414816/", name: "Mobile Home Park with Real Estate", price: 950000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
             {url: "https://www.bizbuysell.com/business-opportunity/waxahatchee-marina-and-grill-rv-dry-storage-and-airb-and-b-s/2427814/", name: "South Florida Glamping & Agritourism Farm", price: 975000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
             {url: "https://www.bizbuysell.com/business-opportunity/south-florida-glamping-camping-5-5-acres-agritourism-orchard-farm/2414816/", name: "Waxahatchee Marina, Grill, RV & Dry Storage", price: 1250000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
@@ -715,34 +705,25 @@
     <script>
         // Listings Data
         const listings = [
-            {name: "South Georgia Storage - AUCTION", location: "Brunswick, GA", price: 650000, priceStr: "$650,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/Listing/74-Cornerstone-Ln-Brunswick-GA/39688394/", score: 6, isNew: true, isRepeat: false, isAuction: true, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "Confidential Florida KOA", location: "Somewhere, FL", price: 4400000, priceStr: "$4,400,000", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida", score: 6, isNew: false, isRepeat: true, isAuction: false, priceReduced: true, contactName: "", firstSeen: "2026-03-08"},
-            {name: "Lake Okeechobee Motel, RV & Fish Camp", location: "Moore Haven, FL", price: 1399000, priceStr: "$1,399,000", type: "RV Park", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/", score: 5, isNew: false, isRepeat: true, isAuction: false, priceReduced: true, contactName: "", firstSeen: "2026-03-08"},
-            {name: "Lender-Owned Self-Storage Facility", location: "Eatonton, GA", price: 395000, priceStr: "$395,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/Listing/109-Coleman-Dr-Eatonton-GA/38309380/", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "Red Oak MHP - 80 Units", location: "Daleville, AL", price: 2000000, priceStr: "$2,000,000", type: "MHP", source: "LoopNet", url: "https://www.loopnet.com/Listing/496-County-Road-109-Daleville-AL/39639461/", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "Dew Drop Inn & Okeechobee Lake RV Park", location: "Okeechobee, FL", price: 5900000, priceStr: "$5,900,000", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "Hospitality / RV Park - 13.85% CAP", location: "SE US", price: 1300000, priceStr: "$1,300,000", type: "RV Park", source: "LoopNet", url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/", score: 3, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-08"},
-            {name: "Seven Sisters Campground & RV Park", location: "Homosassa, FL", price: 2850000, priceStr: "$2,850,000", type: "Campground", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/6945208-seven-sisters-campground-rv-park-for-sale-in-homosassa-fl", score: 3, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-08"},
-            {name: "Self Storage & Airbnb Combo", location: "Bainbridge, GA", price: 450000, priceStr: "$450,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/Listing/115-Spring-Creek-Rd-Bainbridge-GA/38703975/", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "Gated Boutique Coastal Florida RV Park", location: "Florida Panhandle, FL", price: 1599000, priceStr: "$1,599,000", type: "RV Park", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Parks & Places", firstSeen: "2026-03-09"},
-            {name: "Mary's Fish Camp", location: "Spring Hill, FL", price: 3999995, priceStr: "$3,999,995", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "Multi-Family Trailer Park", location: "Denham Springs, LA", price: 425000, priceStr: "$425,000", type: "MHP", source: "BizBuySell", url: "https://www.bizbuysell.com/business-asset/multi-family-trailer-park-for-sale/2363104/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "45-Lot MHP - City Water & Sewer", location: "York, AL", price: 699000, priceStr: "$699,000", type: "MHP", source: "LoopNet", url: "https://www.loopnet.com/Listing/1206-E-4th-ave-York-AL/38661775/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Anna-Claire Rossetti Enterprises", firstSeen: "2026-03-09"},
-            {name: "Mobile Home Park with Real Estate", location: "Albany, GA", price: 950000, priceStr: "$950,000", type: "MHP", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/mobile-home-park-w-re/2458618/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "South Florida Glamping & Agritourism Farm", location: "Indiantown, FL", price: 975000, priceStr: "$975,000", type: "Campground", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/mobile-home-park-w-re/2458618/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "Waxahatchee Marina, Grill, RV & Dry Storage", location: "Shelby, AL", price: 1250000, priceStr: "$1,250,000", type: "Marina", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/waxahatchee-marina-and-grill-rv-dry-storage-and-airb-and-b-s/2427814/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-09"},
-            {name: "Beloved Family Destination in Florida Natural Forest", location: "Central Florida, FL", price: 2999000, priceStr: "$2,999,000", type: "Campground", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Parks & Places", firstSeen: "2026-03-09"},
-            {name: "Established Campground on Scenic Riverfront", location: "Florida", price: 699000, priceStr: "$699,000", type: "Campground", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 1, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: "", firstSeen: "2026-03-08"}
+            {name: "South Georgia Storage - AUCTION", location: "Brunswick, GA", price: 650000, priceStr: "$650,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", score: 6, isNew: true, isRepeat: false, isAuction: true, priceReduced: false, contactName: ""},
+            {name: "Confidential Florida KOA", location: "Somewhere, FL", price: 4400000, priceStr: "$4,400,000", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida", score: 6, isNew: false, isRepeat: true, isAuction: false, priceReduced: true, contactName: ""},
+            {name: "Lake Okeechobee Motel, RV & Fish Camp", location: "Moore Haven, FL", price: 1399000, priceStr: "$1,399,000", type: "RV Park", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/", score: 5, isNew: false, isRepeat: true, isAuction: false, priceReduced: true, contactName: ""},
+            {name: "Lender-Owned Self-Storage Facility", location: "Eatonton, GA", price: 395000, priceStr: "$395,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Red Oak MHP - 80 Units", location: "Daleville, AL", price: 2000000, priceStr: "$2,000,000", type: "MHP", source: "LoopNet", url: "https://www.loopnet.com/search/mobile-home-parks/al/for-sale/", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Dew Drop Inn & Okeechobee Lake RV Park", location: "Okeechobee, FL", price: 5900000, priceStr: "$5,900,000", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Hospitality / RV Park - 13.85% CAP", location: "SE US", price: 1300000, priceStr: "$1,300,000", type: "RV Park", source: "LoopNet", url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/", score: 3, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Seven Sisters Campground & RV Park", location: "Homosassa, FL", price: 2850000, priceStr: "$2,850,000", type: "Campground", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/6945208-seven-sisters-campground-rv-park-for-sale-in-homosassa-fl", score: 3, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Self Storage & Airbnb Combo", location: "Bainbridge, GA", price: 450000, priceStr: "$450,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Gated Boutique Coastal Florida RV Park", location: "Florida Panhandle, FL", price: 1599000, priceStr: "$1,599,000", type: "RV Park", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Parks & Places"},
+            {name: "Mary's Fish Camp", location: "Spring Hill, FL", price: 3999995, priceStr: "$3,999,995", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Multi-Family Trailer Park", location: "Denham Springs, LA", price: 425000, priceStr: "$425,000", type: "MHP", source: "BizBuySell", url: "https://www.bizbuysell.com/business-asset/multi-family-trailer-park-for-sale/2363104/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "45-Lot MHP - City Water & Sewer", location: "York, AL", price: 699000, priceStr: "$699,000", type: "MHP", source: "LoopNet", url: "https://www.loopnet.com/search/mobile-home-parks/al/for-sale/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Anna-Claire Rossetti Enterprises"},
+            {name: "Mobile Home Park with Real Estate", location: "Albany, GA", price: 950000, priceStr: "$950,000", type: "MHP", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/mobile-home-park-w-re/2458618/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "South Florida Glamping & Agritourism Farm", location: "Indiantown, FL", price: 975000, priceStr: "$975,000", type: "Campground", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/mobile-home-park-w-re/2458618/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Waxahatchee Marina, Grill, RV & Dry Storage", location: "Shelby, AL", price: 1250000, priceStr: "$1,250,000", type: "Marina", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/waxahatchee-marina-and-grill-rv-dry-storage-and-airb-and-b-s/2427814/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Beloved Family Destination in Florida Natural Forest", location: "Central Florida, FL", price: 2999000, priceStr: "$2,999,000", type: "Campground", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Parks & Places"},
+            {name: "Established Campground on Scenic Riverfront", location: "Florida", price: 699000, priceStr: "$699,000", type: "Campground", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 1, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: ""}
         ];
-
-        // Format date string
-        function formatDate(dateStr) {
-            if (!dateStr) return 'Unknown';
-            const d = new Date(dateStr + 'T12:00:00');
-            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-            const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-            return days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-        }
 
         // Initialize
         function init() {
@@ -826,8 +807,8 @@
                 return `
                     <div class="listing-card" data-index="${index}">
                         <div class="card-actions">
-                            <button class="action-btn bookmark-btn" title="Bookmark">â­</button>
-                            <button class="action-btn dismiss-btn" title="Dismiss">â</button>
+                            <button class="action-btn bookmark-btn" title="Bookmark">⭐</button>
+                            <button class="action-btn dismiss-btn" title="Dismiss">✕</button>
                         </div>
 
                         <div class="badges">${badges}</div>
@@ -859,8 +840,7 @@
                                     <div class="contact-value">${listing.contactName}</div>
                                 </div>
                             ` : ''}
-                            <div class="listing-date">Listed: <span>${formatDate(listing.firstSeen)}</span></div>
-                            <a href="${listing.url}" target="_blank" class="open-link">View Listing â</a>
+                            <a href="${listing.url}" target="_blank" class="open-link">View Listing →</a>
                         </div>
                     </div>
                 `;
@@ -920,7 +900,7 @@
                         <div class="archive-date">${item.date}</div>
                         <div class="archive-meta">${item.count} listings ${item.isToday ? '(Today)' : ''}</div>
                     </div>
-                    <a href="${item.file}" class="archive-link">View â</a>
+                    <a href="${item.file}" class="archive-link">View →</a>
                 </div>
             `).join('');
         }
