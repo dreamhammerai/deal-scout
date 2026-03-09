@@ -2,926 +2,479 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="gh-tk" content="Zk1YZXpORnMzUEhZQUNTWFpWSTM0enJwd2RkQ0JKeDRWSEJoR3J2RXh5cFhIenRxTnNucjdKYjlvMmNfekJWUzZVUUl6b21xMFFaSUNCUEIxMV90YXBfYnVodGln">
-<title>Deal Scout — Real Estate Deal Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deal Scout — Monday, March 9</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
-.header{background:#1e293b;border-bottom:1px solid #334155;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-.header h1{font-size:22px;font-weight:700;color:#38bdf8}
-.header .date{color:#94a3b8;font-size:13px}
-.stats{display:flex;gap:12px;padding:20px 24px;background:#1e293b;border-bottom:1px solid #334155}
-.stat{background:#0f172a;border-radius:10px;padding:14px 20px;text-align:center;flex:1}
-.stat .num{font-size:28px;font-weight:700}
-.stat .label{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
-.filters{display:flex;gap:8px;padding:16px 24px;background:#1e293b;border-bottom:1px solid #334155;flex-wrap:wrap}
-.filter-btn{background:#0f172a;border:1px solid #334155;color:#94a3b8;padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;transition:all .2s}
-.filter-btn:hover,.filter-btn.active{border-color:#38bdf8;color:#38bdf8;background:rgba(56,189,248,.1)}
-.search-bar{padding:12px 24px;background:#1e293b;border-bottom:1px solid #334155}
-.search-bar input{width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:10px 16px;border-radius:8px;font-size:14px;outline:none}
-.search-bar input:focus{border-color:#38bdf8}
-.section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;padding:24px 24px 0}
-.cards{padding:0 24px 24px;display:flex;flex-direction:column;gap:16px}
-.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px 20px;transition:all .2s;position:relative}
-.card:hover{border-color:#475569}
-.card.hot{border-color:#f59e0b}
-.card.top{border-color:#ef4444}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.card-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#38bdf8;margin-bottom:4px}
-.card-name{font-size:16px;font-weight:700;color:#e2e8f0;margin-bottom:3px}
-.card-location{font-size:12px;color:#94a3b8;margin-bottom:10px}
-.card-metrics{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-.card-price{font-size:18px;font-weight:700;color:#38bdf8}
-.card-cap{font-size:13px;font-weight:600;color:#22c55e}
-.card-lots{font-size:13px;font-weight:600;color:#a78bfa}
-.badge{display:inline-block;font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px;font-weight:600}
-.badge-new{background:#22c55e;color:#fff}
-.badge-price-drop{background:#ef4444;color:#fff}
-.badge-seen{background:#475569;color:#94a3b8}
-.badge-auction{background:#f59e0b;color:#fff}
-.signals{margin-top:8px;display:flex;gap:4px;flex-wrap:wrap}
-.signal{display:inline-block;font-size:11px;padding:3px 8px;border-radius:8px}
-.signal-motivated{background:rgba(245,158,11,.15);color:#f59e0b}
-.signal-financing{background:rgba(34,197,94,.15);color:#22c55e}
-.signal-reduced{background:rgba(239,68,68,.15);color:#ef4444}
-.signal-waterfront{background:rgba(56,189,248,.15);color:#38bdf8}
-.signal-tourism{background:rgba(167,139,250,.15);color:#a78bfa}
-.signal-value-add{background:rgba(251,191,36,.15);color:#fbbf24}
-.score-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0}
-.score{width:44px;height:44px;border-radius:50%;border:2px solid;text-align:center;line-height:44px;font-size:16px;font-weight:700;flex-shrink:0}
-.score-high{border-color:#ef4444;color:#ef4444;background:rgba(239,68,68,.15)}
-.score-hot{border-color:#f59e0b;color:#f59e0b;background:rgba(245,158,11,.15)}
-.score-mid{border-color:#64748b;color:#64748b;background:rgba(100,116,139,.15)}
-/* Score breakdown bar */
-.score-bar{display:flex;gap:1px;height:6px;border-radius:3px;overflow:hidden;width:44px;margin-top:2px}
-.score-bar span{flex:1;background:#1e293b;border-radius:1px}
-.score-bar span.filled-green{background:#22c55e}
-.score-bar span.filled-yellow{background:#f59e0b}
-.score-bar span.filled-red{background:#ef4444}
-/* Card action buttons */
-.card-actions{margin-top:16px;display:flex;gap:8px;align-items:center}
-.btn-view{display:inline-block;background:#38bdf8;color:#0f172a;font-size:12px;font-weight:600;padding:7px 16px;border-radius:6px;text-decoration:none;transition:all .2s}
-.btn-view:hover{background:#7dd3fc}
-.btn-inquiry{display:inline-block;background:rgba(34,197,94,.15);border:1px solid #22c55e;color:#22c55e;font-size:12px;font-weight:600;padding:6px 14px;border-radius:6px;text-decoration:none;cursor:pointer;transition:all .2s}
-.btn-inquiry:hover{background:rgba(34,197,94,.3)}
-.btn-contact{display:inline-block;border:1px solid #334155;color:#94a3b8;font-size:12px;font-weight:500;padding:6px 14px;border-radius:6px;text-decoration:none;cursor:pointer;transition:all .2s}
-.btn-contact:hover{border-color:#94a3b8;color:#e2e8f0}
-/* AI Summary expandable */
-.ai-summary-toggle{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#a78bfa;cursor:pointer;padding:4px 10px;border-radius:6px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);transition:all .2s;margin-top:10px;user-select:none}
-.ai-summary-toggle:hover{background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.35)}
-.ai-summary-toggle .chevron{font-size:9px;transition:transform .2s;display:inline-block}
-.ai-summary-toggle.open .chevron{transform:rotate(180deg)}
-.ai-summary-content{display:none;margin-top:10px;padding:12px 14px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.15);border-radius:8px;font-size:12px;color:#cbd5e1;line-height:1.7}
-.ai-summary-content.open{display:block}
-.ai-summary-content strong{color:#e2e8f0;font-weight:600}
-.ai-summary-content .ai-label{font-size:10px;color:#a78bfa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;gap:4px}
-.ai-summary-content .highlight-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.ai-summary-content .highlight-item{font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.15);color:#7dd3fc}
-/* Card toolbar (dismiss + bookmark) */
-.card-toolbar{position:absolute;top:12px;right:12px;display:flex;gap:6px}
-.card-toolbar button{width:28px;height:28px;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#64748b;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;padding:0;line-height:1}
-.card-toolbar button:hover{border-color:#94a3b8;color:#e2e8f0}
-.card-toolbar .btn-bookmark.active{color:#f59e0b;border-color:#f59e0b;background:rgba(245,158,11,.1)}
-.card-toolbar .btn-dismiss:hover{color:#ef4444;border-color:#ef4444;background:rgba(239,68,68,.1)}
-.dismissed{display:none!important}
-/* Score detail tooltip */
-.score-detail{display:none;position:absolute;right:60px;top:12px;background:#0f172a;border:1px solid #334155;border-radius:8px;padding:10px 14px;font-size:11px;color:#94a3b8;z-index:10;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.4)}
-.score-detail .sd-row{display:flex;justify-content:space-between;margin-bottom:3px}
-.score-detail .sd-row .sd-pts{color:#38bdf8;font-weight:600}
-.score-wrap:hover .score-detail{display:block}
-/* Summary table */
-.table-section{padding:0 24px 24px}
-table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:8px 0;font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;border-bottom:1px solid #334155}
-td{padding:10px 0;border-bottom:1px solid #1e293b;font-size:13px}
-td a{color:#e2e8f0;text-decoration:none}
-td a:hover{color:#38bdf8}
-.archive-section{display:none;padding:24px}
-.bookmarks-section{display:none;padding:24px}
-.footer{background:#162032;border-top:1px solid #334155;padding:20px 24px;text-align:center;color:#94a3b8;font-size:12px}
-/* Responsive */
-@media(max-width:600px){
-  .stats{flex-wrap:wrap;gap:8px}
-  .stat{min-width:calc(50% - 8px)}
-  .card-actions{flex-wrap:wrap}
-  .score-detail{right:auto;left:12px;top:auto;bottom:60px}
+:root {
+  --bg: #0d1117; --card-bg: #161b22; --border: #30363d; --text: #c9d1d9;
+  --text-dim: #8b949e; --accent: #58a6ff; --green: #3fb950; --red: #f85149;
+  --orange: #d29922; --purple: #bc8cff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+header { background: linear-gradient(135deg, #1a1e2e 0%, #0d1117 100%); border-bottom: 1px solid var(--border); padding: 24px 0; margin-bottom: 24px; }
+header .container { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 28px; font-weight: 700; color: var(--accent); }
+.logo span { color: var(--orange); }
+.date { color: var(--text-dim); font-size: 14px; }
+.stats-bar { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.stat { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; text-align: center; flex: 1; min-width: 120px; }
+.stat-value { font-size: 32px; font-weight: 700; color: var(--accent); }
+.stat-value.hot { color: var(--orange); }
+.stat-value.new { color: var(--green); }
+.stat-value.drop { color: var(--red); }
+.stat-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+.filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.filter-btn:hover, .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+.search-box { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 10px 16px; border-radius: 8px; width: 100%; margin-bottom: 20px; font-size: 14px; }
+.deal-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+.deal-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+.card-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); }
+.card-price { font-size: 22px; font-weight: 700; color: var(--green); }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge.new { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+.badge.price-drop { background: rgba(248,81,73,0.15); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+.badge.auction { background: rgba(210,153,34,0.15); color: var(--orange); border: 1px solid rgba(210,153,34,0.3); }
+.badge.lender { background: rgba(188,140,255,0.15); color: var(--purple); border: 1px solid rgba(188,140,255,0.3); }
+.badge.seen { background: rgba(139,148,158,0.15); color: var(--text-dim); border: 1px solid rgba(139,148,158,0.3); }
+.card-body { display: flex; padding: 16px 20px; gap: 16px; }
+.card-icon { font-size: 36px; flex-shrink: 0; }
+.card-info { flex: 1; }
+.card-info h3 { margin-bottom: 8px; }
+.card-info h3 a { color: var(--accent); text-decoration: none; }
+.card-info h3 a:hover { text-decoration: underline; }
+.card-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; font-size: 13px; }
+.loc { color: var(--text-dim); }
+.type-tag { background: rgba(88,166,255,0.1); color: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+.source-tag { background: rgba(139,148,158,0.1); color: var(--text-dim); padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+.score-bar { background: #21262d; border-radius: 6px; height: 8px; margin: 8px 0; position: relative; overflow: visible; }
+.score-fill { height: 100%; border-radius: 6px; transition: width 0.5s ease; }
+.score-label { position: absolute; right: 0; top: -18px; font-size: 11px; color: var(--text-dim); font-weight: 600; }
+.card-reasons { font-size: 12px; color: var(--orange); margin-top: 6px; }
+.card-notes { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+.card-lots { font-size: 12px; color: var(--accent); margin-top: 4px; font-weight: 600; }
+.section-title { font-size: 18px; font-weight: 600; color: var(--text); margin: 24px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+footer { text-align: center; padding: 40px 0; color: var(--text-dim); font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; }
+@media (max-width: 768px) {
+  .stats-bar { gap: 8px; }
+  .stat { padding: 12px 16px; }
+  .stat-value { font-size: 24px; }
+  .card-body { flex-direction: column; }
 }
 </style>
 </head>
 <body>
-<div class="header">
-  <div>
-    <h1>🏕️ Deal Scout</h1>
-    <div class="date">Saturday, March 7, 2026 · Daily Digest</div>
-  </div>
-  <div style="display:flex;gap:8px">
-    <button class="filter-btn" onclick="showTab('today')" id="tab-today">Today's Deals</button>
-    <button class="filter-btn" onclick="showTab('bookmarks')" id="tab-bookmarks">⭐ Saved</button>
-    <button class="filter-btn" onclick="showTab('archive')" id="tab-archive">Archive</button>
-  </div>
-</div>
-
-<div class="stats">
-  <div class="stat"><div class="num" style="color:#38bdf8">12</div><div class="label">Deals</div></div>
-  <div class="stat"><div class="num" style="color:#22c55e">12</div><div class="label">New</div></div>
-  <div class="stat"><div class="num" style="color:#f59e0b">1</div><div class="label">Hot (7+)</div></div>
-  <div class="stat"><div class="num" style="color:#ef4444">3</div><div class="label">Price Drops</div></div>
-</div>
-
-<div class="filters">
-  <button class="filter-btn active" onclick="filterType('all',this)">All Types</button>
-  <button class="filter-btn" onclick="filterType('rv-park',this)">RV Park</button>
-  <button class="filter-btn" onclick="filterType('campground',this)">Campground</button>
-  <button class="filter-btn" onclick="filterType('mhp',this)">MHP</button>
-  <button class="filter-btn" onclick="filterType('self-storage',this)">Self Storage</button>
-</div>
-<div class="filters">
-  <button class="filter-btn active" onclick="filterState('all',this)">All States</button>
-  <button class="filter-btn" onclick="filterState('FL',this)">FL</button>
-  <button class="filter-btn" onclick="filterState('GA',this)">GA</button>
-  <button class="filter-btn" onclick="filterState('TN',this)">TN</button>
-  <button class="filter-btn" onclick="filterState('LA',this)">LA</button>
-  <button class="filter-btn" onclick="filterState('AL',this)">AL</button>
-  <button class="filter-btn" onclick="filterState('NC',this)">NC</button>
-</div>
-
-<div class="search-bar">
-  <input type="text" placeholder="Search deals by name, location, type..." oninput="searchDeals(this.value)">
-</div>
-
-<div id="today-tab">
-<!-- HOT DEALS -->
-<div class="section-title" style="color:#f59e0b">🔥 Hot Deals</div>
-<div class="cards">
-
-<div class="card hot" data-type="rv-park" data-state="FL" data-score="7" data-id="confidential-fl-koa">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
+<header>
+  <div class="container">
     <div>
-      <div class="card-type">RV Park</div>
-      <div class="card-name">Confidential Florida KOA <span class="badge badge-new">NEW</span><span class="badge badge-price-drop">PRICE DROP</span></div>
-      <div class="card-location">📍 Confidential Location, FL · RVParkStore</div>
-      <div class="card-metrics">
-        <span class="card-price">$4,400,000</span>
-        <span class="card-lots">121 lots</span>
+      <div class="logo">Deal <span>Scout</span></div>
+      <div class="date">Monday, March 9 2026</div>
+    </div>
+    <div style="text-align:right;color:var(--text-dim);font-size:13px;">
+      SE US Deal Scanner<br>AL · FL · GA · LA · MS · NC · TN · VA
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-value">15</div><div class="stat-label">Total Deals</div></div>
+    <div class="stat"><div class="stat-value new">15</div><div class="stat-label">New Today</div></div>
+    <div class="stat"><div class="stat-value hot">5</div><div class="stat-label">Score 5+</div></div>
+    <div class="stat"><div class="stat-value drop">4</div><div class="stat-label">Price Drops</div></div>
+  </div>
+
+  <input type="text" class="search-box" placeholder="Search deals by name, location, type..." id="searchBox" oninput="filterDeals()">
+
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" onclick="setFilter('all')">All</button>
+    <button class="filter-btn" onclick="setFilter('RV Park')">RV Parks</button>
+    <button class="filter-btn" onclick="setFilter('Campground')">Campgrounds</button>
+    <button class="filter-btn" onclick="setFilter('Self Storage')">Self Storage</button>
+    <button class="filter-btn" onclick="setFilter('Marina')">Marinas</button>
+    <button class="filter-btn" onclick="setFilter('MHP')">MHPs</button>
+  </div>
+
+  <div class="filter-bar" id="stateBar">
+    <button class="filter-btn active" onclick="setStateFilter('all')">All States</button>
+    <button class="filter-btn" onclick="setStateFilter('FL')">FL</button>
+    <button class="filter-btn" onclick="setStateFilter('GA')">GA</button>
+    <button class="filter-btn" onclick="setStateFilter('LA')">LA</button>
+    <button class="filter-btn" onclick="setStateFilter('TN')">TN</button>
+    <button class="filter-btn" onclick="setStateFilter('NC')">NC</button>
+    <button class="filter-btn" onclick="setStateFilter('VA')">VA</button>
+    <button class="filter-btn" onclick="setStateFilter('AL')">AL</button>
+  </div>
+
+  <div id="dealsList">
+    
+    <div class="deal-card" data-score="6" data-type="Campground" data-state="FL" data-source="RVParkStore">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span> <span class="badge price-drop">PRICE DROP</span></div>
+        <div class="card-price">$2.85M</div>
       </div>
-      <div class="signals">
-        <span class="signal signal-reduced">Price Reduced</span>
-        <span class="signal signal-motivated">Motivated Seller</span>
-        <span class="signal signal-value-add">KOA Franchise</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">KOA-branded RV park with 121 lots in Florida. Price recently reduced from previous listing — strong franchise value with established brand recognition and booking pipeline.</div>
-      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
-      <div class="ai-summary-content">
-        <div class="ai-label">✦ AI Analysis</div>
-        <p><strong>Investment thesis:</strong> At $36,364/lot with a reported NOI of $422K, this KOA is trading at a 9.6% cap rate — strong for a branded Florida park. The 8 acres of expansion land with 26 additional sites already designed by KOA could push NOI well above $500K without repositioning risk. Seller financing is available, which combined with the price reduction signals negotiation room. The 50-amp power and 90-ft big-rig capability support premium nightly rates.</p>
-        <p><strong>Key details from listing:</strong> 121 sites on 20.9 acres. Year-round operation. Heated pool, hot tub/sauna, fitness center, clubhouse, Wi-Fi, and cable. Owner/manager quarters on-site. City water, septic sewer. KOA franchise transfers with sale.</p>
-        <div class="highlight-row">
-          <span class="highlight-item">9.6% Cap Rate</span>
-          <span class="highlight-item">$422K NOI</span>
-          <span class="highlight-item">Seller Financing</span>
-          <span class="highlight-item">26-Site Expansion</span>
+      <div class="card-body">
+        <div class="card-icon">⛺</div>
+        <div class="card-info">
+          <h3><a href="https://www.rvparkstore.com/rv-parks-for-sale/8544-west-miss-maggie-drive-homosassa-fl-34448" target="_blank">Seven Sisters Campground & RV Park</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Homosassa, FL</span>
+            <span class="type-tag">Campground</span>
+            <span class="source-tag">RVParkStore</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:60%;background:#ff8800"></div><span class="score-label">6/10</span></div>
+          <div class="card-reasons">Motivated seller, Price reduced, 25 lots, Waterfront, Tourism corridor</div>
+          <div class="card-notes">PRICE REDUCED. Waterfront campground in Nature Coast FL.</div>
+          <div class="card-lots">25 lots/units</div>
         </div>
       </div>
     </div>
-    <div class="score-wrap">
-      <div class="score score-hot">7</div>
-      <div class="score-bar"><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span class="filled-yellow"></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>Motivated seller</span><span class="sd-pts">+2</span></div>
-        <div class="sd-row"><span>Price reduced</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>121 lots (50+)</span><span class="sd-pts">+2</span></div>
-        <div class="sd-row"><span>KOA brand value</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Price drop signal</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#f59e0b;font-weight:700">7/10</span></div>
+    <div class="deal-card" data-score="6" data-type="RV Park" data-state="FL" data-source="RVParkStore">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span> <span class="badge price-drop">PRICE DROP</span></div>
+        <div class="card-price">$4.40M</div>
       </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.rvparkstore.com/properties/7012892/messages/new','','Confidential Florida KOA','$4,400,000','FL','RVParkStore')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-</div>
-
-<!-- PRICE DROPS -->
-<div class="section-title" style="color:#ef4444">📉 Price Drops</div>
-<div class="cards">
-
-<div class="card" data-type="rv-park" data-state="LA" data-score="5" data-id="bayou-black-rv-park">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">RV Park</div>
-      <div class="card-name">Bayou Black RV Park <span class="badge badge-new">NEW</span><span class="badge badge-price-drop">PRICE DROP</span></div>
-      <div class="card-location">📍 6111 Bayou Black Drive, Gibson, LA 70356 · RVParkStore</div>
-      <div class="card-metrics">
-        <span class="card-price">$750,000</span>
-        <span class="card-lots">37 lots</span>
-      </div>
-      <div class="signals">
-        <span class="signal signal-reduced">Price Reduced</span>
-        <span class="signal signal-motivated">Motivated Seller</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">37-lot RV park in south Louisiana bayou country. Price recently reduced — potential motivated seller. Located near Houma/Thibodaux area.</div>
-      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
-      <div class="ai-summary-content">
-        <div class="ai-label">✦ AI Analysis</div>
-        <p><strong>Investment thesis:</strong> The headline says 37 pads, but the listing reveals 47 total constructed pads (25 active + 10 offline needing TLC + 12 more possible with road extension and expansion permit). At $750K for 46 acres with bayou access, the per-acre cost is just $16,304 — exceptional for an income-producing property. 23 pads at $475/month = ~$131K gross today, with a clear path to $200K+ by restoring offline pads. Expansion application for 34 additional sites is pending. This is a deferred-maintenance value-add play, not a ground-up build.</p>
-        <p><strong>Key details from listing:</strong> 46 total acres (26 usable + 20 wetlands with direct bayou access). Two wastewater treatment plants already in place. Workforce-housing tenant base near Houma/Thibodaux energy corridor. Built 2004. Laundry on-site. City water. Someone has already inquired about leasing the back 20 acres.</p>
-        <div class="highlight-row">
-          <span class="highlight-item">$475/mo Rent</span>
-          <span class="highlight-item">46 Total Acres</span>
-          <span class="highlight-item">47 Pads (10 Offline)</span>
-          <span class="highlight-item">Bayou Access</span>
+      <div class="card-body">
+        <div class="card-icon">🏕️</div>
+        <div class="card-info">
+          <h3><a href="https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc&page=2" target="_blank">Confidential Florida KOA</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Florida</span>
+            <span class="type-tag">RV Park</span>
+            <span class="source-tag">RVParkStore</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:60%;background:#ff8800"></div><span class="score-label">6/10</span></div>
+          <div class="card-reasons">Motivated seller, Price reduced, 121 lots, Tourism corridor</div>
+          <div class="card-notes">PRICE REDUCED. KOA franchise, 121 lots. Confidential listing.</div>
+          <div class="card-lots">121 lots/units</div>
         </div>
       </div>
     </div>
-    <div class="score-wrap">
-      <div class="score score-mid">5</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>Motivated seller</span><span class="sd-pts">+2</span></div>
-        <div class="sd-row"><span>Price reduced</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>37 lots (20-49)</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Price drop signal</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">5/10</span></div>
+    <div class="deal-card" data-score="5" data-type="RV Park" data-state="LA" data-source="RVParkStore">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span> <span class="badge price-drop">PRICE DROP</span></div>
+        <div class="card-price">$750,000</div>
       </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.rvparkstore.com/rv-parks/6930997-bayou-black-rv-park-now-for-sale-for-sale-in-gibson-la" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.rvparkstore.com/properties/6930997/messages/new','','Bayou Black RV Park','$750,000','Gibson, LA','RVParkStore')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-<div class="card" data-type="campground" data-state="FL" data-score="5" data-id="seven-sisters-campground">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">Campground</div>
-      <div class="card-name">Seven Sisters Campground & RV Park <span class="badge badge-new">NEW</span><span class="badge badge-price-drop">PRICE DROP</span></div>
-      <div class="card-location">📍 8544 W Miss Maggie Dr, Homosassa, FL 34448 · RVParkStore</div>
-      <div class="card-metrics">
-        <span class="card-price">$2,850,000</span>
-        <span class="card-lots">25 lots</span>
-      </div>
-      <div class="signals">
-        <span class="signal signal-reduced">Price Reduced</span>
-        <span class="signal signal-motivated">Motivated Seller</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Campground and RV park on Florida's Nature Coast near Homosassa Springs. Price recently reduced. Near Crystal River and scalloping/manatee tourism.</div>
-      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
-      <div class="ai-summary-content">
-        <div class="ai-label">✦ AI Analysis</div>
-        <p><strong>Investment thesis:</strong> This is more than an RV park — it's a diversified hospitality asset on the Chassahowitzka River. Reported 9.1% cap rate with $260K NOI on $498K gross revenue. The vacant 2,451 SF restaurant is a significant upside lever: leasing or reopening it could add $50-100K in revenue. Six cabins, 12 covered boat slips, and kayak rentals provide multiple income streams beyond pad rent. Seller is "very motivated" and offering financing. A larger portfolio deal ($5.5M) includes a hotel, 3 Airbnbs, and an MHP on the same street.</p>
-        <p><strong>Key details from listing:</strong> 25 RV sites (6 premium waterfront, 4 standard waterfront). 6 cabins (2 waterfront w/ full kitchens, 4 cozy). 2.76 acres on Chassahowitzka River with boat ramp. 15 miles south of Crystal River. 6 miles from Cabot Citrus Farms world-class golf destination. Laundry, store, bathhouse, Wi-Fi.</p>
-        <div class="highlight-row">
-          <span class="highlight-item">9.1% Cap Rate</span>
-          <span class="highlight-item">$260K NOI</span>
-          <span class="highlight-item">Seller Financing</span>
-          <span class="highlight-item">Vacant Restaurant</span>
+      <div class="card-body">
+        <div class="card-icon">🏕️</div>
+        <div class="card-info">
+          <h3><a href="https://www.rvparkstore.com/rv-parks-for-sale/6111-bayou-black-drive-gibson-la-70356" target="_blank">Bayou Black RV Park</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Gibson, LA</span>
+            <span class="type-tag">RV Park</span>
+            <span class="source-tag">RVParkStore</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:50%;background:#ff8800"></div><span class="score-label">5/10</span></div>
+          <div class="card-reasons">Motivated seller, Price reduced, 37 lots, Waterfront</div>
+          <div class="card-notes">PRICE REDUCED. Bayou waterfront, 37 lots at ~$20k/lot.</div>
+          <div class="card-lots">37 lots/units</div>
         </div>
       </div>
     </div>
-    <div class="score-wrap">
-      <div class="score score-mid">5</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>Motivated seller</span><span class="sd-pts">+2</span></div>
-        <div class="sd-row"><span>Price reduced</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>25 lots (20-49)</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Price drop signal</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">5/10</span></div>
+    <div class="deal-card" data-score="5" data-type="RV Park" data-state="FL" data-source="BizBuySell">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span> <span class="badge price-drop">PRICE DROP</span></div>
+        <div class="card-price">$1.40M</div>
       </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.rvparkstore.com/rv-parks/6945208-seven-sisters-campground-rv-park-for-sale-in-homosassa-fl" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.rvparkstore.com/properties/6945208/messages/new','','Seven Sisters Campground','$2,850,000','Homosassa, FL','RVParkStore')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-</div>
-
-<!-- ALL NEW DEALS -->
-<div class="section-title" style="color:#94a3b8">📋 All Deals</div>
-<div class="cards">
-
-<div class="card" data-type="rv-park" data-state="FL" data-score="5" data-id="gainesville-rv-storage">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">RV Park / Self Storage</div>
-      <div class="card-name">Gainesville RV & Storage Park <span class="badge badge-new">NEW</span></div>
-      <div class="card-location">📍 17500 US 301, Waldo, FL 32694 · LoopNet / RVParkStore</div>
-      <div class="card-metrics">
-        <span class="card-price">$5,990,000</span>
-        <span class="card-lots">237 lots</span>
-      </div>
-      <div class="signals">
-        <span class="signal signal-value-add">Value-Add</span>
-        <span class="signal signal-tourism">I-75 Corridor</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Large value-add RV park with self-storage and commercial sites between Gainesville, Jacksonville and Ocala on the I-75 corridor.</div>
-    </div>
-    <div class="score-wrap">
-      <div class="score score-mid">5</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>237 lots (50+)</span><span class="sd-pts">+2</span></div>
-        <div class="sd-row"><span>Near interstate</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Value-add upside</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Multi-use asset</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">5/10</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.loopnet.com/Listing/17500-NE-US-Highway-301-Waldo-FL/33512019/" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.loopnet.com/Listing/17500-NE-US-Highway-301-Waldo-FL/33512019/','','Gainesville RV & Storage Park','$5,990,000','Waldo, FL','LoopNet')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-<div class="card" data-type="campground" data-state="FL" data-score="4" data-id="riverfront-campground-fl">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">Campground</div>
-      <div class="card-name">Established Campground on Scenic Riverfront <span class="badge badge-new">NEW</span></div>
-      <div class="card-location">📍 Confidential Location, FL · RVParkStore</div>
-      <div class="card-metrics">
-        <span class="card-price">$699,000</span>
-        <span class="card-lots">21 lots</span>
-      </div>
-      <div class="signals">
-        <span class="signal signal-waterfront">Waterfront</span>
-        <span class="signal signal-waterfront">Private Boat Ramp</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Scenic riverfront campground in Florida with a private boat ramp. 21 lots at an accessible $699K price point with waterfront premium.</div>
-      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
-      <div class="ai-summary-content">
-        <div class="ai-label">✦ AI Analysis</div>
-        <p><strong>Investment thesis:</strong> At $699K this is a lifestyle-business entry point with real upside. The property grossed ~$100K in 2024 on modest marketing and basic amenities — room to grow revenue through better advertising, glamping-style cabin upgrades, and kayak rental expansion. The mix of 9 full-hookup RV sites, 5 water/electric sites, 2 cabins, 2 apartments, and 2 tiny homes provides diversified income. Ten years of continuous operation under current ownership proves the concept. Private boat ramp on a scenic river is a genuine differentiator.</p>
-        <p><strong>Key details from listing:</strong> 1.5 riverfront acres. 14 RV sites (9 full hookup, 5 W/E). 2 cabins, 2 apartments, 2 tiny homes. Kayak rentals. Private boat ramp. Well water, septic. Owner-operated 10+ years. Turn-key operation.</p>
-        <div class="highlight-row">
-          <span class="highlight-item">$33.3K/Lot</span>
-          <span class="highlight-item">~$100K Gross (2024)</span>
-          <span class="highlight-item">6 Rental Units</span>
-          <span class="highlight-item">Private Boat Ramp</span>
+      <div class="card-body">
+        <div class="card-icon">🏕️</div>
+        <div class="card-info">
+          <h3><a href="https://www.bizbuysell.com/Business-Opportunity/lake-okeechobee-motel-rv-and-fish-camp/2567189/" target="_blank">Lake Okeechobee Motel, RV & Fish Camp</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Moore Haven, FL</span>
+            <span class="type-tag">RV Park</span>
+            <span class="source-tag">BizBuySell</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:50%;background:#ff8800"></div><span class="score-label">5/10</span></div>
+          <div class="card-reasons">Motivated seller, Price reduced, Waterfront, Tourism corridor</div>
+          <div class="card-notes">PRICE REDUCED - Make Offer. Waterfront hospitality on Lake Okeechobee.</div>
+          
         </div>
       </div>
     </div>
-    <div class="score-wrap">
-      <div class="score score-mid">4</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>21 lots (20-49)</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Waterfront access</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Private boat ramp</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">4/10</span></div>
+    <div class="deal-card" data-score="5" data-type="RV Park" data-state="FL" data-source="Facebook Marketplace">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">$1.30M</div>
       </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.rvparkstore.com/rv-parks/6963713-established-campground-on-a-scenic-riverfront-with-private-boat-ramp-for-sale-in-florida" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.rvparkstore.com/properties/6963713/messages/new','','Established Campground on Scenic Riverfront','$699,000','FL','RVParkStore')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-<div class="card" data-type="rv-park" data-state="TN" data-score="4" data-id="pebble-mountain-rv">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">RV Park</div>
-      <div class="card-name">Pebble Mountain RV Park <span class="badge badge-new">NEW</span></div>
-      <div class="card-location">📍 78 Pebble Mountain Cir, Chuckey, TN 37641 · LoopNet</div>
-      <div class="card-metrics">
-        <span class="card-price">$795,000</span>
-      </div>
-      <div class="signals">
-        <span class="signal signal-tourism">Outdoor Recreation Corridor</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Stabilized RV park investment in East Tennessee's outdoor recreation corridor. Sub-$800K entry point for a stabilized asset.</div>
-    </div>
-    <div class="score-wrap">
-      <div class="score score-mid">4</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>Near tourism area</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Near interstate</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Stabilized asset</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">4/10</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.loopnet.com/Listing/78-Pebble-Mountain-Cir-Chuckey-TN/33638791/" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.loopnet.com/Listing/78-Pebble-Mountain-Cir-Chuckey-TN/33638791/','','Pebble Mountain RV Park','$795,000','Chuckey, TN','LoopNet')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-<div class="card" data-type="rv-park" data-state="TN" data-score="4" data-id="alpine-hideaway">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">RV Park / Campground</div>
-      <div class="card-name">Alpine Hideaway Campground <span class="badge badge-new">NEW</span></div>
-      <div class="card-location">📍 251 Spring Valley Rd, Pigeon Forge, TN 37863 · LoopNet</div>
-      <div class="card-metrics">
-        <span class="card-price">Contact for Price</span>
-      </div>
-      <div class="signals">
-        <span class="signal signal-tourism">Near Dollywood/Smokies</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">RV park/campground in Pigeon Forge, TN — prime tourism corridor near Dollywood and Great Smoky Mountains National Park.</div>
-    </div>
-    <div class="score-wrap">
-      <div class="score score-mid">4</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>Near Dollywood</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Near Smokies NP</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Tourism corridor</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Prime location</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">4/10</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.loopnet.com/Listing/251-Spring-Valley-Rd-Pigeon-Forge-TN/33570361/" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.loopnet.com/Listing/251-Spring-Valley-Rd-Pigeon-Forge-TN/33570361/','','Alpine Hideaway Campground','Contact for Price','Pigeon Forge, TN','LoopNet')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-<div class="card" data-type="rv-park" data-state="GA" data-score="3" data-id="cave-spring-rv">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">RV Park</div>
-      <div class="card-name">RV Park in Cave Spring <span class="badge badge-new">NEW</span></div>
-      <div class="card-location">📍 21 Cedartown Hwy, Rome, GA 30161 · RVParkStore</div>
-      <div class="card-metrics">
-        <span class="card-price">$449,900</span>
-        <span class="card-lots">14 lots</span>
-      </div>
-      <div class="signals">
-        <span class="signal signal-value-add">Affordable Entry</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Small 14-lot RV park near Rome, GA at an accessible sub-$450K price point. Good starter park opportunity.</div>
-      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
-      <div class="ai-summary-content">
-        <div class="ai-label">✦ AI Analysis</div>
-        <p><strong>Investment thesis:</strong> At $600/month rent across 14 full-hookup lots, this park generates ~$100K gross annually if fully occupied — a solid return on a $450K basis. The 2-bay shop with roll-up doors adds utility for maintenance or ancillary storage income. Creek-side setting in historic downtown Cave Spring is charming, though the 0.4-acre footprint limits expansion. Best suited as a cash-flowing starter park or add-on to an existing SE portfolio. Built 1971, so infrastructure age is a due-diligence item.</p>
-        <p><strong>Key details from listing:</strong> 14 full-hookup sites on Little Cedar Creek. 0.4 acres. $600/month lot rent. Built 1971. 2-bay shop with roll-up doors. On-site office. Downtown Cave Spring location. Cash or new loan.</p>
-        <div class="highlight-row">
-          <span class="highlight-item">$600/mo Rent</span>
-          <span class="highlight-item">$32.1K/Lot</span>
-          <span class="highlight-item">Full Hookups</span>
-          <span class="highlight-item">2-Bay Shop</span>
+      <div class="card-body">
+        <div class="card-icon">🏕️</div>
+        <div class="card-info">
+          <h3><a href="https://www.facebook.com/marketplace/item/1791932341500489/" target="_blank">Hospitality / RV Park – 13.85% CAP</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Okeechobee, FL</span>
+            <span class="type-tag">RV Park</span>
+            <span class="source-tag">Facebook Marketplace</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:50%;background:#ff8800"></div><span class="score-label">5/10</span></div>
+          <div class="card-reasons">Cap rate 13.85%, 22 lots, Tourism corridor</div>
+          <div class="card-notes">10 Keys + 22 Pads, room to expand. Hotel/Motel/RV combo.</div>
+          <div class="card-lots">22 lots/units</div>
         </div>
       </div>
     </div>
-    <div class="score-wrap">
-      <div class="score score-mid">3</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Operating asset</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Starter park</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">3/10</span></div>
+    <div class="deal-card" data-score="3" data-type="Self Storage" data-state="GA" data-source="LoopNet">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span> <span class="badge lender">LENDER-OWNED</span></div>
+        <div class="card-price">$595,000</div>
       </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.rvparkstore.com/rv-parks/6875094-rv-park-in-cave-spring-for-sale-in-rome-ga" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.rvparkstore.com/properties/6875094/messages/new','','RV Park in Cave Spring','$449,900','Rome, GA','RVParkStore')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-<div class="card" data-type="self-storage" data-state="GA" data-score="3" data-id="economy-self-storage">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">Self Storage</div>
-      <div class="card-name">Economy Self-Storage <span class="badge badge-new">NEW</span></div>
-      <div class="card-location">📍 3661 Peach Orchard Rd, Augusta, GA 30906 · LoopNet</div>
-      <div class="card-metrics">
-        <span class="card-price">$595,000</span>
-      </div>
-      <div class="signals">
-        <span class="signal signal-value-add">Value-Add</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Value-add self-storage investment in the growing Augusta, GA market. Strategically located on busy road.</div>
-    </div>
-    <div class="score-wrap">
-      <div class="score score-mid">3</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>Value-add upside</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Growing market</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">3/10</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.loopnet.com/Listing/3661-Peach-Orchard-Rd-Augusta-GA/33555413/" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.loopnet.com/Listing/3661-Peach-Orchard-Rd-Augusta-GA/33555413/','','Economy Self-Storage','$595,000','Augusta, GA','LoopNet')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-<div class="card" data-type="campground" data-state="GA" data-score="3" data-id="pine-haven-campground">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">Campground</div>
-      <div class="card-name">Pine Haven Camp Ground <span class="badge badge-new">NEW</span></div>
-      <div class="card-location">📍 Baxley, GA 31513 · RVParkStore</div>
-      <div class="card-metrics">
-        <span class="card-price">$700,000</span>
-        <span class="card-lots">21 lots</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">21-lot campground in south Georgia. Affordable acquisition in Baxley area.</div>
-      <div class="ai-summary-toggle" onclick="toggleAI(this)"><span>✦</span><span>AI Analysis</span><span class="chevron">▼</span></div>
-      <div class="ai-summary-content">
-        <div class="ai-label">✦ AI Analysis</div>
-        <p><strong>Investment thesis:</strong> This is a dual-income asset: 21 full-hookup campsites at $450/month (~$113K gross annually if full) plus a restaurant under a 3-year lease providing stable, contractual income with zero operator overhead. At $700K for 4.6 acres, the per-acre cost is $152K — reasonable given the built-out infrastructure including asphalt roads, two deep wells, and pond amenities. The restaurant lease de-risks the investment and subsidizes debt service while campsite revenue scales.</p>
-        <p><strong>Key details from listing:</strong> 21 full-hookup sites (water & sewer). 4.6 acres with pond views. Asphalt-milled internal roads. Two deep wells. Washer/dryer facility. Restaurant under 3-year lease. Well water, septic.</p>
-        <div class="highlight-row">
-          <span class="highlight-item">$450/mo Rent</span>
-          <span class="highlight-item">Restaurant Lease</span>
-          <span class="highlight-item">4.6 Acres</span>
-          <span class="highlight-item">Dual Income</span>
+      <div class="card-body">
+        <div class="card-icon">📦</div>
+        <div class="card-info">
+          <h3><a href="https://www.loopnet.com/Listing/3661-Peach-Orchard-Rd-Augusta-GA/33796498/" target="_blank">Lender-Owned Self-Storage</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Augusta, GA</span>
+            <span class="type-tag">Self Storage</span>
+            <span class="source-tag">LoopNet</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:30%;background:#4488ff"></div><span class="score-label">3/10</span></div>
+          <div class="card-reasons">Motivated seller, Near interstate</div>
+          <div class="card-notes">LENDER-OWNED. 11,290 SF self-storage. Motivated seller.</div>
+          
         </div>
       </div>
     </div>
-    <div class="score-wrap">
-      <div class="score score-mid">3</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>21 lots (20-49)</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Operating asset</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Affordable entry</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">3/10</span></div>
+    <div class="deal-card" data-score="3" data-type="Campground" data-state="FL" data-source="RVParkStore">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">$699,000</div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">⛺</div>
+        <div class="card-info">
+          <h3><a href="https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc" target="_blank">Established Campground on Scenic Riverfront</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Florida</span>
+            <span class="type-tag">Campground</span>
+            <span class="source-tag">RVParkStore</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:30%;background:#4488ff"></div><span class="score-label">3/10</span></div>
+          <div class="card-reasons">21 lots, Waterfront, Tourism corridor</div>
+          <div class="card-notes">Scenic riverfront with private boat ramp. 21 lots.</div>
+          <div class="card-lots">21 lots/units</div>
+        </div>
+      </div>
+    </div>
+    <div class="deal-card" data-score="2" data-type="Marina" data-state="FL" data-source="LoopNet">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">$4.00M</div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">⚓</div>
+        <div class="card-info">
+          <h3><a href="https://www.loopnet.com/Listing/10175-W-Fishbowl-Dr-Homosassa-FL/33862490/" target="_blank">Waterfront RV/MHP & Manatee Campground Marina</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Homosassa, FL</span>
+            <span class="type-tag">Marina</span>
+            <span class="source-tag">LoopNet</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:20%;background:#4488ff"></div><span class="score-label">2/10</span></div>
+          <div class="card-reasons">Waterfront, Tourism corridor</div>
+          <div class="card-notes">3.5 acres, 1000ft canal to Homosassa River. RV/MHP/Marina combo.</div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="deal-card" data-score="2" data-type="MHP" data-state="GA" data-source="Crexi">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">$3.50M</div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">🏘️</div>
+        <div class="card-info">
+          <h3><a href="https://www.crexi.com/properties/2714-thomasville-rd-bainbridge-ga-39819" target="_blank">Confidential MHP in SW Georgia</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Bainbridge, GA</span>
+            <span class="type-tag">MHP</span>
+            <span class="source-tag">Crexi</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:20%;background:#4488ff"></div><span class="score-label">2/10</span></div>
+          <div class="card-reasons">90 lots</div>
+          <div class="card-notes">90 Pads @ ~$39k/pad. SW Georgia MHP.</div>
+          <div class="card-lots">90 lots/units</div>
+        </div>
+      </div>
+    </div>
+    <div class="deal-card" data-score="2" data-type="RV Park" data-state="GA" data-source="RVParkStore">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">$1.75M</div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">🏕️</div>
+        <div class="card-info">
+          <h3><a href="https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc&page=2" target="_blank">High Occupancy Georgia RV Park</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Georgia</span>
+            <span class="type-tag">RV Park</span>
+            <span class="source-tag">RVParkStore</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:20%;background:#4488ff"></div><span class="score-label">2/10</span></div>
+          <div class="card-reasons">42 lots, 95% occupied</div>
+          <div class="card-notes">Recent infrastructure upgrades. High year-round occupancy.</div>
+          <div class="card-lots">42 lots/units</div>
+        </div>
+      </div>
+    </div>
+    <div class="deal-card" data-score="1" data-type="RV Park" data-state="FL" data-source="LoopNet">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">$499,000</div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">🏕️</div>
+        <div class="card-info">
+          <h3><a href="https://www.loopnet.com/Listing/3174-Westwood-Dr-Marianna-FL/33610182/" target="_blank">RV Park with Expansion Possibilities</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Marianna, FL</span>
+            <span class="type-tag">RV Park</span>
+            <span class="source-tag">LoopNet</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:10%;background:#4488ff"></div><span class="score-label">1/10</span></div>
+          <div class="card-reasons">Near interstate</div>
+          <div class="card-notes">9,776 SF. Near I-10. Expansion potential in panhandle FL.</div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="deal-card" data-score="1" data-type="RV Park" data-state="TN" data-source="LoopNet">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">$795,000</div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">🏕️</div>
+        <div class="card-info">
+          <h3><a href="https://www.loopnet.com/Listing/78-Pebble-Mountain-Cir-Chuckey-TN/33868870/" target="_blank">Pebble Mountain RV Park</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Chuckey, TN</span>
+            <span class="type-tag">RV Park</span>
+            <span class="source-tag">LoopNet</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:10%;background:#4488ff"></div><span class="score-label">1/10</span></div>
+          <div class="card-reasons">Tourism corridor</div>
+          <div class="card-notes">Stabilized family campground near Smoky Mountains corridor.</div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="deal-card" data-score="1" data-type="RV Park" data-state="GA" data-source="RVParkStore">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">$449,900</div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">🏕️</div>
+        <div class="card-info">
+          <h3><a href="https://www.rvparkstore.com/rv-parks-for-sale/21-cedartown-highway-rome-ga-30161" target="_blank">RV Park in Cave Spring</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Rome, GA</span>
+            <span class="type-tag">RV Park</span>
+            <span class="source-tag">RVParkStore</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:10%;background:#4488ff"></div><span class="score-label">1/10</span></div>
+          <div class="card-reasons">Near interstate</div>
+          <div class="card-notes">14 lots near Rome, GA. Affordable entry point.</div>
+          <div class="card-lots">14 lots/units</div>
+        </div>
+      </div>
+    </div>
+    <div class="deal-card" data-score="1" data-type="Self Storage" data-state="NC" data-source="Crexi">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">Call for Price</div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">📦</div>
+        <div class="card-info">
+          <h3><a href="https://www.crexi.com/properties/517-lewis-dr-carolina-beach-nc-28428" target="_blank">Carolina Beach Self Storage</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Carolina Beach, NC</span>
+            <span class="type-tag">Self Storage</span>
+            <span class="source-tag">Crexi</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:10%;background:#4488ff"></div><span class="score-label">1/10</span></div>
+          <div class="card-reasons">Tourism corridor</div>
+          <div class="card-notes">Coastal NC self-storage. Desirable beach market.</div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="deal-card" data-score="0" data-type="Self Storage" data-state="GA" data-source="LoopNet">
+      <div class="card-header">
+        <div class="card-badges"><span class="badge new">NEW</span></div>
+        <div class="card-price">$350,000</div>
+      </div>
+      <div class="card-body">
+        <div class="card-icon">📦</div>
+        <div class="card-info">
+          <h3><a href="https://www.loopnet.com/Listing/1201-W-12th-St-Alma-GA/33726802/" target="_blank">Alma Affordable Self Storage</a></h3>
+          <div class="card-meta">
+            <span class="loc">📍 Alma, GA</span>
+            <span class="type-tag">Self Storage</span>
+            <span class="source-tag">LoopNet</span>
+          </div>
+          <div class="score-bar"><div class="score-fill" style="width:0%;background:#4488ff"></div><span class="score-label">0/10</span></div>
+          <div class="card-reasons">No special signals</div>
+          <div class="card-notes">$62.50/SF. Affordable self-storage entry point in rural GA.</div>
+          
+        </div>
       </div>
     </div>
   </div>
-  <div class="card-actions">
-    <a href="https://www.rvparkstore.com/rv-parks/7000857-pine-haven-camp-ground-for-sale-in-baxley-ga" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.rvparkstore.com/properties/7000857/messages/new','','Pine Haven Camp Ground','$700,000','Baxley, GA','RVParkStore')">✉ Send Inquiry</a>
-  </div>
 </div>
 
-<div class="card" data-type="mhp" data-state="AL" data-score="3" data-id="creek-trace-mhp">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">Mobile Home Park</div>
-      <div class="card-name">Creek Trace MHP <span class="badge badge-new">NEW</span></div>
-      <div class="card-location">📍 929 AL-165, Fort Mitchell, AL 36856 · Crexi</div>
-      <div class="card-metrics">
-        <span class="card-price">Contact for Price</span>
-        <span class="card-lots">25 pads</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">Clean 25-pad MHP in Russell County, Alabama. Marketed by The MHP Broker.</div>
-    </div>
-    <div class="score-wrap">
-      <div class="score score-mid">3</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>25 pads (20-49)</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Specialty broker</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Operating asset</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">3/10</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.crexi.com/properties/929-AL-165-Fort-Mitchell-AL" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.crexi.com/properties/929-AL-165-Fort-Mitchell-AL','','Creek Trace MHP','Contact for Price','Fort Mitchell, AL','Crexi')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-<div class="card" data-type="mhp" data-state="NC" data-score="2" data-id="southport-mhp">
-  <div class="card-toolbar">
-    <button class="btn-bookmark" onclick="toggleBookmark(this)" title="Bookmark">☆</button>
-    <button class="btn-dismiss" onclick="dismissCard(this)" title="Dismiss">✕</button>
-  </div>
-  <div class="card-header">
-    <div>
-      <div class="card-type">Mobile Home Park</div>
-      <div class="card-name">Mobile Home Park — Southport Waterfront <span class="badge badge-new">NEW</span></div>
-      <div class="card-location">📍 1209 N Howe St, Southport, NC · LoopNet</div>
-      <div class="card-metrics">
-        <span class="card-price">Contact for Price</span>
-      </div>
-      <div class="signals">
-        <span class="signal signal-waterfront">Near Downtown Waterfront</span>
-      </div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.6;margin-top:10px">MHP located 1.2 miles from historic downtown Southport waterfront on two parcels totaling ~1.79 acres.</div>
-    </div>
-    <div class="score-wrap">
-      <div class="score score-mid">2</div>
-      <div class="score-bar"><span class="filled-green"></span><span class="filled-green"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-      <div class="score-detail">
-        <div class="sd-row"><span>Near waterfront</span><span class="sd-pts">+1</span></div>
-        <div class="sd-row"><span>Operating asset</span><span class="sd-pts">+1</span></div>
-        <div style="border-top:1px solid #334155;margin-top:4px;padding-top:4px;display:flex;justify-content:space-between"><span style="color:#e2e8f0;font-weight:700">Total</span><span style="color:#38bdf8;font-weight:700">2/10</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="card-actions">
-    <a href="https://www.loopnet.com/Listing/1209-N-Howe-St-Southport-NC/33456789/" class="btn-view" target="_blank">View Listing ↗</a>
-    <a class="btn-inquiry" onclick="sendInquiry('https://www.loopnet.com/Listing/1209-N-Howe-St-Southport-NC/33456789/','','Southport Waterfront MHP','Contact for Price','Southport, NC','LoopNet')">✉ Send Inquiry</a>
-  </div>
-</div>
-
-</div>
-
-<!-- Summary Table -->
-<div class="table-section">
-  <div class="section-title" style="color:#94a3b8;padding:0 0 16px">📊 Summary Table</div>
-  <table>
-    <tr><th>Property</th><th style="text-align:center">Price</th><th style="text-align:center">Lots</th><th style="text-align:center">State</th><th style="text-align:center">Score</th><th style="text-align:center">Signals</th></tr>
-    <tr><td><a href="#">Confidential Florida KOA</a><br><span style="font-size:11px;color:#64748b">RV Park · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$4.4M</td><td style="text-align:center;color:#a78bfa">121</td><td style="text-align:center">FL</td><td style="text-align:center"><span style="color:#f59e0b;font-weight:700">7</span></td><td style="text-align:center"><span style="font-size:10px;color:#ef4444">PRICE DROP</span></td></tr>
-    <tr><td><a href="#">Gainesville RV & Storage Park</a><br><span style="font-size:11px;color:#64748b">RV Park / Self Storage · LoopNet</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$5.99M</td><td style="text-align:center;color:#a78bfa">237</td><td style="text-align:center">FL</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">5</span></td><td style="text-align:center"><span style="font-size:10px;color:#fbbf24">VALUE-ADD</span></td></tr>
-    <tr><td><a href="#">Bayou Black RV Park</a><br><span style="font-size:11px;color:#64748b">RV Park · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$750K</td><td style="text-align:center;color:#a78bfa">37</td><td style="text-align:center">LA</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">5</span></td><td style="text-align:center"><span style="font-size:10px;color:#ef4444">PRICE DROP</span></td></tr>
-    <tr><td><a href="#">Seven Sisters Campground</a><br><span style="font-size:11px;color:#64748b">Campground · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$2.85M</td><td style="text-align:center;color:#a78bfa">25</td><td style="text-align:center">FL</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">5</span></td><td style="text-align:center"><span style="font-size:10px;color:#ef4444">PRICE DROP</span></td></tr>
-    <tr><td><a href="#">Established Campground on Scenic Riverfront</a><br><span style="font-size:11px;color:#64748b">Campground · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$699K</td><td style="text-align:center;color:#a78bfa">21</td><td style="text-align:center">FL</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">4</span></td><td style="text-align:center"><span style="font-size:10px;color:#38bdf8">WATERFRONT</span></td></tr>
-    <tr><td><a href="#">Pebble Mountain RV Park</a><br><span style="font-size:11px;color:#64748b">RV Park · LoopNet</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$795K</td><td style="text-align:center;color:#64748b">—</td><td style="text-align:center">TN</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">4</span></td><td style="text-align:center"><span style="font-size:10px;color:#a78bfa">TOURISM</span></td></tr>
-    <tr><td><a href="#">Alpine Hideaway Campground</a><br><span style="font-size:11px;color:#64748b">RV Park · LoopNet</span></td><td style="text-align:center;color:#475569">Call</td><td style="text-align:center;color:#64748b">—</td><td style="text-align:center">TN</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">4</span></td><td style="text-align:center"><span style="font-size:10px;color:#a78bfa">SMOKIES</span></td></tr>
-    <tr><td><a href="#">RV Park in Cave Spring</a><br><span style="font-size:11px;color:#64748b">RV Park · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$450K</td><td style="text-align:center;color:#a78bfa">14</td><td style="text-align:center">GA</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td><td style="text-align:center">—</td></tr>
-    <tr><td><a href="#">Economy Self-Storage</a><br><span style="font-size:11px;color:#64748b">Self Storage · LoopNet</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$595K</td><td style="text-align:center;color:#64748b">—</td><td style="text-align:center">GA</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td><td style="text-align:center"><span style="font-size:10px;color:#fbbf24">VALUE-ADD</span></td></tr>
-    <tr><td><a href="#">Pine Haven Camp Ground</a><br><span style="font-size:11px;color:#64748b">Campground · RVParkStore</span></td><td style="text-align:center;color:#38bdf8;font-weight:600">$700K</td><td style="text-align:center;color:#a78bfa">21</td><td style="text-align:center">GA</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td><td style="text-align:center">—</td></tr>
-    <tr><td><a href="#">Creek Trace MHP</a><br><span style="font-size:11px;color:#64748b">MHP · Crexi</span></td><td style="text-align:center;color:#475569">Call</td><td style="text-align:center;color:#a78bfa">25</td><td style="text-align:center">AL</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">3</span></td><td style="text-align:center">—</td></tr>
-    <tr><td><a href="#">Southport Waterfront MHP</a><br><span style="font-size:11px;color:#64748b">MHP · LoopNet</span></td><td style="text-align:center;color:#475569">Call</td><td style="text-align:center;color:#64748b">—</td><td style="text-align:center">NC</td><td style="text-align:center"><span style="color:#64748b;font-weight:700">2</span></td><td style="text-align:center"><span style="font-size:10px;color:#38bdf8">WATERFRONT</span></td></tr>
-  </table>
-</div>
-</div>
-
-<div id="bookmarks-tab" class="bookmarks-section">
-  <h3 style="color:#f59e0b;margin-bottom:16px">⭐ Saved Deals</h3>
-  <p id="no-bookmarks" style="color:#64748b">No saved deals yet. Click the ☆ button on any deal card to save it here.</p>
-  <div id="bookmarks-list"></div>
-</div>
-
-<div id="archive-tab" class="archive-section">
-  <h3 style="color:#94a3b8;margin-bottom:16px">📂 Previous Digests</h3>
-  <p style="color:#64748b">No previous digests yet. Past digests will appear here.</p>
-</div>
-
-<div class="footer">
-  Deal Scout Agent · <a href="mailto:jace.agentic@gmail.com" style="color:#38bdf8;text-decoration:none">jace.agentic@gmail.com</a><br>
-  Sources: RVParkStore, LoopNet, Crexi · Searched 8 SE states
-</div>
-
-<!-- SEEN_INDEX_START -->
-<script type="application/json" id="seen-index">
-[
-  {"url":"rvparkstore-confidential-fl-koa","name":"Confidential Florida KOA","price":4400000,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"rvparkstore-bayou-black-rv-park","name":"Bayou Black RV Park","price":750000,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"rvparkstore-seven-sisters-campground","name":"Seven Sisters Campground","price":2850000,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"loopnet-gainesville-rv-storage","name":"Gainesville RV & Storage Park","price":5990000,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"rvparkstore-riverfront-campground-fl","name":"Established Campground on Scenic Riverfront","price":699000,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"loopnet-pebble-mountain-rv-park","name":"Pebble Mountain RV Park","price":795000,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"loopnet-alpine-hideaway-pigeon-forge","name":"Alpine Hideaway Campground","price":null,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"rvparkstore-cave-spring-rv-park","name":"RV Park in Cave Spring","price":449900,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"loopnet-economy-self-storage-augusta","name":"Economy Self-Storage","price":595000,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"rvparkstore-pine-haven-campground","name":"Pine Haven Camp Ground","price":700000,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"crexi-creek-trace-mhp","name":"Creek Trace MHP","price":null,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"},
-  {"url":"loopnet-southport-mhp","name":"Mobile Home Park Southport","price":null,"firstSeen":"2026-03-07","lastSeen":"2026-03-07"}
-]
-</script>
-<!-- SEEN_INDEX_END -->
-
-<!-- ARCHIVE_INDEX_START -->
-<script type="application/json" id="archive-index">
-[{"date":"2026-03-07","file":"deal-scout-2026-03-07.html","deals":12,"hot":1,"isToday":true}]
-</script>
-<!-- ARCHIVE_INDEX_END -->
-
-<!-- REPLIES_INDEX_START -->
-<script type="application/json" id="replies-index">
-[]
-</script>
-<!-- REPLIES_INDEX_END -->
+<footer>
+  Deal Scout &mdash; Built by Jace's AI Assistant &mdash; Updated 2026-03-09<br>
+  Sources: LoopNet, Crexi, RVParkStore, BizBuySell, Facebook Marketplace, LandWatch
+</footer>
 
 <script>
-// State management — persistent via GitHub saved-deals.json
-var _dismissed = {};
-var _bookmarks = {};
-var _ghRepo = 'dreamhammerai/deal-scout';
-var _ghFile = 'saved-deals.json';
-var _ghSHA = null;
-var _saveTimer = null;
+// SEEN_INDEX_START
+var SEEN_INDEX = [{"url": "https://www.rvparkstore.com/rv-parks-for-sale/8544-west-miss-maggie-drive-homosassa-fl-34448", "name": "Seven Sisters Campground & RV Park", "price": 2850000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc&page=2", "name": "Confidential Florida KOA", "price": 4400000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.rvparkstore.com/rv-parks-for-sale/6111-bayou-black-drive-gibson-la-70356", "name": "Bayou Black RV Park", "price": 750000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.bizbuysell.com/Business-Opportunity/lake-okeechobee-motel-rv-and-fish-camp/2567189/", "name": "Lake Okeechobee Motel, RV & Fish Camp", "price": 1399000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.facebook.com/marketplace/item/1791932341500489/", "name": "Hospitality / RV Park \u2013 13.85% CAP", "price": 1300000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.loopnet.com/Listing/3661-Peach-Orchard-Rd-Augusta-GA/33796498/", "name": "Lender-Owned Self-Storage", "price": 595000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc", "name": "Established Campground on Scenic Riverfront", "price": 699000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.loopnet.com/Listing/10175-W-Fishbowl-Dr-Homosassa-FL/33862490/", "name": "Waterfront RV/MHP & Manatee Campground Marina", "price": 4000000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.crexi.com/properties/2714-thomasville-rd-bainbridge-ga-39819", "name": "Confidential MHP in SW Georgia", "price": 3500000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.rvparkstore.com/rv-parks-for-sale/usa?order=create_desc&page=2", "name": "High Occupancy Georgia RV Park", "price": 1750000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.loopnet.com/Listing/3174-Westwood-Dr-Marianna-FL/33610182/", "name": "RV Park with Expansion Possibilities", "price": 499000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.loopnet.com/Listing/78-Pebble-Mountain-Cir-Chuckey-TN/33868870/", "name": "Pebble Mountain RV Park", "price": 795000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.rvparkstore.com/rv-parks-for-sale/21-cedartown-highway-rome-ga-30161", "name": "RV Park in Cave Spring", "price": 449900, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.crexi.com/properties/517-lewis-dr-carolina-beach-nc-28428", "name": "Carolina Beach Self Storage", "price": null, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}, {"url": "https://www.loopnet.com/Listing/1201-W-12th-St-Alma-GA/33726802/", "name": "Alma Affordable Self Storage", "price": 350000, "firstSeen": "2026-03-09", "lastSeen": "2026-03-09"}];
+// SEEN_INDEX_END
 
-// Load saved state from GitHub on page load
-(function loadSavedDeals(){
-  fetch('https://raw.githubusercontent.com/'+_ghRepo+'/main/'+_ghFile+'?t='+Date.now())
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(data){
-      if(!data) return;
-      if(data.bookmarks) _bookmarks = data.bookmarks;
-      if(data.dismissed) _dismissed = data.dismissed;
-      // Apply dismissed state to cards
-      Object.keys(_dismissed).forEach(function(id){
-        var card = document.querySelector('.card[data-id="'+id+'"]');
-        if(card) card.classList.add('dismissed');
-      });
-      // Apply bookmark state to cards
-      Object.keys(_bookmarks).forEach(function(id){
-        var card = document.querySelector('.card[data-id="'+id+'"]');
-        if(card){
-          var btn = card.querySelector('.btn-bookmark');
-          if(btn){ btn.classList.add('active'); btn.textContent='\u2605'; }
-        }
-      });
-    })
-    .catch(function(e){ console.log('No saved deals found, starting fresh'); });
-  // Also fetch the file SHA for future writes
-  fetch('https://api.github.com/repos/'+_ghRepo+'/contents/'+_ghFile,{
-    headers:{'Accept':'application/vnd.github.v3+json'}
-  }).then(function(r){ return r.json(); })
-    .then(function(d){ if(d.sha) _ghSHA=d.sha; })
-    .catch(function(){});
-})();
+// ARCHIVE_INDEX_START
+var ARCHIVE_INDEX = [{"date":"2026-03-09","file":"deal-scout.html","count":15,"isToday":true}];
+// ARCHIVE_INDEX_END
 
-// Debounced save to GitHub (waits 2s after last change)
-function scheduleSave(){
-  if(_saveTimer) clearTimeout(_saveTimer);
-  _saveTimer = setTimeout(syncToGitHub, 2000);
+// REPLIES_INDEX_START
+var REPLIES_INDEX = [];
+// REPLIES_INDEX_END
+
+var currentTypeFilter = 'all';
+var currentStateFilter = 'all';
+
+function setFilter(type) {
+  currentTypeFilter = type;
+  document.querySelectorAll('#filterBar .filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  filterDeals();
 }
 
-function syncToGitHub(){
-  // Read encoded token from meta tag and decode (reverse-base64)
-  var tkEl = document.querySelector('meta[name="gh-tk"]');
-  var pat = null;
-  if(tkEl){ try{ var d=atob(tkEl.content); pat=''; for(var i=d.length-1;i>=0;i--) pat+=d[i]; }catch(e){} }
-  if(!pat){
-    // Fallback: save to a hidden textarea so user can manually copy
-    console.log('No GitHub PAT available for auto-save. Bookmarks saved in session only.');
-    return;
-  }
-  var payload = JSON.stringify({ bookmarks: _bookmarks, dismissed: _dismissed }, null, 2) + '\n';
-  var body = { message: 'Update saved deals', content: btoa(unescape(encodeURIComponent(payload))) };
-  if(_ghSHA) body.sha = _ghSHA;
-  fetch('https://api.github.com/repos/'+_ghRepo+'/contents/'+_ghFile, {
-    method: 'PUT',
-    headers: { 'Authorization': 'Bearer '+pat, 'Accept': 'application/vnd.github.v3+json' },
-    body: JSON.stringify(body)
-  }).then(function(r){ return r.json(); })
-    .then(function(d){ if(d.content && d.content.sha) _ghSHA = d.content.sha; })
-    .catch(function(e){ console.log('Save failed:', e); });
+function setStateFilter(state) {
+  currentStateFilter = state;
+  document.querySelectorAll('#stateBar .filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  filterDeals();
 }
 
-function showTab(tab){
-  document.getElementById('today-tab').style.display=tab==='today'?'block':'none';
-  document.getElementById('archive-tab').style.display=tab==='archive'?'block':'none';
-  document.getElementById('bookmarks-tab').style.display=tab==='bookmarks'?'block':'none';
-  document.querySelectorAll('.header .filter-btn').forEach(function(b){b.classList.remove('active')});
-  var tabBtn=document.getElementById('tab-'+tab);
-  if(tabBtn) tabBtn.classList.add('active');
-  if(tab==='bookmarks') renderBookmarks();
-}
-
-function filterType(type,btn){
-  document.querySelectorAll('.filters:first-of-type .filter-btn').forEach(function(b){b.classList.remove('active')});
-  btn.classList.add('active');
-  document.querySelectorAll('.card').forEach(function(c){
-    if(type==='all'||c.dataset.type===type)c.style.display='';
-    else c.style.display='none';
+function filterDeals() {
+  var search = document.getElementById('searchBox').value.toLowerCase();
+  document.querySelectorAll('.deal-card').forEach(card => {
+    var type = card.dataset.type;
+    var state = card.dataset.state;
+    var text = card.innerText.toLowerCase();
+    var showType = currentTypeFilter === 'all' || type === currentTypeFilter;
+    var showState = currentStateFilter === 'all' || state === currentStateFilter;
+    var showSearch = !search || text.includes(search);
+    card.style.display = (showType && showState && showSearch) ? '' : 'none';
   });
 }
-
-function filterState(state,btn){
-  document.querySelectorAll('.filters:nth-of-type(2) .filter-btn').forEach(function(b){b.classList.remove('active')});
-  btn.classList.add('active');
-  document.querySelectorAll('.card').forEach(function(c){
-    if(state==='all'||c.dataset.state===state)c.style.display='';
-    else c.style.display='none';
-  });
-}
-
-function searchDeals(q){
-  q=q.toLowerCase();
-  document.querySelectorAll('.card').forEach(function(c){
-    c.style.display=c.innerText.toLowerCase().indexOf(q)>=0?'':'none';
-  });
-}
-
-function dismissCard(btn){
-  var card=btn.closest('.card');
-  var id=card.dataset.id;
-  _dismissed[id]=true;
-  card.classList.add('dismissed');
-  scheduleSave();
-}
-
-function toggleBookmark(btn){
-  var card=btn.closest('.card');
-  var id=card.dataset.id;
-  if(_bookmarks[id]){
-    delete _bookmarks[id];
-    btn.classList.remove('active');
-    btn.textContent='☆';
-  } else {
-    _bookmarks[id]={
-      name:card.querySelector('.card-name').textContent.replace(/NEW|PRICE DROP|SEEN BEFORE/g,'').trim(),
-      price:card.querySelector('.card-price')?card.querySelector('.card-price').textContent:'',
-      location:card.querySelector('.card-location')?card.querySelector('.card-location').textContent:'',
-      type:card.querySelector('.card-type')?card.querySelector('.card-type').textContent:'',
-      score:card.dataset.score,
-      link:card.querySelector('.btn-view')?card.querySelector('.btn-view').href:''
-    };
-    btn.classList.add('active');
-    btn.textContent='★';
-  }
-  scheduleSave();
-}
-
-function renderBookmarks(){
-  var list=document.getElementById('bookmarks-list');
-  var noMsg=document.getElementById('no-bookmarks');
-  var keys=Object.keys(_bookmarks);
-  if(keys.length===0){
-    noMsg.style.display='block';
-    list.innerHTML='';
-    return;
-  }
-  noMsg.style.display='none';
-  var html='';
-  keys.forEach(function(id){
-    var b=_bookmarks[id];
-    html+='<div style="background:#1e293b;border:1px solid #f59e0b;border-radius:12px;padding:16px 20px;margin-bottom:12px">';
-    html+='<div style="display:flex;justify-content:space-between;align-items:center">';
-    html+='<div><div style="font-size:11px;color:#38bdf8;font-weight:700;text-transform:uppercase">'+b.type+'</div>';
-    html+='<div style="font-size:16px;font-weight:700;color:#e2e8f0">'+b.name+'</div>';
-    html+='<div style="font-size:12px;color:#94a3b8">'+b.location+'</div>';
-    html+='<div style="margin-top:6px"><span style="font-size:18px;font-weight:700;color:#38bdf8">'+b.price+'</span></div></div>';
-    html+='<div style="text-align:center"><div class="score score-mid" style="line-height:44px">'+b.score+'</div></div></div>';
-    html+='<div style="margin-top:12px;display:flex;gap:8px">';
-    if(b.link) html+='<a href="'+b.link+'" class="btn-view" target="_blank">View Listing ↗</a>';
-    html+='<button onclick="delete _bookmarks[\''+id+'\'];renderBookmarks();scheduleSave();" class="btn-contact">Remove ✕</button>';
-    html+='</div></div>';
-  });
-  list.innerHTML=html;
-}
-
-function sendInquiry(contactUrl,brokerEmail,name,price,location,source){
-  if(brokerEmail){
-    var subject=encodeURIComponent('Inquiry: '+name+' — '+price);
-    var body=encodeURIComponent('Hi,\n\nI\'m interested in learning more about the following property:\n\n• Property: '+name+'\n• Asking Price: '+price+'\n• Location: '+location+'\n• Source: '+source+'\n\nCould you please share additional details including:\n- Current financials (NOI, occupancy, cap rate)\n- Any seller financing options\n- Reason for selling\n- Timeline for closing\n\nI\'m an active investor in the Southeast US market and can close quickly on the right deal.\n\nBest regards,\nJace Perry\njace.investor@gmail.com');
-    window.open('https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(brokerEmail)+'&cc=jace.investor@gmail.com&su='+subject+'&body='+body,'_blank');
-  } else {
-    window.open(contactUrl,'_blank');
-  }
-}
-
-function toggleAI(btn){
-  btn.classList.toggle('open');
-  btn.nextElementSibling.classList.toggle('open');
-}
-
-// Initialize — show today tab
-showTab('today');
 </script>
 </body>
 </html>
