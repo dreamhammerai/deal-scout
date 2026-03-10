@@ -126,6 +126,10 @@
     .stats-bar { gap: 12px; }
   }
 
+
+.listing-date{font-size:.72rem;color:var(--muted);padding:4px 0 2px;display:flex;gap:8px;align-items:center}
+.listing-date .dom{color:#f59e0b;font-weight:600}
+
 /* AI Analysis Panels */
 .ai-summary-toggle{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#00d4ff;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.85rem;display:flex;align-items:center;justify-content:space-between;margin-top:10px;border:1px solid rgba(0,212,255,.2);transition:all .3s ease}
 .ai-summary-toggle:hover{border-color:rgba(0,212,255,.5);box-shadow:0 0 15px rgba(0,212,255,.15)}
@@ -658,6 +662,16 @@ function formatPrice(p) {
 
 function renderCard(l) {
   const isBookmarked = bookmarks.has(l.id);
+    const seenEntry = SEEN_INDEX.find(s => s.name === l.name);
+    const firstSeen = seenEntry ? seenEntry.firstSeen : null;
+    let dateHtml = '';
+    if (firstSeen) {
+      const fs = new Date(firstSeen + 'T00:00:00');
+      const today = new Date(); today.setHours(0,0,0,0);
+      const dom = Math.round((today - fs) / 86400000);
+      const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][fs.getMonth()];
+      dateHtml = `<div class="listing-date">Listed: ${mo} ${fs.getDate()}, ${fs.getFullYear()}${dom > 0 ? ` <span class="dom">${dom} day${dom!==1?'s':''} on market</span>` : ' <span class="dom">NEW TODAY</span>'}</div>`;
+    }
   const cardClass = ['card', l.score >= 9 ? 'top-deal' : l.score >= 7 ? 'hot-deal' : '', dismissed.has(l.id) ? 'dismissed' : '', isBookmarked ? 'bookmarked' : ''].filter(Boolean).join(' ');
 
   const badges = [];
@@ -690,7 +704,7 @@ function renderCard(l) {
     <div class="card-header">
       <div class="card-title"><a href="${l.url}" target="_blank">${l.name}</a></div>
       <div class="card-actions">
-        <button class="btn-icon ${isBookmarked ? 'bookmarked' : ''}" title="${isBookmarked ? 'Remove bookmark' : 'Bookmark'}" onclick="toggleBookmark('${l.id}', this)">⭐</button>
+        <button class="btn-icon ${isBookmarked ? 'bookmarked' : ''}" title="${isBookmarked ? 'Remove bookmark' : 'Bookmark'}" onclick="toggleBookmark('${l.id}', this)">${isBookmarked ? '★' : '☆'}</button>
         <button class="btn-icon" title="Dismiss" onclick="dismiss('${l.id}', this)">✕</button>
       </div>
     </div>
@@ -705,6 +719,8 @@ function renderCard(l) {
     <div class="badges">${tagHTML}</div>
     <div class="snippet">${l.snippet}</div>
     ${l.contact && l.contact.name ? `<div class="contact">👤 <strong>${l.contact.name}</strong>${l.contact.firm ? ' · ' + l.contact.firm : ''}${l.contact.phone ? ' · ' + l.contact.phone : ''}</div>` : ''}
+    
+    ${dateHtml}
     <div class="card-footer">
       <span class="source-tag">${l.source}</span>
       <a class="view-btn" href="${l.url}" target="_blank">View Listing →</a>
@@ -787,9 +803,11 @@ function toggleBookmark(id, btn) {
   if (bookmarks.has(id)) {
     bookmarks.delete(id);
     btn.classList.remove('bookmarked');
+    btn.textContent = '☆';
   } else {
     bookmarks.add(id);
     btn.classList.add('bookmarked');
+    btn.textContent = '★';
   }
   saveState();
   renderBookmarks();
