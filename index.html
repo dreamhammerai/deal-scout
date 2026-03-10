@@ -130,6 +130,11 @@
 .listing-date{font-size:.72rem;color:var(--muted);padding:4px 0 2px;display:flex;gap:8px;align-items:center}
 .listing-date .dom{color:#f59e0b;font-weight:600}
 
+
+.inquiry-toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#065f46,#047857);color:#6ee7b7;padding:14px 24px;border-radius:10px;font-size:.9rem;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.4);border:1px solid rgba(110,231,183,.3);display:none;text-align:center;min-width:300px}
+.inquiry-toast.show{display:block;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateX(-50%) translateY(20px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+
 /* AI Analysis Panels */
 .ai-summary-toggle{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#00d4ff;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.85rem;display:flex;align-items:center;justify-content:space-between;margin-top:10px;border:1px solid rgba(0,212,255,.2);transition:all .3s ease}
 .ai-summary-toggle:hover{border-color:rgba(0,212,255,.5);box-shadow:0 0 15px rgba(0,212,255,.15)}
@@ -837,6 +842,132 @@ function switchTab(tab, el) {
 // ─── INIT ───────────────────────────────────────────────────────────────────
 renderListings();
 renderArchive();
+
+
+  // === Send Inquiry Workflow ===
+  function sendInquiry(idx) {
+    var l = LISTINGS[idx];
+    if (!l) return;
+    
+    // Store inquiry request for AI agent to pick up
+    window._inquiryRequest = {
+      dealName: l.name,
+      location: l.location,
+      price: l.priceText,
+      type: l.type,
+      lots: l.lots,
+      capRate: l.capRate,
+      contactName: l.contact ? l.contact.name : '',
+      contactCompany: l.contact ? l.contact.company : '',
+      source: l.source,
+      url: l.url,
+      snippet: l.snippet,
+      timestamp: Date.now()
+    };
+    
+    // Show toast
+    var toast = document.getElementById('inquiry-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'inquiry-toast';
+      toast.className = 'inquiry-toast';
+      document.body.appendChild(toast);
+    }
+    toast.innerHTML = '📧 Preparing inquiry for <strong>' + l.name + '</strong>...<br><small>AI is scraping listing for contact info</small>';
+    toast.classList.add('show');
+    
+    // Signal via title change for AI agent detection
+    document.title = 'INQUIRY_REQUEST:' + idx + ':' + l.name;
+    
+    // Fallback: after 10s if AI hasn't processed, open Gmail compose
+    window._inquiryFallbackTimer = setTimeout(function() {
+      if (window._inquiryRequest && !window._inquiryRequest.processed) {
+        var subj = encodeURIComponent('Inquiry: ' + l.name + ' - ' + l.location);
+        var body = encodeURIComponent(
+          'Hello' + (l.contact && l.contact.name ? ' ' + l.contact.name : '') + ',\n\n' +
+          'I am writing to inquire about the following property listing:\n\n' +
+          l.name + '\n' +
+          'Location: ' + l.location + '\n' +
+          'Listed Price: ' + l.priceText + '\n\n' +
+          'I am an active real estate investor and would appreciate more details, including:\n' +
+          '- Current occupancy and revenue\n' +
+          '- Reason for selling\n' +
+          '- Seller financing terms if available\n' +
+          '- Available due diligence materials\n\n' +
+          'Please let me know a convenient time to discuss.\n\n' +
+          'Best regards,\nJace\njace.agentic@gmail.com'
+        );
+        var cc = encodeURIComponent('jace.investor@gmail.com');
+        window.open('https://mail.google.com/mail/?view=cm&fs=1&cc=' + cc + '&su=' + subj + '&body=' + body, '_blank');
+        toast.innerHTML = '✉️ Gmail compose opened — add recipient email manually';
+        setTimeout(function(){ toast.classList.remove('show'); }, 4000);
+      }
+    }, 10000);
+  }
+
+
+
+  // === Send Inquiry Workflow ===
+  function sendInquiry(idx) {
+    var l = LISTINGS[idx];
+    if (!l) return;
+    
+    // Store inquiry request for AI agent to pick up
+    window._inquiryRequest = {
+      dealName: l.name,
+      location: l.location,
+      price: l.priceText,
+      type: l.type,
+      lots: l.lots,
+      capRate: l.capRate,
+      contactName: l.contact ? l.contact.name : '',
+      contactCompany: l.contact ? l.contact.company : '',
+      source: l.source,
+      url: l.url,
+      snippet: l.snippet,
+      timestamp: Date.now()
+    };
+    
+    // Show toast
+    var toast = document.getElementById('inquiry-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'inquiry-toast';
+      toast.className = 'inquiry-toast';
+      document.body.appendChild(toast);
+    }
+    toast.innerHTML = '📧 Preparing inquiry for <strong>' + l.name + '</strong>...<br><small>AI is scraping listing for contact info</small>';
+    toast.classList.add('show');
+    
+    // Signal via title change for AI agent detection
+    document.title = 'INQUIRY_REQUEST:' + idx + ':' + l.name;
+    
+    // Fallback: after 10s if AI hasn't processed, open Gmail compose
+    window._inquiryFallbackTimer = setTimeout(function() {
+      if (window._inquiryRequest && !window._inquiryRequest.processed) {
+        var subj = encodeURIComponent('Inquiry: ' + l.name + ' - ' + l.location);
+        var body = encodeURIComponent(
+          'Hello' + (l.contact && l.contact.name ? ' ' + l.contact.name : '') + ',\n\n' +
+          'I am writing to inquire about the following property listing:\n\n' +
+          l.name + '\n' +
+          'Location: ' + l.location + '\n' +
+          'Listed Price: ' + l.priceText + '\n\n' +
+          'I am an active real estate investor and would appreciate more details, including:\n' +
+          '- Current occupancy and revenue\n' +
+          '- Reason for selling\n' +
+          '- Seller financing terms if available\n' +
+          '- Available due diligence materials\n\n' +
+          'Please let me know a convenient time to discuss.\n\n' +
+          'Best regards,\nJace\njace.agentic@gmail.com'
+        );
+        var cc = encodeURIComponent('jace.investor@gmail.com');
+        window.open('https://mail.google.com/mail/?view=cm&fs=1&cc=' + cc + '&su=' + subj + '&body=' + body, '_blank');
+        toast.innerHTML = '✉️ Gmail compose opened — add recipient email manually';
+        setTimeout(function(){ toast.classList.remove('show'); }, 4000);
+      }
+    }, 10000);
+  }
+
 </script>
 
 <script>
