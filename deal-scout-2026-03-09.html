@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Scout — Monday, March 9</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            font-size: 1rem;
+            color: #a0a0a0;
+            margin-bottom: 25px;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: #252545;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .stat-card:nth-child(2) {
+            border-left-color: #22c55e;
+        }
+
+        .stat-card:nth-child(3) {
+            border-left-color: #ef4444;
+        }
+
+        .stat-card:nth-child(4) {
+            border-left-color: #f97316;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #333344;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            color: #a0a0a0;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            color: #ffffff;
+        }
+
+        .tab-button.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            background-color: #252545;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .filter-input,
+        .filter-select {
+            padding: 10px 12px;
+            background-color: #1a1a2e;
+            border: 1px solid #444455;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .filter-input:focus,
+        .filter-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background-color: #1f1f3e;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 8px 14px;
+            background-color: #1a1a2e;
+            border: 1px solid #444455;
+            color: #a0a0a0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .filter-btn.active {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        /* Listings Grid */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Listing Card */
+        .listing-card {
+            background-color: #252545;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid #333344;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .listing-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .listing-card.dismissed {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* Card Actions */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a1a2e;
+            border: 1px solid #444455;
+            border-radius: 6px;
+            color: #a0a0a0;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        .action-btn.bookmarked {
+            background-color: #fbbf24;
+            border-color: #fbbf24;
+            color: #1a1a2e;
+        }
+
+        /* Badges */
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-new {
+            background-color: #22c55e;
+            color: #ffffff;
+        }
+
+        .badge-seen {
+            background-color: #6b7280;
+            color: #ffffff;
+        }
+
+        .badge-auction {
+            background-color: #f97316;
+            color: #ffffff;
+        }
+
+        .badge-hot {
+            background-color: #ef4444;
+            color: #ffffff;
+        }
+
+        .badge-price-drop {
+            background-color: #ef4444;
+            color: #ffffff;
+        }
+
+        /* Property Info */
+        .property-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .property-location {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin-bottom: 12px;
+        }
+
+        .property-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #22c55e;
+            margin-bottom: 8px;
+        }
+
+        .property-type {
+            display: inline-block;
+            background-color: #1a1a2e;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #a0a0a0;
+            margin-bottom: 15px;
+        }
+
+        /* Score Bar */
+        .score-section {
+            margin-bottom: 15px;
+        }
+
+        .score-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .score-label-text {
+            color: #a0a0a0;
+        }
+
+        .score-number {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .score-bar {
+            width: 100%;
+            height: 6px;
+            background-color: #1a1a2e;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .score-7-10 .score-fill {
+            background-color: #22c55e;
+        }
+
+        .score-4-6 .score-fill {
+            background-color: #f97316;
+        }
+
+        .score-1-3 .score-fill {
+            background-color: #ef4444;
+        }
+
+        /* Source and Contact */
+        .card-footer {
+            border-top: 1px solid #333344;
+            padding-top: 12px;
+            font-size: 0.85rem;
+        }
+
+        .source-info {
+            color: #a0a0a0;
+            margin-bottom: 8px;
+        }
+
+        .source-label {
+            color: #666677;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .source-name {
+            color: #e0e0e0;
+        }
+
+        .contact-info {
+            margin-top: 8px;
+            color: #a0a0a0;
+        }
+
+        .contact-label {
+            color: #666677;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-value {
+            color: #e0e0e0;
+            word-break: break-all;
+        }
+
+        .open-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .open-link:hover {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a0a0a0;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .empty-state-text {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        /* Archive List */
+        .archive-list {
+            background-color: #252545;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .archive-item {
+            padding: 20px;
+            border-bottom: 1px solid #333344;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .archive-item:hover {
+            background-color: #2e2e50;
+        }
+
+        .archive-item:last-child {
+            border-bottom: none;
+        }
+
+        .archive-info {
+            flex: 1;
+        }
+
+        .archive-date {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .archive-meta {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        .archive-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #3b82f6;
+            color: #ffffff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .archive-link:hover {
+            background-color: #2563eb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header-title {
+                font-size: 1.8rem;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .listings-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-input,
+            .filter-select {
+                width: 100%;
+            }
+        }
+
+        /* Scroll behavior */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #444455;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #666677;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="header-title">Deal Scout</h1>
+            <p class="header-subtitle">Real Estate Deal Dashboard</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-label">Total Deals</div>
+                <div class="stat-value" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">New Deals</div>
+                <div class="stat-value" id="statNew">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Hot Deals (7+)</div>
+                <div class="stat-value" id="statHot">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Date</div>
+                <div class="stat-value" id="statDate">-</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-button active" data-tab="today">Today's Deals</button>
+            <button class="tab-button" data-tab="archive">Archive</button>
+        </div>
+
+        <!-- Today's Deals Tab -->
+        <div class="tab-content active" id="today">
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label class="filter-label">Property Type</label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="type" data-value="">All</button>
+                        <button class="filter-btn" data-filter="type" data-value="RV Park">RV Park</button>
+                        <button class="filter-btn" data-filter="type" data-value="Campground">Campground</button>
+                        <button class="filter-btn" data-filter="type" data-value="MHP">MHP</button>
+                        <button class="filter-btn" data-filter="type" data-value="Self-Storage">Self-Storage</button>
+                        <button class="filter-btn" data-filter="type" data-value="Marina">Marina</button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">State</label>
+                    <select class="filter-select" id="stateFilter">
+                        <option value="">All States</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="AL">Alabama</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="VA">Virginia</option>
+                        <option value="MS">Mississippi</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Search</label>
+                    <input type="text" class="filter-input" id="searchFilter" placeholder="Property name or location...">
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Score Range</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="number" class="filter-input" id="scoreMin" placeholder="Min" min="1" max="10" style="width: 60px;">
+                        <input type="number" class="filter-input" id="scoreMax" placeholder="Max" min="1" max="10" style="width: 60px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listings Grid -->
+            <div class="listings-grid" id="listingsGrid">
+                <!-- Populated by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">🔍</div>
+                <div class="empty-state-text">No listings found</div>
+                <p style="color: #666677;">Try adjusting your filters</p>
+            </div>
+        </div>
+
+        <!-- Archive Tab -->
+        <div class="tab-content" id="archive">
+            <div class="archive-list" id="archiveList">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Embedded Data Indexes -->
+    <script>
+        // SEEN_INDEX_START
+        var SEEN_INDEX = [
+            {url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", name: "South Georgia Storage - AUCTION", price: 650000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida", name: "Confidential Florida KOA", price: 4400000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
+            {url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/", name: "Lake Okeechobee Motel, RV & Fish Camp", price: 1399000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", name: "Lender-Owned Self-Storage Facility", price: 395000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/search/rv-parks/usa/for-sale/search/mobile-home-parks/al/for-sale/", name: "Red Oak MHP - 80 Units", price: 2000000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl", name: "Dew Drop Inn & Okeechobee Lake RV Park", price: 5900000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/", name: "Hospitality / RV Park - 13.85% CAP", price: 1300000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
+            {url: "https://www.rvparkstore.com/rv-parks/6945208-seven-sisters-campground-rv-park-for-sale-in-homosassa-fl", name: "Seven Sisters Campground & RV Park", price: 2850000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", name: "Self Storage & Airbnb Combo", price: 450000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Gated Boutique Coastal Florida RV Park", price: 1599000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl", name: "Mary's Fish Camp", price: 3999995, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.bizbuysell.com/business-asset/multi-family-trailer-park-for-sale/2363104/", name: "Multi-Family Trailer Park", price: 425000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.loopnet.com/search/mobile-home-parks/al/for-sale/", name: "45-Lot MHP - City Water & Sewer", price: 699000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.bizbuysell.com/business-opportunity/south-florida-glamping-camping-5-5-acres-agritourism-orchard-farm/2414816/", name: "Mobile Home Park with Real Estate", price: 950000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.bizbuysell.com/business-opportunity/waxahatchee-marina-and-grill-rv-dry-storage-and-airb-and-b-s/2427814/", name: "South Florida Glamping & Agritourism Farm", price: 975000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.bizbuysell.com/business-opportunity/south-florida-glamping-camping-5-5-acres-agritourism-orchard-farm/2414816/", name: "Waxahatchee Marina, Grill, RV & Dry Storage", price: 1250000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Beloved Family Destination in Florida Natural Forest", price: 2999000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
+            {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Established Campground on Scenic Riverfront", price: 699000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"}
+        ];
+        // SEEN_INDEX_END
+
+        // ARCHIVE_INDEX_START
+        var ARCHIVE_INDEX = [
+            {date: "2026-03-08", file: "deal-scout-2026-03-08.html", count: 16, isToday: false},
+            {date: "2026-03-09", file: "deal-scout.html", count: 18, isToday: true}
+        ];
+        // ARCHIVE_INDEX_END
+
+        // REPLIES_INDEX_START
+        var REPLIES_INDEX = [];
+        // REPLIES_INDEX_END
+    </script>
+
+    <script>
+        // Listings Data
+        const listings = [
+            {name: "South Georgia Storage - AUCTION", location: "Brunswick, GA", price: 650000, priceStr: "$650,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", score: 6, isNew: true, isRepeat: false, isAuction: true, priceReduced: false, contactName: ""},
+            {name: "Confidential Florida KOA", location: "Somewhere, FL", price: 4400000, priceStr: "$4,400,000", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida", score: 6, isNew: false, isRepeat: true, isAuction: false, priceReduced: true, contactName: ""},
+            {name: "Lake Okeechobee Motel, RV & Fish Camp", location: "Moore Haven, FL", price: 1399000, priceStr: "$1,399,000", type: "RV Park", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/", score: 5, isNew: false, isRepeat: true, isAuction: false, priceReduced: true, contactName: ""},
+            {name: "Lender-Owned Self-Storage Facility", location: "Eatonton, GA", price: 395000, priceStr: "$395,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Red Oak MHP - 80 Units", location: "Daleville, AL", price: 2000000, priceStr: "$2,000,000", type: "MHP", source: "LoopNet", url: "https://www.loopnet.com/search/mobile-home-parks/al/for-sale/", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Dew Drop Inn & Okeechobee Lake RV Park", location: "Okeechobee, FL", price: 5900000, priceStr: "$5,900,000", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Hospitality / RV Park - 13.85% CAP", location: "SE US", price: 1300000, priceStr: "$1,300,000", type: "RV Park", source: "LoopNet", url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/", score: 3, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Seven Sisters Campground & RV Park", location: "Homosassa, FL", price: 2850000, priceStr: "$2,850,000", type: "Campground", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/6945208-seven-sisters-campground-rv-park-for-sale-in-homosassa-fl", score: 3, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Self Storage & Airbnb Combo", location: "Bainbridge, GA", price: 450000, priceStr: "$450,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Gated Boutique Coastal Florida RV Park", location: "Florida Panhandle, FL", price: 1599000, priceStr: "$1,599,000", type: "RV Park", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Parks & Places"},
+            {name: "Mary's Fish Camp", location: "Spring Hill, FL", price: 3999995, priceStr: "$3,999,995", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Multi-Family Trailer Park", location: "Denham Springs, LA", price: 425000, priceStr: "$425,000", type: "MHP", source: "BizBuySell", url: "https://www.bizbuysell.com/business-asset/multi-family-trailer-park-for-sale/2363104/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "45-Lot MHP - City Water & Sewer", location: "York, AL", price: 699000, priceStr: "$699,000", type: "MHP", source: "LoopNet", url: "https://www.loopnet.com/search/mobile-home-parks/al/for-sale/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Anna-Claire Rossetti Enterprises"},
+            {name: "Mobile Home Park with Real Estate", location: "Albany, GA", price: 950000, priceStr: "$950,000", type: "MHP", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/mobile-home-park-w-re/2458618/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "South Florida Glamping & Agritourism Farm", location: "Indiantown, FL", price: 975000, priceStr: "$975,000", type: "Campground", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/mobile-home-park-w-re/2458618/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Waxahatchee Marina, Grill, RV & Dry Storage", location: "Shelby, AL", price: 1250000, priceStr: "$1,250,000", type: "Marina", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/waxahatchee-marina-and-grill-rv-dry-storage-and-airb-and-b-s/2427814/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
+            {name: "Beloved Family Destination in Florida Natural Forest", location: "Central Florida, FL", price: 2999000, priceStr: "$2,999,000", type: "Campground", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Parks & Places"},
+            {name: "Established Campground on Scenic Riverfront", location: "Florida", price: 699000, priceStr: "$699,000", type: "Campground", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 1, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: ""}
+        ];
+
+        // Initialize
+        function init() {
+            updateStats();
+            renderListings();
+            renderArchive();
+            setupEventListeners();
+            loadLocalStorageState();
+        }
+
+        // Update stats
+        function updateStats() {
+            const newCount = listings.filter(l => l.isNew).length;
+            const hotCount = listings.filter(l => l.score >= 7).length;
+
+            document.getElementById('statTotal').textContent = listings.length;
+            document.getElementById('statNew').textContent = newCount;
+            document.getElementById('statHot').textContent = hotCount;
+            document.getElementById('statDate').textContent = 'Monday, Mar 9';
+        }
+
+        // Get filtered listings
+        function getFilteredListings() {
+            const typeFilter = document.querySelector('.filter-btn[data-filter="type"].active')?.dataset.value || '';
+            const stateFilter = document.getElementById('stateFilter').value;
+            const searchTerm = document.getElementById('searchFilter').value.toLowerCase();
+            const scoreMin = parseInt(document.getElementById('scoreMin').value) || 0;
+            const scoreMax = parseInt(document.getElementById('scoreMax').value) || 10;
+
+            return listings.filter(listing => {
+                const matchesType = !typeFilter || listing.type === typeFilter;
+                const matchesState = !stateFilter || listing.location.includes(stateFilter);
+                const matchesSearch = !searchTerm ||
+                    listing.name.toLowerCase().includes(searchTerm) ||
+                    listing.location.toLowerCase().includes(searchTerm);
+                const matchesScore = listing.score >= scoreMin && listing.score <= scoreMax;
+
+                return matchesType && matchesState && matchesSearch && matchesScore;
+            });
+        }
+
+        // Sort listings
+        function sortListings(listings) {
+            return listings.sort((a, b) => {
+                if (a.score !== b.score) {
+                    return b.score - a.score;
+                }
+                if (a.isNew !== b.isNew) {
+                    return a.isNew ? -1 : 1;
+                }
+                return 0;
+            });
+        }
+
+        // Render listings
+        function renderListings() {
+            const grid = document.getElementById('listingsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const filtered = getFilteredListings();
+            const sorted = sortListings(filtered);
+
+            if (sorted.length === 0) {
+                grid.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            grid.innerHTML = sorted.map((listing, index) => {
+                const state = listing.location.match(/\b([A-Z]{2})\b/)?.[1] || '';
+                const scorePercent = (listing.score / 10) * 100;
+                const scoreClass = listing.score >= 7 ? 'score-7-10' : listing.score >= 4 ? 'score-4-6' : 'score-1-3';
+
+                let badges = '';
+                if (listing.isNew) badges += '<span class="badge badge-new">NEW</span>';
+                if (listing.isRepeat) badges += '<span class="badge badge-seen">SEEN BEFORE</span>';
+                if (listing.isAuction) badges += '<span class="badge badge-auction">AUCTION</span>';
+                if (listing.score >= 7) badges += '<span class="badge badge-hot">HOT DEAL</span>';
+                if (listing.priceReduced) badges += '<span class="badge badge-price-drop">PRICE DROP</span>';
+
+                return `
+                    <div class="listing-card" data-index="${index}">
+                        <div class="card-actions">
+                            <button class="action-btn bookmark-btn" title="Bookmark">⭐</button>
+                            <button class="action-btn dismiss-btn" title="Dismiss">✕</button>
+                        </div>
+
+                        <div class="badges">${badges}</div>
+
+                        <h3 class="property-name">${listing.name}</h3>
+                        <p class="property-location">${listing.location}</p>
+
+                        <p class="property-price">${listing.priceStr}</p>
+                        <span class="property-type">${listing.type}</span>
+
+                        <div class="score-section score-${scoreClass}">
+                            <div class="score-label">
+                                <span class="score-label-text">Deal Score</span>
+                                <span class="score-number">${listing.score}/10</span>
+                            </div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${scorePercent}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="source-info">
+                                <div class="source-label">Source</div>
+                                <div class="source-name">${listing.source}</div>
+                            </div>
+                            ${listing.contactName ? `
+                                <div class="contact-info">
+                                    <div class="contact-label">Contact</div>
+                                    <div class="contact-value">${listing.contactName}</div>
+                                </div>
+                            ` : ''}
+                            <a href="${listing.url}" target="_blank" class="open-link">View Listing →</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            setupCardListeners();
+        }
+
+        // Setup card listeners
+        function setupCardListeners() {
+            document.querySelectorAll('.dismiss-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const card = btn.closest('.listing-card');
+                    const index = card.dataset.index;
+                    card.classList.add('dismissed');
+                    localStorage.setItem(`dismissed-${index}`, 'true');
+                });
+            });
+
+            document.querySelectorAll('.bookmark-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    btn.classList.toggle('bookmarked');
+                    const card = btn.closest('.listing-card');
+                    const index = card.dataset.index;
+                    const isBookmarked = btn.classList.contains('bookmarked');
+                    if (isBookmarked) {
+                        localStorage.setItem(`bookmarked-${index}`, 'true');
+                    } else {
+                        localStorage.removeItem(`bookmarked-${index}`);
+                    }
+                });
+            });
+        }
+
+        // Load localStorage state
+        function loadLocalStorageState() {
+            document.querySelectorAll('.listing-card').forEach(card => {
+                const index = card.dataset.index;
+                if (localStorage.getItem(`dismissed-${index}`) === 'true') {
+                    card.classList.add('dismissed');
+                }
+                const bookmarkBtn = card.querySelector('.bookmark-btn');
+                if (localStorage.getItem(`bookmarked-${index}`) === 'true') {
+                    bookmarkBtn.classList.add('bookmarked');
+                }
+            });
+        }
+
+        // Render archive
+        function renderArchive() {
+            const archiveList = document.getElementById('archiveList');
+            archiveList.innerHTML = ARCHIVE_INDEX.map(item => `
+                <div class="archive-item">
+                    <div class="archive-info">
+                        <div class="archive-date">${item.date}</div>
+                        <div class="archive-meta">${item.count} listings ${item.isToday ? '(Today)' : ''}</div>
+                    </div>
+                    <a href="${item.file}" class="archive-link">View →</a>
+                </div>
+            `).join('');
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Tab switching
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tab = btn.dataset.tab;
+                    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(tab).classList.add('active');
+                });
+            });
+
+            // Type filter
+            document.querySelectorAll('.filter-btn[data-filter="type"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn[data-filter="type"]').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderListings();
+                });
+            });
+
+            // State filter
+            document.getElementById('stateFilter').addEventListener('change', renderListings);
+
+            // Search filter
+            document.getElementById('searchFilter').addEventListener('input', renderListings);
+
+            // Score filters
+            document.getElementById('scoreMin').addEventListener('input', renderListings);
+            document.getElementById('scoreMax').addEventListener('input', renderListings);
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
