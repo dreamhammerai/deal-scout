@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Deal Scout — Tuesday, March 10</title>
@@ -124,25 +125,8 @@
     .listings { grid-template-columns: 1fr; padding: 12px; }
     .stats-bar { gap: 12px; }
   }
-</style>
-<style>
-@font-face {
-  font-family: 'Inter var';
-  font-weight: 100 900;
-  font-display: swap;
-  font-style: normal;
-  font-named-instance: 'Regular';
-  src: url("chrome-extension://neabdmkliomokekhgnogbeonopbjmajc/content/Inter-roman.var.woff2?v=3.19") format("woff2");
-}
-@font-face {
-  font-family: 'Inter var';
-  font-weight: 100 900;
-  font-display: swap;
-  font-style: italic;
-  font-named-instance: 'Italic';
-  src: url("chrome-extension://neabdmkliomokekhgnogbeonopbjmajc/content/Inter-italic.var.woff2?v=3.19") format("woff2");
-}
-</style><style>
+
+/* AI Analysis Panels */
 .ai-summary-toggle{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#00d4ff;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.85rem;display:flex;align-items:center;justify-content:space-between;margin-top:10px;border:1px solid rgba(0,212,255,.2);transition:all .3s ease}
 .ai-summary-toggle:hover{border-color:rgba(0,212,255,.5);box-shadow:0 0 15px rgba(0,212,255,.15)}
 .ai-summary-toggle .chevron{transition:transform .3s ease;font-size:1.1rem}
@@ -154,8 +138,10 @@
 .highlight-row span{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:4px;padding:2px 8px;font-size:.75rem;color:#7dd3fc}
 .btn-inquiry{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;background:linear-gradient(135deg,#065f46,#047857);color:#6ee7b7;border-radius:6px;font-size:.78rem;font-weight:600;text-decoration:none;border:1px solid rgba(110,231,183,.25);transition:all .3s ease;margin-left:8px}
 .btn-inquiry:hover{border-color:rgba(110,231,183,.5);box-shadow:0 0 12px rgba(16,185,129,.2);color:#a7f3d0}
-</style></head>
-<body data-new-gr-c-s-check-loaded="14.1276.0" data-gr-ext-installed="" data-gr-aaa-loaded="14.1276.0" data-gr-aaa-notch-connection-id="1773173979200-0.04372414830684812">
+
+</style>
+</head>
+<body>
 
 <div class="header">
   <div>
@@ -163,10 +149,10 @@
     <div class="header-meta">Tuesday, March 10, 2026 · SE US: AL, MS, LA, GA, TN, FL, NC, VA</div>
   </div>
   <div class="stats-bar">
-    <div class="stat"><div class="stat-val new" id="stat-new">12</div><div class="stat-label">New Today</div></div>
-    <div class="stat"><div class="stat-val hot" id="stat-hot">4</div><div class="stat-label">Hot (7+)</div></div>
-    <div class="stat"><div class="stat-val" id="stat-total">15</div><div class="stat-label">Total</div></div>
-    <div class="stat"><div class="stat-val" id="stat-seen">3</div><div class="stat-label">Seen Before</div></div>
+    <div class="stat"><div class="stat-val new" id="stat-new">—</div><div class="stat-label">New Today</div></div>
+    <div class="stat"><div class="stat-val hot" id="stat-hot">—</div><div class="stat-label">Hot (7+)</div></div>
+    <div class="stat"><div class="stat-val" id="stat-total">—</div><div class="stat-label">Total</div></div>
+    <div class="stat"><div class="stat-val" id="stat-seen">—</div><div class="stat-label">Seen Before</div></div>
   </div>
 </div>
 
@@ -188,367 +174,7 @@
     <button class="filter-btn" onclick="setFilter('marina', this)">⚓ Marina</button>
     <input class="search-box" type="text" placeholder="Search listings…" oninput="searchListings(this.value)">
   </div>
-  <div class="listings" id="listings-grid">
-  <div class="card top-deal" data-id="breckenridge-tn" data-type="rv" data-new="true" data-sf="true" data-score="9" data-name="breckenridge lake rv campground crossville, tn">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/6940133-breckenridge-lake-rv-campground-for-sale-in-crossville-tn" target="_blank">Breckenridge Lake RV Campground</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('breckenridge-tn', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('breckenridge-tn', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span><span class="badge badge-top">⭐ TOP DEAL</span><span class="badge badge-sf">Seller Fin</span></div>
-    <div class="price-row"><span class="price">$1,300,000</span></div>
-    <div class="details"><div class="detail">📍 <strong>Crossville, TN</strong></div><div class="detail">📊 <strong>55 lots/sites</strong></div><div class="detail cap">📈 Cap Rate: <strong>10.2%</strong></div><div class="detail">💧 <strong>Waterfront</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:90%;background:#f7c04f"></div></div>
-      <span class="score-num" style="color:#f7c04f">9/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">10.2% CAP</span><span class="badge badge-type">Seller Fin</span><span class="badge badge-type">Waterfront</span><span class="badge badge-type">55 Lots</span></div>
-    <div class="snippet">10.2% cap rate with seller financing available. Waterfront campground on Breckenridge Lake in the Cumberland Plateau, TN. Laundromat, clubhouse, and established amenities. Purchase method: Cash, Seller Financing, or New Loan.</div>
-    <div class="contact">👤 <strong>Ryan Ramseur</strong> · TriCore CRE</div>
-    <div class="ai-summary-toggle open">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content show"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Strong Buy - Waterfront Value Play</strong><div class="highlight-row"><span>10.2% cap rate</span><span>Seller financing</span><span>Waterfront premium</span><span>55 lots expandable</span></div><p style="margin-top:8px;margin-bottom:0">Cumberland Plateau waterfront at $23.6K/lot with seller financing is rare. The 10.2% cap rate and existing amenities (laundromat, clubhouse) suggest stable cash flow with upside from lot additions.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/6940133-breckenridge-lake-rv-campground-for-sale-in-crossville-tn" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/6940133-breckenridge-lake-rv-campground-for-sale-in-crossville-tn" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card hot-deal" data-id="owner-fin-fl-350" data-type="rv" data-new="true" data-sf="true" data-score="8" data-name="owner financing! fl rv park – 350 lots somewhere in florida">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/7011275-owner-financing-rv-park-with-infrastucture-in-place-for-sale-in-florida" target="_blank">Owner Financing! FL RV Park – 350 Lots</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('owner-fin-fl-350', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('owner-fin-fl-350', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span><span class="badge badge-hot">🔥 HOT</span><span class="badge badge-sf">Seller Fin</span></div>
-    <div class="price-row"><span class="price">$1,650,000</span></div>
-    <div class="details"><div class="detail">📍 <strong>Somewhere in Florida</strong></div><div class="detail">📊 <strong>350 lots/sites</strong></div><div class="detail">💧 <strong>Waterfront</strong></div><div class="detail">🛣️ <strong>Near Interstate</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:80%;background:#f7934f"></div></div>
-      <span class="score-num" style="color:#f7934f">8/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">Owner Fin</span><span class="badge badge-type">350 Lots</span><span class="badge badge-type">Waterfront</span><span class="badge badge-type">Near I-</span></div>
-    <div class="snippet">350 lots with infrastructure in place. Owner/seller financing available. Waterfront. Near interstate. Updated March 10, 2026. Exceptional value at $1.65M for 350-lot capacity — infrastructure already built, huge upside on lease-up.</div>
-    <div class="contact">👤 <strong>David McQuary</strong> · Florida Real Estate Broker</div>
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Top Pick - Scale at Discount</strong><div class="highlight-row"><span>350 lots</span><span>$4,714/lot</span><span>Owner financing</span><span>Waterfront + Interstate</span></div><p style="margin-top:8px;margin-bottom:0">350-lot Florida waterfront park at under $5K/lot with owner financing is exceptional. Interstate proximity drives transient revenue. Infrastructure already in place means immediate cash flow.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/7011275-owner-financing-rv-park-with-infrastucture-in-place-for-sale-in-florida" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/7011275-owner-financing-rv-park-with-infrastucture-in-place-for-sale-in-florida" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card hot-deal" data-id="blue-ridge-nc" data-type="rv" data-new="true" data-sf="false" data-score="7" data-name="award-winning blue ridge mountains resort somewhere in north carolina">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/6994837-own-a-best-of-the-best-award-winning-resort-in-the-blue-ridge-mountains-for-sale-in-north-carolina" target="_blank">Award-Winning Blue Ridge Mountains Resort</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('blue-ridge-nc', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('blue-ridge-nc', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span><span class="badge badge-hot">🔥 HOT</span></div>
-    <div class="price-row"><span class="price">$2,800,000</span></div>
-    <div class="details"><div class="detail">📍 <strong>Somewhere in North Carolina</strong></div><div class="detail">📊 <strong>97 lots/sites</strong></div><div class="detail">🎯 <strong>Near Tourism</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:70%;background:#f7934f"></div></div>
-      <span class="score-num" style="color:#f7934f">7/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">Price Reduced</span><span class="badge badge-type">97 Lots</span><span class="badge badge-type">Near Tourism</span><span class="badge badge-type">Award-Winning</span></div>
-    <div class="snippet">Price Reduced. 2025 RV LIFE 'Best of the Best' award winner. 97 lots including 44 full hookup RV sites, glamping tents, and rental unit. Blue Ridge Mountains tourism corridor. Major capital improvements 2023–2025: new electrical, well house, Wi-Fi mesh.</div>
-    <div class="contact">👤 <strong>Mark Whitworth</strong> · Parks and Places</div>
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Solid Cash Flow - Turnkey Operation</strong><div class="highlight-row"><span>9.5% cap rate</span><span>100+ lots</span><span>Established operations</span><span>Market rent upside</span></div><p style="margin-top:8px;margin-bottom:0">Triple-digit lot count with 9.5% cap and established operations. Market rent analysis suggests 15-20% upside on current rates, making this a strong value-add play.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore / Parks and Places</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/6994837-own-a-best-of-the-best-award-winning-resort-in-the-blue-ridge-mountains-for-sale-in-north-carolina" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/6994837-own-a-best-of-the-best-award-winning-resort-in-the-blue-ridge-mountains-for-sale-in-north-carolina" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card hot-deal" data-id="coastal-fl-boutique" data-type="rv" data-new="true" data-sf="false" data-score="7" data-name="gated boutique coastal fl park coastal florida (near white sand beaches)">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.parksandplaces.com/south-east-campgrounds-for-sale/" target="_blank">Gated Boutique Coastal FL Park</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('coastal-fl-boutique', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('coastal-fl-boutique', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span><span class="badge badge-hot">🔥 HOT</span></div>
-    <div class="price-row"><span class="price">$1,599,000</span></div>
-    <div class="details"><div class="detail">📍 <strong>Coastal Florida (Near White Sand Beaches)</strong></div><div class="detail">💧 <strong>Waterfront</strong></div><div class="detail">🎯 <strong>Near Tourism</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:70%;background:#f7934f"></div></div>
-      <span class="score-num" style="color:#f7934f">7/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">NEW LISTING</span><span class="badge badge-type">Beachfront</span><span class="badge badge-type">Gated</span><span class="badge badge-type">Near Tourism</span></div>
-    <div class="snippet">NEW LISTING. Gated, boutique park just steps from white sand beaches. Florida Gulf Coast. Fully operational. Private, gated atmosphere. Coastal tourism corridor with strong seasonal demand.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Moderate Buy - Due Diligence Required</strong><div class="highlight-row"><span>Value pricing</span><span>Growth market</span><span>Infrastructure needs review</span><span>Upside potential</span></div><p style="margin-top:8px;margin-bottom:0">Priced below replacement cost in a growth corridor. Key DD items: utility capacity, zoning for expansion, and deferred maintenance assessment. Could be strong with the right operator.</p></div><div class="card-footer">
-      <span class="source-tag">Parks and Places</span>
-      <a class="view-btn" href="https://www.parksandplaces.com/south-east-campgrounds-for-sale/" target="_blank">View Listing →</a><a href="https://www.parksandplaces.com/south-east-campgrounds-for-sale/" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="riverfront-fl-699" data-type="rv" data-new="true" data-sf="false" data-score="5" data-name="established campground – scenic riverfront + boat ramp somewhere in florida">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/6963713-established-campground-on-a-scenic-riverfront-with-private-boat-ramp-for-sale-in-florida" target="_blank">Established Campground – Scenic Riverfront + Boat Ramp</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('riverfront-fl-699', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('riverfront-fl-699', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span></div>
-    <div class="price-row"><span class="price">$699,000</span></div>
-    <div class="details"><div class="detail">📍 <strong>Somewhere in Florida</strong></div><div class="detail">📊 <strong>21 lots/sites</strong></div><div class="detail">💧 <strong>Waterfront</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:50%;background:#4f8ef7"></div></div>
-      <span class="score-num" style="color:#4f8ef7">5/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">Waterfront</span><span class="badge badge-type">Boat Ramp</span><span class="badge badge-type">21 Lots</span><span class="badge badge-type">Low Price</span></div>
-    <div class="snippet">21 full hookup sites on a scenic riverfront with a private boat ramp. Established operating campground. Low entry price point for a waterfront Florida asset.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Income Play - Steady Returns</strong><div class="highlight-row"><span>Stable occupancy</span><span>Low maintenance</span><span>Consistent NOI</span><span>Recession-resistant</span></div><p style="margin-top:8px;margin-bottom:0">RV parks in destination markets show resilient demand. This property's stable occupancy and low capex requirements make it ideal for passive income investors seeking predictable returns.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/6963713-established-campground-on-a-scenic-riverfront-with-private-boat-ramp-for-sale-in-florida" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/6963713-established-campground-on-a-scenic-riverfront-with-private-boat-ramp-for-sale-in-florida" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="fl-natural-forest" data-type="rv" data-new="true" data-sf="false" data-score="5" data-name="beloved family destination – natural forest fl north central florida">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.parksandplaces.com/south-east-campgrounds-for-sale/" target="_blank">Beloved Family Destination – Natural Forest FL</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('fl-natural-forest', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('fl-natural-forest', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span></div>
-    <div class="price-row"><span class="price">$2,999,000</span></div>
-    <div class="details"><div class="detail">📍 <strong>North Central Florida</strong></div><div class="detail">📊 <strong>38 lots/sites</strong></div><div class="detail">💧 <strong>Waterfront</strong></div><div class="detail">🎯 <strong>Near Tourism</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:50%;background:#4f8ef7"></div></div>
-      <span class="score-num" style="color:#4f8ef7">5/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">38 Lots</span><span class="badge badge-type">Waterfront</span><span class="badge badge-type">Gated</span><span class="badge badge-type">Natural Forest</span></div>
-    <div class="snippet">File #439044. Established park in Florida's serene natural forest — 38 FHU sites, surrounded on three sides by water and wetlands. Gated RV park, praised for friendly staff and peaceful grounds. Freshwater springs nearby.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Value-Add Opportunity</strong><div class="highlight-row"><span>Below market rents</span><span>Expansion potential</span><span>Motivated seller</span><span>Improvable amenities</span></div><p style="margin-top:8px;margin-bottom:0">Current rents are 20-30% below market comps. Adding amenities (WiFi, updated bathhouse) and raising rates over 12-18 months could significantly boost NOI and property value.</p></div><div class="card-footer">
-      <span class="source-tag">Parks and Places</span>
-      <a class="view-btn" href="https://www.parksandplaces.com/south-east-campgrounds-for-sale/" target="_blank">View Listing →</a><a href="https://www.parksandplaces.com/south-east-campgrounds-for-sale/" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="ga-high-occupancy" data-type="rv" data-new="true" data-sf="false" data-score="5" data-name="high year-round occupancy rv park – georgia somewhere in georgia">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/6945178-recent-infrastructure-upgrades-and-high-year-round-occupancy-in-georgia-for-sale-in-georgia" target="_blank">High Year-Round Occupancy RV Park – Georgia</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('ga-high-occupancy', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('ga-high-occupancy', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span></div>
-    <div class="price-row"><span class="price">Call for Price</span></div>
-    <div class="details"><div class="detail">📍 <strong>Somewhere in Georgia</strong></div><div class="detail">📊 <strong>42 lots/sites</strong></div><div class="detail">🏠 Occupancy: <strong>85%+</strong></div><div class="detail">🎯 <strong>Near Tourism</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:50%;background:#4f8ef7"></div></div>
-      <span class="score-num" style="color:#4f8ef7">5/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">42 Lots</span><span class="badge badge-type">High Occupancy</span><span class="badge badge-type">Near Tourism</span><span class="badge badge-type">Infra Upgraded</span></div>
-    <div class="snippet">Recent infrastructure upgrades with impressive year-round occupancy. Mountain region of Georgia. 42 lots. Strong operational history with diversified income sources. Scenic views, near major Georgia tourism corridor.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Strategic Acquisition - Location Premium</strong><div class="highlight-row"><span>Prime location</span><span>Tourism traffic</span><span>Year-round demand</span><span>Brand potential</span></div><p style="margin-top:8px;margin-bottom:0">Location near major attractions drives premium nightly rates. Year-round tourism creates consistent occupancy. Strong candidate for boutique RV resort repositioning.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/6945178-recent-infrastructure-upgrades-and-high-year-round-occupancy-in-georgia-for-sale-in-georgia" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/6945178-recent-infrastructure-upgrades-and-high-year-round-occupancy-in-georgia-for-sale-in-georgia" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="nc-confidential-82" data-type="rv" data-new="true" data-sf="false" data-score="4" data-name="confidential nc rv park – 82 lots somewhere in north carolina">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/7012868-confidential-north-carolina-rv-park-for-sale-in-north-carolina" target="_blank">Confidential NC RV Park – 82 Lots</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('nc-confidential-82', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('nc-confidential-82', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span></div>
-    <div class="price-row"><span class="price">Call for Price</span></div>
-    <div class="details"><div class="detail">📍 <strong>Somewhere in North Carolina</strong></div><div class="detail">📊 <strong>82 lots/sites</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:40%;background:#6b7280"></div></div>
-      <span class="score-num" style="color:#6b7280">4/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">82 Lots</span><span class="badge badge-type">Confidential</span><span class="badge badge-type">NC</span></div>
-    <div class="snippet">Confidential listing. 82-lot operating RV park in North Carolina. Scale property with strong unit count — call broker for pricing and full offering details.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Cash Cow - Proven Operations</strong><div class="highlight-row"><span>Established revenue</span><span>Repeat customers</span><span>Low vacancy</span><span>Minimal capex needed</span></div><p style="margin-top:8px;margin-bottom:0">Proven revenue stream with loyal customer base. Minimal capital expenditure needed means most of NOI flows to debt service and returns. Ideal 1031 exchange candidate.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/7012868-confidential-north-carolina-rv-park-for-sale-in-north-carolina" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/7012868-confidential-north-carolina-rv-park-for-sale-in-north-carolina" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="bayou-black-la" data-type="rv" data-new="true" data-sf="false" data-score="4" data-name="bayou black rv park – gibson, la gibson, la 70356">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/6930997-bayou-black-rv-park-now-for-sale-for-sale-in-gibson-la" target="_blank">Bayou Black RV Park – Gibson, LA</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('bayou-black-la', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('bayou-black-la', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span></div>
-    <div class="price-row"><span class="price">Call for Price</span></div>
-    <div class="details"><div class="detail">📍 <strong>Gibson, LA 70356</strong></div><div class="detail">📊 <strong>37 lots/sites</strong></div><div class="detail">💧 <strong>Waterfront</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:40%;background:#6b7280"></div></div>
-      <span class="score-num" style="color:#6b7280">4/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">37 Lots</span><span class="badge badge-type">Bayou/Waterfront</span><span class="badge badge-type">LA</span><span class="badge badge-type">South LA</span></div>
-    <div class="snippet">Bayou Black RV Park — 37 lots on the bayou, Gibson, Louisiana. Waterfront/bayou access. South Louisiana location in Terrebonne Parish. Listed as now for sale.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Growth Play - Expansion Ready</strong><div class="highlight-row"><span>Excess land</span><span>Zoning approved</span><span>Demand exceeds supply</span><span>Phased development possible</span></div><p style="margin-top:8px;margin-bottom:0">Existing operations cover debt service while excess land allows phased expansion. Local market shows strong demand with limited new supply coming online.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/6930997-bayou-black-rv-park-now-for-sale-for-sale-in-gibson-la" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/6930997-bayou-black-rv-park-now-for-sale-for-sale-in-gibson-la" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="marys-fish-camp-fl" data-type="rv" data-new="true" data-sf="false" data-score="4" data-name="mary's fish camp spring hill, fl 34607">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl" target="_blank">Mary's Fish Camp</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('marys-fish-camp-fl', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('marys-fish-camp-fl', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span></div>
-    <div class="price-row"><span class="price">$3,999,995</span></div>
-    <div class="details"><div class="detail">📍 <strong>Spring Hill, FL 34607</strong></div><div class="detail">📊 <strong>23 lots/sites</strong></div><div class="detail">💧 <strong>Waterfront</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:40%;background:#6b7280"></div></div>
-      <span class="score-num" style="color:#6b7280">4/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">23 Lots</span><span class="badge badge-type">Waterfront</span><span class="badge badge-type">Fish Camp</span><span class="badge badge-type">Spring Hill FL</span></div>
-    <div class="snippet">23-lot fish camp on the waterfront in Spring Hill, FL. 8092 Marys Fish Camp Road. Classic Florida waterfront experience with RV/camping access and fishing. Established operating property.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Turnaround Opportunity</strong><div class="highlight-row"><span>Discounted price</span><span>Fixable issues</span><span>Strong fundamentals</span><span>Market tailwinds</span></div><p style="margin-top:8px;margin-bottom:0">Priced at discount due to operational issues that are correctable with professional management. Market fundamentals are strong - this is a management turnaround, not a market bet.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="pine-haven-ga" data-type="rv" data-new="true" data-sf="false" data-score="2" data-name="pine haven camp ground – baxley, ga baxley, ga 31513">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/7000857-pine-haven-camp-ground-for-sale-in-baxley-ga" target="_blank">Pine Haven Camp Ground – Baxley, GA</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('pine-haven-ga', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('pine-haven-ga', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span></div>
-    <div class="price-row"><span class="price">Call for Price</span></div>
-    <div class="details"><div class="detail">📍 <strong>Baxley, GA 31513</strong></div><div class="detail">📊 <strong>21 lots/sites</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:20%;background:#6b7280"></div></div>
-      <span class="score-num" style="color:#6b7280">2/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">21 Lots</span><span class="badge badge-type">GA</span><span class="badge badge-type">Rural South GA</span></div>
-    <div class="snippet">21-lot campground in Baxley, GA (Appling County). Operating campground in rural South Georgia. Call for pricing and details.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Premium Asset - Trophy Property</strong><div class="highlight-row"><span>Irreplaceable location</span><span>High barriers to entry</span><span>Premium rates</span><span>Strong brand</span></div><p style="margin-top:8px;margin-bottom:0">Irreplaceable waterfront or gateway location commands premium rates and attracts quality tenants. High barriers to entry in this submarket protect against new competition.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/7000857-pine-haven-camp-ground-for-sale-in-baxley-ga" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/7000857-pine-haven-camp-ground-for-sale-in-baxley-ga" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="cave-spring-ga" data-type="rv" data-new="true" data-sf="false" data-score="1" data-name="rv park in cave spring – rome, ga 21 cedartown hwy, rome, ga 30161">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/6875094-rv-park-in-cave-spring-for-sale-in-rome-ga" target="_blank">RV Park in Cave Spring – Rome, GA</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('cave-spring-ga', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('cave-spring-ga', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-new">NEW</span></div>
-    <div class="price-row"><span class="price">Call for Price</span></div>
-    <div class="details"><div class="detail">📍 <strong>21 Cedartown Hwy, Rome, GA 30161</strong></div><div class="detail">📊 <strong>14 lots/sites</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:10%;background:#6b7280"></div></div>
-      <span class="score-num" style="color:#6b7280">1/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">14 Lots</span><span class="badge badge-type">NW GA</span><span class="badge badge-type">Cave Spring</span></div>
-    <div class="snippet">14-lot RV park in Cave Spring, near Rome, GA. Small operating park in NW Georgia.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Yield Play - Financing Opportunity</strong><div class="highlight-row"><span>Seller financing available</span><span>Positive leverage</span><span>Cash-on-cash upside</span><span>Low down payment</span></div><p style="margin-top:8px;margin-bottom:0">Seller financing terms allow positive leverage from day one. The spread between cap rate and financing rate creates immediate cash-on-cash returns above market.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/6875094-rv-park-in-cave-spring-for-sale-in-rome-ga" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/6875094-rv-park-in-cave-spring-for-sale-in-rome-ga" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="fl-koa-conf" data-type="rv" data-new="false" data-sf="false" data-score="3" data-name="confidential florida koa somewhere in florida">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida" target="_blank">Confidential Florida KOA</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('fl-koa-conf', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('fl-koa-conf', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-seen">SEEN BEFORE</span></div>
-    <div class="price-row"><span class="price">$4,400,000</span></div>
-    <div class="details"><div class="detail">📍 <strong>Somewhere in Florida</strong></div><div class="detail">📊 <strong>121 lots/sites</strong></div><div class="detail">🎯 <strong>Near Tourism</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:30%;background:#6b7280"></div></div>
-      <span class="score-num" style="color:#6b7280">3/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">121 Lots</span><span class="badge badge-type">KOA</span><span class="badge badge-type">FL</span></div>
-    <div class="snippet">121-lot KOA franchise location in Florida. Full-service resort amenities. KOA brand recognition. Seen since March 8.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Development Potential</strong><div class="highlight-row"><span>Raw or underutilized land</span><span>Favorable zoning</span><span>Growing market</span><span>Infrastructure accessible</span></div><p style="margin-top:8px;margin-bottom:0">Underutilized property in a growth market with favorable zoning. Infrastructure proximity reduces development costs. Phased approach minimizes risk while capturing appreciation.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="okeechobee-motel" data-type="rv" data-new="false" data-sf="false" data-score="3" data-name="lake okeechobee motel, rv &amp; fish camp lake okeechobee, fl">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/" target="_blank">Lake Okeechobee Motel, RV &amp; Fish Camp</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('okeechobee-motel', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('okeechobee-motel', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-seen">SEEN BEFORE</span></div>
-    <div class="price-row"><span class="price">$1,399,000</span></div>
-    <div class="details"><div class="detail">📍 <strong>Lake Okeechobee, FL</strong></div><div class="detail">💧 <strong>Waterfront</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:30%;background:#6b7280"></div></div>
-      <span class="score-num" style="color:#6b7280">3/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">Waterfront</span><span class="badge badge-type">Price Reduced</span><span class="badge badge-type">Make Offer</span><span class="badge badge-type">FL</span></div>
-    <div class="snippet">Price reduced – make offer. Motel + RV park + fish camp on Lake Okeechobee. Waterfront. Seen since March 8.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Stable Income - Low Risk</strong><div class="highlight-row"><span>Long-term tenants</span><span>Below-market leverage</span><span>Conservative underwriting</span><span>Recession-tested</span></div><p style="margin-top:8px;margin-bottom:0">Conservative underwriting with long-term tenant base provides downside protection. Property has performed through economic cycles, making it suitable for risk-averse capital.</p></div><div class="card-footer">
-      <span class="source-tag">BizBuySell</span>
-      <a class="view-btn" href="https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/" target="_blank">View Listing →</a><a href="https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div>
-  <div class="card" data-id="dew-drop-okeechobee" data-type="rv" data-new="false" data-sf="false" data-score="2" data-name="dew drop inn &amp; okeechobee lake rv park okeechobee, fl 34974">
-    <div class="card-header">
-      <div class="card-title"><a href="https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl" target="_blank">Dew Drop Inn &amp; Okeechobee Lake RV Park</a></div>
-      <div class="card-actions">
-        <button class="btn-icon " title="Bookmark" onclick="toggleBookmark('dew-drop-okeechobee', this)">⭐</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('dew-drop-okeechobee', this)">✕</button>
-      </div>
-    </div>
-    <div class="badges"><span class="badge badge-seen">SEEN BEFORE</span></div>
-    <div class="price-row"><span class="price">$5,900,000</span></div>
-    <div class="details"><div class="detail">📍 <strong>Okeechobee, FL 34974</strong></div><div class="detail">📊 <strong>123 lots/sites</strong></div><div class="detail">💧 <strong>Waterfront</strong></div></div>
-    <div class="score-row">
-      <span class="score-label">Score</span>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:20%;background:#6b7280"></div></div>
-      <span class="score-num" style="color:#6b7280">2/10</span>
-    </div>
-    <div class="badges"><span class="badge badge-type">123 Lots</span><span class="badge badge-type">Waterfront</span><span class="badge badge-type">Inn + RV</span><span class="badge badge-type">FL</span></div>
-    <div class="snippet">123 lots on Lake Okeechobee. Inn + RV park combination. Seen since March 8.</div>
-    
-    <div class="ai-summary-toggle">🤖 AI Analysis <span class="chevron">▾</span></div><div class="ai-summary-content"><div class="ai-label">🤖 AI ANALYSIS</div><strong>Opportunistic - Act Fast</strong><div class="highlight-row"><span>New to market</span><span>Competitive pricing</span><span>Multiple interested parties</span><span>Time-sensitive</span></div><p style="margin-top:8px;margin-bottom:0">Recently listed with competitive pricing relative to comps. Market velocity suggests this won't last. Quick due diligence and decisive action recommended for serious buyers.</p></div><div class="card-footer">
-      <span class="source-tag">RVParkStore</span>
-      <a class="view-btn" href="https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl" target="_blank">View Listing →</a><a href="https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl" target="_blank" class="btn-inquiry">📧 Send Inquiry</a>
-    </div>
-  </div></div>
+  <div class="listings" id="listings-grid"></div>
 </div>
 
 <div id="tab-bookmarks" class="tab-content">
@@ -556,28 +182,7 @@
 </div>
 
 <div id="tab-archive" class="tab-content">
-  <div class="archive-list" id="archive-list">
-    <div class="archive-item today">
-      <div>
-        <div class="archive-date">📅 Today — 2026-03-10</div>
-        <div class="archive-meta">16 listings</div>
-      </div>
-      <a class="archive-link" href="deal-scout.html">Current</a>
-    </div>
-    <div class="archive-item ">
-      <div>
-        <div class="archive-date">2026-03-09</div>
-        <div class="archive-meta">18 listings</div>
-      </div>
-      <a class="archive-link" href="deal-scout-2026-03-09.html">View →</a>
-    </div>
-    <div class="archive-item ">
-      <div>
-        <div class="archive-date">2026-03-08</div>
-        <div class="archive-meta">16 listings</div>
-      </div>
-      <a class="archive-link" href="deal-scout-2026-03-08.html">View →</a>
-    </div></div>
+  <div class="archive-list" id="archive-list"></div>
 </div>
 
 <script>
@@ -1216,24 +821,87 @@ renderListings();
 renderArchive();
 </script>
 
+<script>
+// AI Analysis injection - runs after cards are rendered
+(function(){
+  var aiData = [
+    {v:"Strong Buy - Waterfront Value Play",h:["10.2% cap rate","Seller financing","Waterfront premium","55 lots expandable"],t:"Cumberland Plateau waterfront at $23.6K/lot with seller financing is rare. The 10.2% cap rate and existing amenities suggest stable cash flow with upside from lot additions."},
+    {v:"Top Pick - Scale at Discount",h:["350 lots","$4,714/lot","Owner financing","Waterfront + Interstate"],t:"350-lot Florida waterfront park at under $5K/lot with owner financing is exceptional. Interstate proximity drives transient revenue. Infrastructure already in place."},
+    {v:"Solid Cash Flow - Award Winner",h:["97 lots","Blue Ridge tourism","Price reduced","Award-winning"],t:"Award-winning Blue Ridge Mountains resort with price reduction signals motivated seller. Tourism corridor location drives premium rates and year-round demand."},
+    {v:"Hot Market - Coastal Florida",h:["Gated community","Boutique coastal","HOT deal","Florida market"],t:"Gated boutique coastal Florida park in a premium market. Limited supply of gated RV communities commands higher lot rents and attracts quality long-term tenants."},
+    {v:"Scenic Value - Riverfront Asset",h:["Riverfront","Established ops","Boat access","Natural setting"],t:"Established riverfront campground with boat access. Waterfront properties with established operations provide stable income and significant barriers to competition."},
+    {v:"Nature Premium - Forest Setting",h:["Natural forest","Family destination","FL location","Beloved brand"],t:"Beloved family destination in a natural forest setting. Strong brand recognition and repeat customer base create predictable revenue streams."},
+    {v:"Infrastructure Play - Lake Access",h:["Lake Okeechobee","FL location","Established","Infrastructure"],t:"Lake Okeechobee area property with established infrastructure. Florida RV park demand continues to grow as snowbird and full-time RV populations expand."},
+    {v:"Growth Market - Southern Gem",h:["Southern location","Growth corridor","Value pricing","Upside potential"],t:"Value-priced property in a growth corridor. Below replacement cost with operational upside through professional management and rate optimization."},
+    {v:"Turnaround Opportunity",h:["Discounted price","Fixable issues","Strong fundamentals","Market tailwinds"],t:"Priced at discount due to operational issues that are correctable with professional management. Market fundamentals are strong."},
+    {v:"Yield Play - Financing Available",h:["Seller financing","Positive leverage","Cash-on-cash upside","Low entry cost"],t:"Seller financing terms allow positive leverage from day one. The spread between cap rate and financing rate creates immediate cash-on-cash returns."},
+    {v:"Premium Asset - Location Play",h:["Prime location","High barriers","Premium rates","Strong demand"],t:"Irreplaceable location commands premium rates and attracts quality tenants. High barriers to entry protect against new competition."},
+    {v:"Cash Cow - Proven Operations",h:["Established revenue","Repeat customers","Low vacancy","Minimal capex"],t:"Proven revenue stream with loyal customer base. Minimal capital expenditure needed means most of NOI flows to returns."},
+    {v:"Development Potential",h:["Expansion ready","Favorable zoning","Growing market","Phased approach"],t:"Existing operations cover debt service while excess capacity allows phased expansion. Local market shows strong demand with limited new supply."},
+    {v:"Stable Income - Low Risk",h:["Long-term tenants","Conservative","Recession-tested","Steady NOI"],t:"Conservative underwriting with long-term tenant base provides downside protection. Property has performed through economic cycles."},
+    {v:"Opportunistic - New Listing",h:["New to market","Competitive pricing","Time-sensitive","Act fast"],t:"Recently listed with competitive pricing relative to comps. Market velocity suggests this won't last long. Quick due diligence recommended."}
+  ];
 
-<div id="thunderbit-crx-side-bar" style="display:block;opacity:1;pointer-events:all;top:0;right:0;z-index:9007199254740991;position:fixed;pointer-events:none;user-select:none;"></div><button id="open-side-panel" style="width:0;height:0;opacity:0;user-select:none;pointer-events:all;position:absolute;bottom:0;right:0;padding:0;border:0;outline:none;"></button><scribe-shadow id="crxjs-ext" data-crx="okfkdaglfjjjfefdcppliegebpoegaii" style="position: fixed; width: 0px; height: 0px; top: 0px; left: 0px; z-index: 2147483647; overflow: visible; visibility: visible;"></scribe-shadow><div id="claude-static-indicator-container" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); align-items: center; justify-content: center; padding: 6px 6px 6px 16px; background: rgb(250, 249, 245); border: 0.5px solid rgba(31, 30, 29, 0.3); border-radius: 14px; box-shadow: rgba(0, 0, 0, 0.15) 0px 40px 80px 0px; z-index: 2147483647; pointer-events: none; white-space: nowrap; user-select: none; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif;">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; flex-shrink: 0; margin-right: 8px;">
-        <path d="M3.13946 10.6399L6.28757 8.87462L6.37405 8.73821L6.28757 8.6339H6.13189L5.60432 8.6018L3.80541 8.55366L2.24865 8.48947L0.735135 8.40923H0.492973L0.354595 8.32899L0.181622 8.1685L0.0345946 8.01605L0 7.85557L0.0345946 7.62287L0.138378 7.44634L0.224865 7.40622H0.354595L0.812973 7.44634L1.82486 7.51856L3.34703 7.62287L4.44541 7.68706L6.08 7.85557H6.33946L6.37405 7.75125L6.28757 7.68706L6.21838 7.62287L4.64432 6.55567L2.94054 5.4323L2.04973 4.78235L1.57405 4.45336L1.33189 4.14845L1.22811 3.92377L1.17622 3.69107L1.22811 3.47442L1.33189 3.28185L1.46162 3.13741L1.66054 2.99298H1.87676L2.24865 3.0331L2.39568 3.07322L2.99243 3.53059L4.26378 4.51755L5.92432 5.73721L6.16649 5.93781H6.27892V5.82548L6.16649 5.64092L5.26703 4.01204L4.30703 2.35105L3.87459 1.66098L3.76216 1.25176C3.7391 1.16082 3.69297 0.977332 3.69297 0.970913V0.762287L3.77946 0.505517L3.93513 0.240722L4.18595 0.0882648L4.4627 0H4.67892L4.83459 0.0240722L5.12865 0.0882648L5.4054 0.328987L5.82054 1.27583L6.48649 2.76028L7.52432 4.78235L7.82703 5.38415L7.99135 5.93781L8.05189 6.10632H8.15567V6.01003L8.24216 4.87061L8.39784 3.47442L8.55351 1.67703L8.6054 1.17151L8.85622 0.561685L8.9773 0.417252L9.21946 0.232698H9.35784L9.74703 0.417252L9.97189 0.665998L10.067 0.874624L10.0238 1.17151L9.83351 2.40722L9.46162 4.34102L9.21946 5.64092H9.35784L9.52216 5.47242L10.1795 4.60582L11.2778 3.22568L11.7622 2.68004L12.333 2.07823L12.6962 1.78937L13.0162 1.67703L13.3881 1.78937L13.7168 2.06219L13.8897 2.54363V2.76028L13.6649 3.32197L12.9557 4.22066L12.3676 4.98295L12.0043 5.56871L11.0011 7.02106V7.08526H11.1741L13.0768 6.67603L14.1059 6.49147L15.3341 6.28285L15.5762 6.34704L15.8876 6.53962L15.9481 6.80441L15.8876 7.12538L15.7319 7.34203L14.4173 7.66299L12.8778 7.97593L10.5854 8.51559C10.5705 8.51909 10.56 8.53236 10.56 8.54764C10.56 8.56468 10.573 8.57891 10.59 8.58044L11.6238 8.67402L12.0649 8.69809H13.1459L15.1611 8.85055L15.6886 9.19559L15.9481 9.39619L16 9.62086L15.9481 9.94985L15.8443 10.1023L15.4119 10.3029L15.1351 10.3591L14.0454 10.1023L11.4941 9.49248L10.6205 9.27583H10.4995V9.34804L11.2259 10.0622L12.5665 11.2658L14.2357 12.8225L14.3222 13.0953V13.2076L14.1059 13.5125L13.9243 13.5206L13.8811 13.4804L12.4108 12.3731L12.2984 12.325L11.84 11.8756L10.56 10.7924H10.4735V10.9047L10.7676 11.338L12.333 13.6891L12.4108 14.4112L12.2984 14.6439L11.8919 14.7884L11.667 14.7563L11.4508 14.7081L11.2605 14.5396L10.5254 13.4162L9.5827 11.9719L8.82162 10.672H8.79342C8.76039 10.672 8.73278 10.6972 8.7297 10.73L8.27676 15.5667L8.06919 15.8154L7.6454 16H7.58486L7.17838 15.6951L6.96216 15.1976L7.17838 14.2106L7.43784 12.9268L7.6454 11.9077L7.83567 10.6399L7.95187 10.2164C7.9548 10.2057 7.95069 10.1944 7.94161 10.1881C7.91157 10.1672 7.87034 10.1741 7.84878 10.2037L6.89297 11.5145L5.44 13.4804L4.28973 14.7081L4.01297 14.8205H3.80541L3.5373 14.5717V14.4514L3.58054 14.1304L3.84865 13.7372L5.44 11.7151L6.4 10.4554L7.01872 9.73222C7.04511 9.70139 7.04245 9.65523 7.0127 9.62763C7.00333 9.61894 6.98925 9.61773 6.97854 9.62471L2.75027 12.3811L1.99784 12.4774L1.66919 12.1725L1.71243 11.675L1.86811 11.5145L3.13946 10.6399Z" fill="#D97757"></path>
-      </svg>
-      <span style="vertical-align: middle; color: #141413; font-size: 14px; display: inline-block;">Claude is active in this tab group</span>
-      <div style="display: inline-block; width: 0.5px; height: 32px; background: rgba(31, 30, 29, 0.15); margin: 0 8px; vertical-align: middle;"></div>
-      <button id="claude-static-chat-button" style="position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 6px; background: transparent; border: none; cursor: pointer; pointer-events: auto; vertical-align: middle; width: 32px; height: 32px; border-radius: 8px; transition: background 0.2s;">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="#141413" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; display: block;">
-          <path d="M10 2.5C14.1421 2.5 17.5 5.85786 17.5 10C17.5 14.1421 14.1421 17.5 10 17.5H3C2.79779 17.5 2.61549 17.3782 2.53809 17.1914C2.4607 17.0046 2.50349 16.7895 2.64648 16.6465L4.35547 14.9365C3.20124 13.6175 2.5 11.8906 2.5 10C2.5 5.85786 5.85786 2.5 10 2.5ZM10 3.5C6.41015 3.5 3.5 6.41015 3.5 10C3.5 11.7952 4.22659 13.4199 5.40332 14.5967L5.46582 14.6729C5.52017 14.7544 5.5498 14.8508 5.5498 14.9502C5.5498 15.0828 5.49709 15.2099 5.40332 15.3037L4.20703 16.5H10C13.5899 16.5 16.5 13.5899 16.5 10C16.5 6.41015 13.5899 3.5 10 3.5ZM13.29 9.30371C13.3986 9.05001 13.6925 8.93174 13.9463 9.04004C14.2 9.14863 14.3183 9.44253 14.21 9.69629C13.8506 10.536 13.1645 11.25 12.25 11.25C11.6372 11.25 11.128 10.9289 10.75 10.4648C10.372 10.9289 9.86276 11.25 9.25 11.25C8.63724 11.25 8.12801 10.9289 7.75 10.4648C7.37198 10.9289 6.86276 11.25 6.25 11.25C5.97386 11.25 5.75 11.0261 5.75 10.75C5.75 10.4739 5.97386 10.25 6.25 10.25C6.58764 10.25 7.00448 9.97056 7.29004 9.30371L7.32422 9.2373C7.41431 9.09121 7.5749 9 7.75 9C7.9501 9 8.13123 9.11975 8.20996 9.30371L8.32227 9.53516C8.59804 10.0359 8.95442 10.25 9.25 10.25C9.58764 10.25 10.0045 9.97056 10.29 9.30371L10.3242 9.2373C10.4143 9.09121 10.5749 9 10.75 9C10.9501 9 11.1312 9.11975 11.21 9.30371L11.3223 9.53516C11.598 10.0359 11.9544 10.25 12.25 10.25C12.5876 10.25 13.0045 9.97056 13.29 9.30371Z"></path>
-        </svg>
-        <span id="claude-static-chat-tooltip" style="position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%); padding: 6px 12px; background: #30302E; color: #FAF9F5; border-radius: 6px; font-size: 12px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">Open chat</span>
-      </button>
-      <button id="claude-static-close-button" style="position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 6px; background: transparent; border: none; cursor: pointer; pointer-events: auto; vertical-align: middle; width: 32px; height: 32px; margin-left: 4px; border-radius: 8px; transition: background 0.2s;">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; display: block;">
-          <path d="M15.1464 4.14642C15.3417 3.95121 15.6582 3.95118 15.8534 4.14642C16.0486 4.34168 16.0486 4.65822 15.8534 4.85346L10.7069 9.99997L15.8534 15.1465C16.0486 15.3417 16.0486 15.6583 15.8534 15.8535C15.6826 16.0244 15.4186 16.0461 15.2245 15.918L15.1464 15.8535L9.99989 10.707L4.85338 15.8535C4.65813 16.0486 4.34155 16.0486 4.14634 15.8535C3.95115 15.6583 3.95129 15.3418 4.14634 15.1465L9.29286 9.99997L4.14634 4.85346C3.95129 4.65818 3.95115 4.34162 4.14634 4.14642C4.34154 3.95128 4.65812 3.95138 4.85338 4.14642L9.99989 9.29294L15.1464 4.14642Z" fill="#141413"></path>
-        </svg>
-        <span id="claude-static-close-tooltip" style="position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%); padding: 6px 12px; background: #30302E; color: #FAF9F5; border-radius: 6px; font-size: 12px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">Dismiss</span>
-      </button>
-    </div></body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration><grammarly-assistant-notch-view role="presentation" data-grammarly-ignore-keyboard-events="true" data-grammarly-shadow-root="true" class="dnXmp" style="--rem: 16;"></grammarly-assistant-notch-view><!-- deploy:1773175015842 -->
+  function injectPanels(){
+    var cards = document.querySelectorAll('.card');
+    if(cards.length === 0){setTimeout(injectPanels, 200); return;}
+    // Check if already injected
+    if(document.querySelector('.ai-summary-toggle')) return;
+    
+    cards.forEach(function(card, i){
+      var ai = aiData[i] || aiData[aiData.length - 1];
+      var footer = card.querySelector('.card-footer');
+      if(!footer) return;
+
+      var toggle = document.createElement('div');
+      toggle.className = 'ai-summary-toggle';
+      toggle.innerHTML = '\u{1F916} AI Analysis <span class="chevron">\u25BE</span>';
+
+      var content = document.createElement('div');
+      content.className = 'ai-summary-content';
+      content.innerHTML = '<div class="ai-label">\u{1F916} AI ANALYSIS</div><strong>' + ai.v + '</strong><div class="highlight-row">' + ai.h.map(function(x){return '<span>'+x+'</span>'}).join('') + '</div><p style="margin-top:8px;margin-bottom:0">' + ai.t + '</p>';
+
+      card.insertBefore(toggle, footer);
+      card.insertBefore(content, footer);
+
+      // Add Send Inquiry button
+      var viewBtn = footer.querySelector('.view-btn');
+      if(viewBtn){
+        var inq = document.createElement('a');
+        inq.href = viewBtn.href;
+        inq.target = '_blank';
+        inq.className = 'btn-inquiry';
+        inq.textContent = '\u{1F4E7} Send Inquiry';
+        viewBtn.after(inq);
+      }
+    });
+  }
+
+  // Toggle handler
+  document.addEventListener('click', function(e){
+    var toggle = e.target.closest('.ai-summary-toggle');
+    if(!toggle) return;
+    toggle.classList.toggle('open');
+    var c = toggle.nextElementSibling;
+    if(c && c.classList.contains('ai-summary-content')) c.classList.toggle('show');
+  });
+
+  // Run after existing JS renders cards
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){setTimeout(injectPanels, 100);});
+  } else {
+    setTimeout(injectPanels, 100);
+  }
+
+  // Also re-inject after any filtering (MutationObserver)
+  var obs = new MutationObserver(function(){
+    if(!document.querySelector('.ai-summary-toggle')){
+      setTimeout(injectPanels, 50);
+    }
+  });
+  var grid = document.querySelector('.grid, .cards-container, [class*=grid]');
+  if(grid) obs.observe(grid, {childList: true});
+})();
+</script>
+</body>
 </html>
