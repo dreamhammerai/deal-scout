@@ -1,945 +1,810 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deal Scout — Monday, March 9</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: #1a1a2e;
-            color: #e0e0e0;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header Section */
-        .header {
-            margin-bottom: 30px;
-        }
-
-        .header-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 5px;
-        }
-
-        .header-subtitle {
-            font-size: 1rem;
-            color: #a0a0a0;
-            margin-bottom: 25px;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background-color: #252545;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #3b82f6;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: #a0a0a0;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .stat-card:nth-child(2) {
-            border-left-color: #22c55e;
-        }
-
-        .stat-card:nth-child(3) {
-            border-left-color: #ef4444;
-        }
-
-        .stat-card:nth-child(4) {
-            border-left-color: #f97316;
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 0;
-            margin-bottom: 25px;
-            border-bottom: 1px solid #333344;
-        }
-
-        .tab-button {
-            padding: 12px 20px;
-            background: none;
-            border: none;
-            color: #a0a0a0;
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .tab-button:hover {
-            color: #ffffff;
-        }
-
-        .tab-button.active {
-            color: #3b82f6;
-            border-bottom-color: #3b82f6;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Filter Bar */
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 25px;
-            background-color: #252545;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .filter-label {
-            font-size: 0.85rem;
-            color: #a0a0a0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-
-        .filter-input,
-        .filter-select {
-            padding: 10px 12px;
-            background-color: #1a1a2e;
-            border: 1px solid #444455;
-            border-radius: 6px;
-            color: #e0e0e0;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-
-        .filter-input:focus,
-        .filter-select:focus {
-            outline: none;
-            border-color: #3b82f6;
-            background-color: #1f1f3e;
-        }
-
-        .filter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .filter-btn {
-            padding: 8px 14px;
-            background-color: #1a1a2e;
-            border: 1px solid #444455;
-            color: #a0a0a0;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .filter-btn:hover {
-            border-color: #3b82f6;
-            color: #3b82f6;
-        }
-
-        .filter-btn.active {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-            color: #ffffff;
-        }
-
-        /* Listings Grid */
-        .listings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        /* Listing Card */
-        .listing-card {
-            background-color: #252545;
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            border: 1px solid #333344;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .listing-card:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
-            transform: translateY(-4px);
-        }
-
-        .listing-card.dismissed {
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        /* Card Actions */
-        .card-actions {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            justify-content: flex-end;
-        }
-
-        .action-btn {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #1a1a2e;
-            border: 1px solid #444455;
-            border-radius: 6px;
-            color: #a0a0a0;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-            color: #ffffff;
-        }
-
-        .action-btn.bookmarked {
-            background-color: #fbbf24;
-            border-color: #fbbf24;
-            color: #1a1a2e;
-        }
-
-        /* Badges */
-        .badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-new {
-            background-color: #22c55e;
-            color: #ffffff;
-        }
-
-        .badge-seen {
-            background-color: #6b7280;
-            color: #ffffff;
-        }
-
-        .badge-auction {
-            background-color: #f97316;
-            color: #ffffff;
-        }
-
-        .badge-hot {
-            background-color: #ef4444;
-            color: #ffffff;
-        }
-
-        .badge-price-drop {
-            background-color: #ef4444;
-            color: #ffffff;
-        }
-
-        /* Property Info */
-        .property-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 6px;
-            line-height: 1.4;
-        }
-
-        .property-location {
-            font-size: 0.9rem;
-            color: #a0a0a0;
-            margin-bottom: 12px;
-        }
-
-        .property-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #22c55e;
-            margin-bottom: 8px;
-        }
-
-        .property-type {
-            display: inline-block;
-            background-color: #1a1a2e;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            color: #a0a0a0;
-            margin-bottom: 15px;
-        }
-
-        /* Score Bar */
-        .score-section {
-            margin-bottom: 15px;
-        }
-
-        .score-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-        }
-
-        .score-label-text {
-            color: #a0a0a0;
-        }
-
-        .score-number {
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        .score-bar {
-            width: 100%;
-            height: 6px;
-            background-color: #1a1a2e;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .score-fill {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        .score-7-10 .score-fill {
-            background-color: #22c55e;
-        }
-
-        .score-4-6 .score-fill {
-            background-color: #f97316;
-        }
-
-        .score-1-3 .score-fill {
-            background-color: #ef4444;
-        }
-
-        /* Source and Contact */
-        .card-footer {
-            border-top: 1px solid #333344;
-            padding-top: 12px;
-            font-size: 0.85rem;
-        }
-
-        .source-info {
-            color: #a0a0a0;
-            margin-bottom: 8px;
-        }
-
-        .source-label {
-            color: #666677;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .source-name {
-            color: #e0e0e0;
-        }
-
-        .contact-info {
-            margin-top: 8px;
-            color: #a0a0a0;
-        }
-
-        .contact-label {
-            color: #666677;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .contact-value {
-            color: #e0e0e0;
-            word-break: break-all;
-        }
-
-        .open-link {
-            display: inline-block;
-            margin-top: 12px;
-            color: #3b82f6;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .open-link:hover {
-            color: #60a5fa;
-            text-decoration: underline;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #a0a0a0;
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        .empty-state-text {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-
-        /* Archive List */
-        .archive-list {
-            background-color: #252545;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .archive-item {
-            padding: 20px;
-            border-bottom: 1px solid #333344;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s ease;
-        }
-
-        .archive-item:hover {
-            background-color: #2e2e50;
-        }
-
-        .archive-item:last-child {
-            border-bottom: none;
-        }
-
-        .archive-info {
-            flex: 1;
-        }
-
-        .archive-date {
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 4px;
-        }
-
-        .archive-meta {
-            color: #a0a0a0;
-            font-size: 0.9rem;
-        }
-
-        .archive-link {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #3b82f6;
-            color: #ffffff;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .archive-link:hover {
-            background-color: #2563eb;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            .header-title {
-                font-size: 1.8rem;
-            }
-
-            .stats-bar {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .filter-bar {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .listings-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .filter-group {
-                width: 100%;
-            }
-
-            .filter-input,
-            .filter-select {
-                width: 100%;
-            }
-        }
-
-        /* Scroll behavior */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #1a1a2e;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #444455;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #666677;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deal Scout — Tuesday, March 10</title>
+<style>
+  :root {
+    --bg: #0f1117; --card: #1a1d2e; --card2: #1e2135;
+    --accent: #4f8ef7; --hot: #f7934f; --top: #f7c04f;
+    --green: #4fcf8e; --red: #f74f4f; --gray: #6b7280;
+    --text: #e2e8f0; --muted: #94a3b8; --border: #2d3148;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, #1a1d2e 0%, #0f1117 100%); border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .header h1 { font-size: 20px; font-weight: 700; color: #fff; }
+  .header h1 span { color: var(--accent); }
+  .header-meta { color: var(--muted); font-size: 13px; }
+  .stats-bar { display: flex; gap: 20px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-val { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-val.hot { color: var(--hot); }
+  .stat-val.new { color: var(--green); }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 2px; background: var(--card); border-bottom: 1px solid var(--border); padding: 0 20px; }
+  .tab { padding: 12px 16px; cursor: pointer; color: var(--muted); font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Filter bar */
+  .filter-bar { background: var(--card); border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .filter-btn { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; transition: all 0.15s; }
+  .filter-btn:hover, .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .filter-btn.hot-filter.active { background: var(--hot); border-color: var(--hot); }
+  .search-box { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 12px; outline: none; width: 200px; }
+  .search-box:focus { border-color: var(--accent); }
+
+  /* Listings grid */
+  .listings { padding: 16px 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 14px; }
+
+  /* Card */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; position: relative; transition: border-color 0.15s; }
+  .card:hover { border-color: var(--accent); }
+  .card.dismissed { display: none; }
+  .card.bookmarked { border-color: var(--top); }
+  .card.top-deal { border-left: 3px solid var(--top); }
+  .card.hot-deal { border-left: 3px solid var(--hot); }
+
+  /* Card header */
+  .card-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+  .card-title { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .card-title a { color: var(--text); }
+  .card-title a:hover { color: var(--accent); text-decoration: none; }
+  .card-actions { display: flex; gap: 4px; flex-shrink: 0; }
+  .btn-icon { background: transparent; border: none; cursor: pointer; color: var(--muted); font-size: 16px; padding: 2px 4px; line-height: 1; transition: color 0.15s; }
+  .btn-icon:hover { color: var(--text); }
+  .btn-icon.bookmarked { color: var(--top); }
+
+  /* Badges */
+  .badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+  .badge { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
+  .badge-new { background: rgba(79,207,142,0.2); color: var(--green); border: 1px solid rgba(79,207,142,0.3); }
+  .badge-price-drop { background: rgba(247,79,79,0.2); color: var(--red); border: 1px solid rgba(247,79,79,0.3); }
+  .badge-seen { background: rgba(107,114,128,0.2); color: var(--gray); border: 1px solid rgba(107,114,128,0.3); }
+  .badge-auction { background: rgba(249,115,22,0.2); color: #f97316; border: 1px solid rgba(249,115,22,0.3); }
+  .badge-hot { background: rgba(247,147,79,0.2); color: var(--hot); border: 1px solid rgba(247,147,79,0.3); }
+  .badge-top { background: rgba(247,192,79,0.2); color: var(--top); border: 1px solid rgba(247,192,79,0.3); }
+  .badge-type { background: rgba(79,142,247,0.15); color: var(--accent); border: 1px solid rgba(79,142,247,0.25); }
+  .badge-sf { background: rgba(79,207,142,0.15); color: #34d399; border: 1px solid rgba(79,207,142,0.25); }
+
+  /* Price row */
+  .price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .price { font-size: 20px; font-weight: 700; color: #fff; }
+  .old-price { font-size: 14px; color: var(--muted); text-decoration: line-through; }
+  .drop-pct { font-size: 12px; color: var(--red); font-weight: 600; }
+
+  /* Details grid */
+  .details { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 12px; margin-bottom: 10px; }
+  .detail { font-size: 12px; color: var(--muted); }
+  .detail strong { color: var(--text); }
+  .detail.cap { color: var(--green); font-weight: 600; }
+
+  /* Score bar */
+  .score-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .score-label { font-size: 11px; color: var(--muted); width: 40px; flex-shrink: 0; }
+  .score-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 6px; }
+  .score-bar { height: 6px; border-radius: 4px; transition: width 0.3s; }
+  .score-num { font-size: 12px; font-weight: 700; width: 24px; text-align: right; }
+
+  /* Snippet */
+  .snippet { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 8px; border-top: 1px solid var(--border); padding-top: 8px; }
+
+  /* Contact */
+  .contact { font-size: 12px; color: var(--muted); }
+  .contact strong { color: var(--text); }
+
+  /* Source */
+  .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .source-tag { font-size: 11px; color: var(--muted); }
+  .view-btn { font-size: 11px; color: var(--accent); font-weight: 600; }
+
+  /* Archive tab */
+  .archive-list { padding: 20px; display: grid; gap: 10px; max-width: 600px; }
+  .archive-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .archive-item.today { border-color: var(--accent); }
+  .archive-date { font-weight: 600; color: var(--text); }
+  .archive-meta { font-size: 12px; color: var(--muted); }
+  .archive-link { font-size: 12px; color: var(--accent); }
+
+  /* Empty state */
+  .empty { padding: 60px 20px; text-align: center; color: var(--muted); }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .listings { grid-template-columns: 1fr; padding: 12px; }
+    .stats-bar { gap: 12px; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1 class="header-title">Deal Scout</h1>
-            <p class="header-subtitle">Real Estate Deal Dashboard</p>
-        </div>
 
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-card">
-                <div class="stat-label">Total Deals</div>
-                <div class="stat-value" id="statTotal">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">New Deals</div>
-                <div class="stat-value" id="statNew">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Hot Deals (7+)</div>
-                <div class="stat-value" id="statHot">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Date</div>
-                <div class="stat-value" id="statDate">-</div>
-            </div>
-        </div>
+<div class="header">
+  <div>
+    <h1>🏕️ Deal <span>Scout</span></h1>
+    <div class="header-meta">Tuesday, March 10, 2026 · SE US: AL, MS, LA, GA, TN, FL, NC, VA</div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-val new" id="stat-new">—</div><div class="stat-label">New Today</div></div>
+    <div class="stat"><div class="stat-val hot" id="stat-hot">—</div><div class="stat-label">Hot (7+)</div></div>
+    <div class="stat"><div class="stat-val" id="stat-total">—</div><div class="stat-label">Total</div></div>
+    <div class="stat"><div class="stat-val" id="stat-seen">—</div><div class="stat-label">Seen Before</div></div>
+  </div>
+</div>
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab-button active" data-tab="today">Today's Deals</button>
-            <button class="tab-button" data-tab="archive">Archive</button>
-        </div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('today', this)">Today's Deals</div>
+  <div class="tab" onclick="switchTab('bookmarks', this)">⭐ Bookmarks</div>
+  <div class="tab" onclick="switchTab('archive', this)">Archive</div>
+</div>
 
-        <!-- Today's Deals Tab -->
-        <div class="tab-content active" id="today">
-            <!-- Filter Bar -->
-            <div class="filter-bar">
-                <div class="filter-group">
-                    <label class="filter-label">Property Type</label>
-                    <div class="filter-buttons">
-                        <button class="filter-btn active" data-filter="type" data-value="">All</button>
-                        <button class="filter-btn" data-filter="type" data-value="RV Park">RV Park</button>
-                        <button class="filter-btn" data-filter="type" data-value="Campground">Campground</button>
-                        <button class="filter-btn" data-filter="type" data-value="MHP">MHP</button>
-                        <button class="filter-btn" data-filter="type" data-value="Self-Storage">Self-Storage</button>
-                        <button class="filter-btn" data-filter="type" data-value="Marina">Marina</button>
-                    </div>
-                </div>
+<div id="tab-today" class="tab-content active">
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn hot-filter" onclick="setFilter('hot', this)">🔥 Hot (7+)</button>
+    <button class="filter-btn" onclick="setFilter('new', this)">🆕 New</button>
+    <button class="filter-btn" onclick="setFilter('sf', this)">💰 Seller Fin</button>
+    <button class="filter-btn" onclick="setFilter('rv', this)">🏕️ RV/Camp</button>
+    <button class="filter-btn" onclick="setFilter('mhp', this)">🏠 MHP</button>
+    <button class="filter-btn" onclick="setFilter('storage', this)">📦 Storage</button>
+    <button class="filter-btn" onclick="setFilter('marina', this)">⚓ Marina</button>
+    <input class="search-box" type="text" placeholder="Search listings…" oninput="searchListings(this.value)">
+  </div>
+  <div class="listings" id="listings-grid"></div>
+</div>
 
-                <div class="filter-group">
-                    <label class="filter-label">State</label>
-                    <select class="filter-select" id="stateFilter">
-                        <option value="">All States</option>
-                        <option value="FL">Florida</option>
-                        <option value="GA">Georgia</option>
-                        <option value="AL">Alabama</option>
-                        <option value="LA">Louisiana</option>
-                        <option value="NC">North Carolina</option>
-                        <option value="TN">Tennessee</option>
-                        <option value="VA">Virginia</option>
-                        <option value="MS">Mississippi</option>
-                    </select>
-                </div>
+<div id="tab-bookmarks" class="tab-content">
+  <div class="listings" id="bookmarks-grid"></div>
+</div>
 
-                <div class="filter-group">
-                    <label class="filter-label">Search</label>
-                    <input type="text" class="filter-input" id="searchFilter" placeholder="Property name or location...">
-                </div>
+<div id="tab-archive" class="tab-content">
+  <div class="archive-list" id="archive-list"></div>
+</div>
 
-                <div class="filter-group">
-                    <label class="filter-label">Score Range</label>
-                    <div style="display: flex; gap: 8px;">
-                        <input type="number" class="filter-input" id="scoreMin" placeholder="Min" min="1" max="10" style="width: 60px;">
-                        <input type="number" class="filter-input" id="scoreMax" placeholder="Max" min="1" max="10" style="width: 60px;">
-                    </div>
-                </div>
-            </div>
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
 
-            <!-- Listings Grid -->
-            <div class="listings-grid" id="listingsGrid">
-                <!-- Populated by JavaScript -->
-            </div>
+// SEEN_INDEX_START
+const SEEN_INDEX = [
+  {url: "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida", name: "Confidential Florida KOA", price: 4400000, firstSeen: "2026-03-08", lastSeen: "2026-03-10"},
+  {url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/", name: "Lake Okeechobee Motel, RV & Fish Camp", price: 1399000, firstSeen: "2026-03-08", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl", name: "Dew Drop Inn & Okeechobee Lake RV Park", price: 5900000, firstSeen: "2026-03-08", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/6940133-breckenridge-lake-rv-campground-for-sale-in-crossville-tn", name: "Breckenridge Lake RV Campground", price: 1300000, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/7011275-owner-financing-rv-park-with-infrastucture-in-place-for-sale-in-florida", name: "Owner Financing! FL RV Park – 350 Lots", price: 1650000, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/6994837-own-a-best-of-the-best-award-winning-resort-in-the-blue-ridge-mountains-for-sale-in-north-carolina", name: "Award-Winning Blue Ridge Mountains Resort – NC", price: 2800000, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/6963713-established-campground-on-a-scenic-riverfront-with-private-boat-ramp-for-sale-in-florida", name: "Established Campground – Scenic Riverfront + Boat Ramp", price: 699000, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl", name: "Mary's Fish Camp", price: 3999995, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/6945178-recent-infrastructure-upgrades-and-high-year-round-occupancy-in-georgia-for-sale-in-georgia", name: "High Year-Round Occupancy RV Park – Georgia", price: null, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/7000857-pine-haven-camp-ground-for-sale-in-baxley-ga", name: "Pine Haven Camp Ground – Baxley, GA", price: null, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/7012868-confidential-north-carolina-rv-park-for-sale-in-north-carolina", name: "Confidential NC RV Park – 82 Lots", price: null, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/6930997-bayou-black-rv-park-now-for-sale-for-sale-in-gibson-la", name: "Bayou Black RV Park – Gibson, LA", price: null, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Gated Boutique Coastal FL Park – Near White Sand Beaches", price: 1599000, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/6875094-rv-park-in-cave-spring-for-sale-in-rome-ga", name: "RV Park in Cave Spring – Rome, GA", price: null, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/3353134-six-oaks-rv-park-for-sale-in-mooresburg-tn", name: "Six Oaks RV Park – Mooresburg, TN", price: null, firstSeen: "2026-03-10", lastSeen: "2026-03-10"},
+  {url: "https://www.rvparkstore.com/rv-parks/7007161-85-acre-resort-with-lazy-river-extensive-water-park-for-sale-for-sale-in-louisiana", name: "85-Acre Resort with Lazy River & Water Park – LA", price: null, firstSeen: "2026-03-10", lastSeen: "2026-03-10"}
+];
+// SEEN_INDEX_END
 
-            <!-- Empty State -->
-            <div class="empty-state" id="emptyState" style="display: none;">
-                <div class="empty-state-icon">🔍</div>
-                <div class="empty-state-text">No listings found</div>
-                <p style="color: #666677;">Try adjusting your filters</p>
-            </div>
-        </div>
+// ARCHIVE_INDEX_START
+const ARCHIVE_INDEX = [
+  {date: "2026-03-08", file: "deal-scout-2026-03-08.html", count: 16, isToday: false},
+  {date: "2026-03-09", file: "deal-scout-2026-03-09.html", count: 18, isToday: false},
+  {date: "2026-03-10", file: "deal-scout.html", count: 16, isToday: true}
+];
+// ARCHIVE_INDEX_END
 
-        <!-- Archive Tab -->
-        <div class="tab-content" id="archive">
-            <div class="archive-list" id="archiveList">
-                <!-- Populated by JavaScript -->
-            </div>
-        </div>
+// REPLIES_INDEX_START
+const REPLIES_INDEX = [];
+// REPLIES_INDEX_END
+
+const YESTERDAY_URLS = new Set([
+  "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida",
+  "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/",
+  "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl",
+  "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/",
+  "https://www.loopnet.com/search/rv-parks/usa/for-sale/"
+]);
+
+const LISTINGS = [
+  // ── TOP DEALS (Score 9-10) ──────────────────────────────────────────
+  {
+    id: "breckenridge-tn",
+    name: "Breckenridge Lake RV Campground",
+    location: "Crossville, TN",
+    type: "rv",
+    price: 1300000,
+    priceText: "$1,300,000",
+    oldPrice: null,
+    lots: 55,
+    capRate: "10.2%",
+    sellerFinancing: true,
+    hasWaterfront: true,
+    nearInterstate: false,
+    nearTourism: false,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 9,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/6940133-breckenridge-lake-rv-campground-for-sale-in-crossville-tn",
+    contact: { name: "Ryan Ramseur", firm: "TriCore CRE", phone: "", email: "" },
+    snippet: "10.2% cap rate with seller financing available. Waterfront campground on Breckenridge Lake in the Cumberland Plateau, TN. Laundromat, clubhouse, and established amenities. Purchase method: Cash, Seller Financing, or New Loan.",
+    tags: ["10.2% CAP", "Seller Fin", "Waterfront", "55 Lots"]
+  },
+  {
+    id: "owner-fin-fl-350",
+    name: "Owner Financing! FL RV Park – 350 Lots",
+    location: "Somewhere in Florida",
+    type: "rv",
+    price: 1650000,
+    priceText: "$1,650,000",
+    oldPrice: null,
+    lots: 350,
+    capRate: null,
+    sellerFinancing: true,
+    hasWaterfront: true,
+    nearInterstate: true,
+    nearTourism: false,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 8,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/7011275-owner-financing-rv-park-with-infrastucture-in-place-for-sale-in-florida",
+    contact: { name: "David McQuary", firm: "Florida Real Estate Broker", phone: "", email: "" },
+    snippet: "350 lots with infrastructure in place. Owner/seller financing available. Waterfront. Near interstate. Updated March 10, 2026. Exceptional value at $1.65M for 350-lot capacity — infrastructure already built, huge upside on lease-up.",
+    tags: ["Owner Fin", "350 Lots", "Waterfront", "Near I-"]
+  },
+
+  // ── HOT DEALS (Score 7-8) ─────────────────────────────────────────
+  {
+    id: "blue-ridge-nc",
+    name: "Award-Winning Blue Ridge Mountains Resort",
+    location: "Somewhere in North Carolina",
+    type: "rv",
+    price: 2800000,
+    priceText: "$2,800,000",
+    oldPrice: null,
+    lots: 97,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: false,
+    nearInterstate: false,
+    nearTourism: true,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 7,
+    source: "RVParkStore / Parks and Places",
+    url: "https://www.rvparkstore.com/rv-parks/6994837-own-a-best-of-the-best-award-winning-resort-in-the-blue-ridge-mountains-for-sale-in-north-carolina",
+    contact: { name: "Mark Whitworth", firm: "Parks and Places", phone: "", email: "" },
+    snippet: "Price Reduced. 2025 RV LIFE 'Best of the Best' award winner. 97 lots including 44 full hookup RV sites, glamping tents, and rental unit. Blue Ridge Mountains tourism corridor. Major capital improvements 2023–2025: new electrical, well house, Wi-Fi mesh.",
+    tags: ["Price Reduced", "97 Lots", "Near Tourism", "Award-Winning"]
+  },
+  {
+    id: "coastal-fl-boutique",
+    name: "Gated Boutique Coastal FL Park",
+    location: "Coastal Florida (Near White Sand Beaches)",
+    type: "rv",
+    price: 1599000,
+    priceText: "$1,599,000",
+    oldPrice: null,
+    lots: null,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: true,
+    nearInterstate: false,
+    nearTourism: true,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 7,
+    source: "Parks and Places",
+    url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/",
+    contact: { name: "", firm: "Parks and Places", phone: "", email: "" },
+    snippet: "NEW LISTING. Gated, boutique park just steps from white sand beaches. Florida Gulf Coast. Fully operational. Private, gated atmosphere. Coastal tourism corridor with strong seasonal demand.",
+    tags: ["NEW LISTING", "Beachfront", "Gated", "Near Tourism"]
+  },
+
+  // ── MID DEALS (Score 4-6) ─────────────────────────────────────────
+  {
+    id: "riverfront-fl-699",
+    name: "Established Campground – Scenic Riverfront + Boat Ramp",
+    location: "Somewhere in Florida",
+    type: "rv",
+    price: 699000,
+    priceText: "$699,000",
+    oldPrice: null,
+    lots: 21,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: true,
+    nearInterstate: false,
+    nearTourism: false,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 5,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/6963713-established-campground-on-a-scenic-riverfront-with-private-boat-ramp-for-sale-in-florida",
+    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
+    snippet: "21 full hookup sites on a scenic riverfront with a private boat ramp. Established operating campground. Low entry price point for a waterfront Florida asset.",
+    tags: ["Waterfront", "Boat Ramp", "21 Lots", "Low Price"]
+  },
+  {
+    id: "fl-natural-forest",
+    name: "Beloved Family Destination – Natural Forest FL",
+    location: "North Central Florida",
+    type: "rv",
+    price: 2999000,
+    priceText: "$2,999,000",
+    oldPrice: null,
+    lots: 38,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: true,
+    nearInterstate: false,
+    nearTourism: true,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 5,
+    source: "Parks and Places",
+    url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/",
+    contact: { name: "", firm: "Parks and Places", phone: "", email: "" },
+    snippet: "File #439044. Established park in Florida's serene natural forest — 38 FHU sites, surrounded on three sides by water and wetlands. Gated RV park, praised for friendly staff and peaceful grounds. Freshwater springs nearby.",
+    tags: ["38 Lots", "Waterfront", "Gated", "Natural Forest"]
+  },
+  {
+    id: "ga-high-occupancy",
+    name: "High Year-Round Occupancy RV Park – Georgia",
+    location: "Somewhere in Georgia",
+    type: "rv",
+    price: null,
+    priceText: "Call for Price",
+    oldPrice: null,
+    lots: 42,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: false,
+    nearInterstate: false,
+    nearTourism: true,
+    occupancy: "85%+",
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 5,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/6945178-recent-infrastructure-upgrades-and-high-year-round-occupancy-in-georgia-for-sale-in-georgia",
+    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
+    snippet: "Recent infrastructure upgrades with impressive year-round occupancy. Mountain region of Georgia. 42 lots. Strong operational history with diversified income sources. Scenic views, near major Georgia tourism corridor.",
+    tags: ["42 Lots", "High Occupancy", "Near Tourism", "Infra Upgraded"]
+  },
+  {
+    id: "nc-confidential-82",
+    name: "Confidential NC RV Park – 82 Lots",
+    location: "Somewhere in North Carolina",
+    type: "rv",
+    price: null,
+    priceText: "Call for Price",
+    oldPrice: null,
+    lots: 82,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: false,
+    nearInterstate: false,
+    nearTourism: false,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 4,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/7012868-confidential-north-carolina-rv-park-for-sale-in-north-carolina",
+    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
+    snippet: "Confidential listing. 82-lot operating RV park in North Carolina. Scale property with strong unit count — call broker for pricing and full offering details.",
+    tags: ["82 Lots", "Confidential", "NC"]
+  },
+  {
+    id: "bayou-black-la",
+    name: "Bayou Black RV Park – Gibson, LA",
+    location: "Gibson, LA 70356",
+    type: "rv",
+    price: null,
+    priceText: "Call for Price",
+    oldPrice: null,
+    lots: 37,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: true,
+    nearInterstate: false,
+    nearTourism: false,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 4,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/6930997-bayou-black-rv-park-now-for-sale-for-sale-in-gibson-la",
+    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
+    snippet: "Bayou Black RV Park — 37 lots on the bayou, Gibson, Louisiana. Waterfront/bayou access. South Louisiana location in Terrebonne Parish. Listed as now for sale.",
+    tags: ["37 Lots", "Bayou/Waterfront", "LA", "South LA"]
+  },
+  {
+    id: "marys-fish-camp-fl",
+    name: "Mary's Fish Camp",
+    location: "Spring Hill, FL 34607",
+    type: "rv",
+    price: 3999995,
+    priceText: "$3,999,995",
+    oldPrice: null,
+    lots: 23,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: true,
+    nearInterstate: false,
+    nearTourism: false,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 4,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl",
+    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
+    snippet: "23-lot fish camp on the waterfront in Spring Hill, FL. 8092 Marys Fish Camp Road. Classic Florida waterfront experience with RV/camping access and fishing. Established operating property.",
+    tags: ["23 Lots", "Waterfront", "Fish Camp", "Spring Hill FL"]
+  },
+
+  // ── LOWER SCORE ───────────────────────────────────────────────────
+  {
+    id: "pine-haven-ga",
+    name: "Pine Haven Camp Ground – Baxley, GA",
+    location: "Baxley, GA 31513",
+    type: "rv",
+    price: null,
+    priceText: "Call for Price",
+    oldPrice: null,
+    lots: 21,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: false,
+    nearInterstate: false,
+    nearTourism: false,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 2,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/7000857-pine-haven-camp-ground-for-sale-in-baxley-ga",
+    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
+    snippet: "21-lot campground in Baxley, GA (Appling County). Operating campground in rural South Georgia. Call for pricing and details.",
+    tags: ["21 Lots", "GA", "Rural South GA"]
+  },
+  {
+    id: "cave-spring-ga",
+    name: "RV Park in Cave Spring – Rome, GA",
+    location: "21 Cedartown Hwy, Rome, GA 30161",
+    type: "rv",
+    price: null,
+    priceText: "Call for Price",
+    oldPrice: null,
+    lots: 14,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: false,
+    nearInterstate: false,
+    nearTourism: false,
+    occupancy: null,
+    isNew: true,
+    isRepeat: false,
+    priceChanged: false,
+    isAuction: false,
+    score: 1,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/6875094-rv-park-in-cave-spring-for-sale-in-rome-ga",
+    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
+    snippet: "14-lot RV park in Cave Spring, near Rome, GA. Small operating park in NW Georgia.",
+    tags: ["14 Lots", "NW GA", "Cave Spring"]
+  },
+
+  // ── SEEN BEFORE ──────────────────────────────────────────────────
+  {
+    id: "fl-koa-conf",
+    name: "Confidential Florida KOA",
+    location: "Somewhere in Florida",
+    type: "rv",
+    price: 4400000,
+    priceText: "$4,400,000",
+    oldPrice: null,
+    lots: 121,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: false,
+    nearInterstate: false,
+    nearTourism: true,
+    occupancy: null,
+    isNew: false,
+    isRepeat: true,
+    priceChanged: false,
+    isAuction: false,
+    score: 3,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida",
+    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
+    snippet: "121-lot KOA franchise location in Florida. Full-service resort amenities. KOA brand recognition. Seen since March 8.",
+    tags: ["121 Lots", "KOA", "FL"]
+  },
+  {
+    id: "okeechobee-motel",
+    name: "Lake Okeechobee Motel, RV & Fish Camp",
+    location: "Lake Okeechobee, FL",
+    type: "rv",
+    price: 1399000,
+    priceText: "$1,399,000",
+    oldPrice: null,
+    lots: null,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: true,
+    nearInterstate: false,
+    nearTourism: false,
+    occupancy: null,
+    isNew: false,
+    isRepeat: true,
+    priceChanged: false,
+    isAuction: false,
+    score: 3,
+    source: "BizBuySell",
+    url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/",
+    contact: { name: "", firm: "BizBuySell", phone: "", email: "" },
+    snippet: "Price reduced – make offer. Motel + RV park + fish camp on Lake Okeechobee. Waterfront. Seen since March 8.",
+    tags: ["Waterfront", "Price Reduced", "Make Offer", "FL"]
+  },
+  {
+    id: "dew-drop-okeechobee",
+    name: "Dew Drop Inn & Okeechobee Lake RV Park",
+    location: "Okeechobee, FL 34974",
+    type: "rv",
+    price: 5900000,
+    priceText: "$5,900,000",
+    oldPrice: null,
+    lots: 123,
+    capRate: null,
+    sellerFinancing: false,
+    hasWaterfront: true,
+    nearInterstate: false,
+    nearTourism: false,
+    occupancy: null,
+    isNew: false,
+    isRepeat: true,
+    priceChanged: false,
+    isAuction: false,
+    score: 2,
+    source: "RVParkStore",
+    url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl",
+    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
+    snippet: "123 lots on Lake Okeechobee. Inn + RV park combination. Seen since March 8.",
+    tags: ["123 Lots", "Waterfront", "Inn + RV", "FL"]
+  }
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+const dismissed = new Set(JSON.parse(localStorage.getItem('dismissed') || '[]'));
+const bookmarks = new Set(JSON.parse(localStorage.getItem('bookmarks') || '[]'));
+let currentFilter = 'all';
+let searchQuery = '';
+
+function saveState() {
+  localStorage.setItem('dismissed', JSON.stringify([...dismissed]));
+  localStorage.setItem('bookmarks', JSON.stringify([...bookmarks]));
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function scoreColor(s) {
+  if (s >= 9) return '#f7c04f';
+  if (s >= 7) return '#f7934f';
+  if (s >= 5) return '#4f8ef7';
+  return '#6b7280';
+}
+
+function formatPrice(p) {
+  if (!p) return 'Call for Price';
+  if (p >= 1000000) return '$' + (p/1000000).toFixed(2).replace(/\.?0+$/, '') + 'M';
+  return '$' + p.toLocaleString();
+}
+
+function renderCard(l) {
+  const isBookmarked = bookmarks.has(l.id);
+  const cardClass = ['card', l.score >= 9 ? 'top-deal' : l.score >= 7 ? 'hot-deal' : '', dismissed.has(l.id) ? 'dismissed' : '', isBookmarked ? 'bookmarked' : ''].filter(Boolean).join(' ');
+
+  const badges = [];
+  if (l.isNew) badges.push('<span class="badge badge-new">NEW</span>');
+  if (l.priceChanged) badges.push(`<span class="badge badge-price-drop">PRICE DROP ▼</span>`);
+  if (l.isRepeat && !l.priceChanged) badges.push('<span class="badge badge-seen">SEEN BEFORE</span>');
+  if (l.isAuction) badges.push('<span class="badge badge-auction">AUCTION</span>');
+  if (l.score >= 9) badges.push('<span class="badge badge-top">⭐ TOP DEAL</span>');
+  else if (l.score >= 7) badges.push('<span class="badge badge-hot">🔥 HOT</span>');
+  if (l.sellerFinancing) badges.push('<span class="badge badge-sf">Seller Fin</span>');
+
+  const priceBlock = l.priceChanged && l.oldPrice
+    ? `<div class="price-row"><span class="price">${l.priceText}</span><span class="old-price">${formatPrice(l.oldPrice)}</span><span class="drop-pct">▼${Math.round((1-l.price/l.oldPrice)*100)}%</span></div>`
+    : `<div class="price-row"><span class="price">${l.priceText}</span></div>`;
+
+  const detailItems = [
+    l.location ? `<div class="detail">📍 <strong>${l.location}</strong></div>` : '',
+    l.lots ? `<div class="detail">📊 <strong>${l.lots} lots/sites</strong></div>` : '',
+    l.capRate ? `<div class="detail cap">📈 Cap Rate: <strong>${l.capRate}</strong></div>` : '',
+    l.occupancy ? `<div class="detail">🏠 Occupancy: <strong>${l.occupancy}</strong></div>` : '',
+    l.hasWaterfront ? `<div class="detail">💧 <strong>Waterfront</strong></div>` : '',
+    l.nearTourism ? `<div class="detail">🎯 <strong>Near Tourism</strong></div>` : '',
+    l.nearInterstate ? `<div class="detail">🛣️ <strong>Near Interstate</strong></div>` : '',
+  ].filter(Boolean).join('');
+
+  const tagHTML = l.tags.map(t => `<span class="badge badge-type">${t}</span>`).join('');
+
+  return `
+  <div class="${cardClass}" data-id="${l.id}" data-type="${l.type}" data-new="${l.isNew}" data-sf="${l.sellerFinancing}" data-score="${l.score}" data-name="${l.name.toLowerCase()} ${l.location.toLowerCase()}">
+    <div class="card-header">
+      <div class="card-title"><a href="${l.url}" target="_blank">${l.name}</a></div>
+      <div class="card-actions">
+        <button class="btn-icon ${isBookmarked ? 'bookmarked' : ''}" title="${isBookmarked ? 'Remove bookmark' : 'Bookmark'}" onclick="toggleBookmark('${l.id}', this)">⭐</button>
+        <button class="btn-icon" title="Dismiss" onclick="dismiss('${l.id}', this)">✕</button>
+      </div>
     </div>
+    <div class="badges">${badges.join('')}</div>
+    ${priceBlock}
+    <div class="details">${detailItems}</div>
+    <div class="score-row">
+      <span class="score-label">Score</span>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:${l.score*10}%;background:${scoreColor(l.score)}"></div></div>
+      <span class="score-num" style="color:${scoreColor(l.score)}">${l.score}/10</span>
+    </div>
+    <div class="badges">${tagHTML}</div>
+    <div class="snippet">${l.snippet}</div>
+    ${l.contact && l.contact.name ? `<div class="contact">👤 <strong>${l.contact.name}</strong>${l.contact.firm ? ' · ' + l.contact.firm : ''}${l.contact.phone ? ' · ' + l.contact.phone : ''}</div>` : ''}
+    <div class="card-footer">
+      <span class="source-tag">${l.source}</span>
+      <a class="view-btn" href="${l.url}" target="_blank">View Listing →</a>
+    </div>
+  </div>`;
+}
 
-    <!-- Embedded Data Indexes -->
-    <script>
-        // SEEN_INDEX_START
-        var SEEN_INDEX = [
-            {url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", name: "South Georgia Storage - AUCTION", price: 650000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida", name: "Confidential Florida KOA", price: 4400000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
-            {url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/", name: "Lake Okeechobee Motel, RV & Fish Camp", price: 1399000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", name: "Lender-Owned Self-Storage Facility", price: 395000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/search/rv-parks/usa/for-sale/search/mobile-home-parks/al/for-sale/", name: "Red Oak MHP - 80 Units", price: 2000000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl", name: "Dew Drop Inn & Okeechobee Lake RV Park", price: 5900000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/", name: "Hospitality / RV Park - 13.85% CAP", price: 1300000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
-            {url: "https://www.rvparkstore.com/rv-parks/6945208-seven-sisters-campground-rv-park-for-sale-in-homosassa-fl", name: "Seven Sisters Campground & RV Park", price: 2850000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", name: "Self Storage & Airbnb Combo", price: 450000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Gated Boutique Coastal Florida RV Park", price: 1599000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl", name: "Mary's Fish Camp", price: 3999995, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.bizbuysell.com/business-asset/multi-family-trailer-park-for-sale/2363104/", name: "Multi-Family Trailer Park", price: 425000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.loopnet.com/search/mobile-home-parks/al/for-sale/", name: "45-Lot MHP - City Water & Sewer", price: 699000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.bizbuysell.com/business-opportunity/south-florida-glamping-camping-5-5-acres-agritourism-orchard-farm/2414816/", name: "Mobile Home Park with Real Estate", price: 950000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.bizbuysell.com/business-opportunity/waxahatchee-marina-and-grill-rv-dry-storage-and-airb-and-b-s/2427814/", name: "South Florida Glamping & Agritourism Farm", price: 975000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.bizbuysell.com/business-opportunity/south-florida-glamping-camping-5-5-acres-agritourism-orchard-farm/2414816/", name: "Waxahatchee Marina, Grill, RV & Dry Storage", price: 1250000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Beloved Family Destination in Florida Natural Forest", price: 2999000, firstSeen: "2026-03-09", lastSeen: "2026-03-09"},
-            {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Established Campground on Scenic Riverfront", price: 699000, firstSeen: "2026-03-08", lastSeen: "2026-03-09"}
-        ];
-        // SEEN_INDEX_END
+function getFiltered() {
+  return LISTINGS.filter(l => {
+    if (dismissed.has(l.id)) return false;
+    if (currentFilter === 'hot' && l.score < 7) return false;
+    if (currentFilter === 'new' && !l.isNew) return false;
+    if (currentFilter === 'sf' && !l.sellerFinancing) return false;
+    if (currentFilter === 'rv' && l.type !== 'rv') return false;
+    if (currentFilter === 'mhp' && l.type !== 'mhp') return false;
+    if (currentFilter === 'storage' && l.type !== 'storage') return false;
+    if (currentFilter === 'marina' && l.type !== 'marina') return false;
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      const haystack = (l.name + ' ' + l.location + ' ' + l.snippet + ' ' + l.tags.join(' ')).toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
+    return true;
+  });
+}
 
-        // ARCHIVE_INDEX_START
-        var ARCHIVE_INDEX = [
-            {date: "2026-03-08", file: "deal-scout-2026-03-08.html", count: 16, isToday: false},
-            {date: "2026-03-09", file: "deal-scout.html", count: 18, isToday: true}
-        ];
-        // ARCHIVE_INDEX_END
+function renderListings() {
+  const filtered = getFiltered();
+  const grid = document.getElementById('listings-grid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div>No listings match your filter.</div></div>';
+  } else {
+    grid.innerHTML = filtered.map(renderCard).join('');
+  }
+  updateStats();
+}
 
-        // REPLIES_INDEX_START
-        var REPLIES_INDEX = [];
-        // REPLIES_INDEX_END
-    </script>
+function renderBookmarks() {
+  const bookmarked = LISTINGS.filter(l => bookmarks.has(l.id));
+  const grid = document.getElementById('bookmarks-grid');
+  if (!bookmarked.length) {
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">⭐</div><div>No bookmarks yet. Star listings to save them here.</div></div>';
+  } else {
+    grid.innerHTML = bookmarked.map(renderCard).join('');
+  }
+}
 
-    <script>
-        // Listings Data
-        const listings = [
-            {name: "South Georgia Storage - AUCTION", location: "Brunswick, GA", price: 650000, priceStr: "$650,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", score: 6, isNew: true, isRepeat: false, isAuction: true, priceReduced: false, contactName: ""},
-            {name: "Confidential Florida KOA", location: "Somewhere, FL", price: 4400000, priceStr: "$4,400,000", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7012892-confidential-flordia-koa-for-sale-in-florida", score: 6, isNew: false, isRepeat: true, isAuction: false, priceReduced: true, contactName: ""},
-            {name: "Lake Okeechobee Motel, RV & Fish Camp", location: "Moore Haven, FL", price: 1399000, priceStr: "$1,399,000", type: "RV Park", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/", score: 5, isNew: false, isRepeat: true, isAuction: false, priceReduced: true, contactName: ""},
-            {name: "Lender-Owned Self-Storage Facility", location: "Eatonton, GA", price: 395000, priceStr: "$395,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "Red Oak MHP - 80 Units", location: "Daleville, AL", price: 2000000, priceStr: "$2,000,000", type: "MHP", source: "LoopNet", url: "https://www.loopnet.com/search/mobile-home-parks/al/for-sale/", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "Dew Drop Inn & Okeechobee Lake RV Park", location: "Okeechobee, FL", price: 5900000, priceStr: "$5,900,000", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl", score: 4, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "Hospitality / RV Park - 13.85% CAP", location: "SE US", price: 1300000, priceStr: "$1,300,000", type: "RV Park", source: "LoopNet", url: "https://www.loopnet.com/search/rv-parks/usa/for-sale/", score: 3, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "Seven Sisters Campground & RV Park", location: "Homosassa, FL", price: 2850000, priceStr: "$2,850,000", type: "Campground", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/6945208-seven-sisters-campground-rv-park-for-sale-in-homosassa-fl", score: 3, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "Self Storage & Airbnb Combo", location: "Bainbridge, GA", price: 450000, priceStr: "$450,000", type: "Self-Storage", source: "LoopNet", url: "https://www.loopnet.com/search/self-storage-facilities/ga/for-sale/", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "Gated Boutique Coastal Florida RV Park", location: "Florida Panhandle, FL", price: 1599000, priceStr: "$1,599,000", type: "RV Park", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Parks & Places"},
-            {name: "Mary's Fish Camp", location: "Spring Hill, FL", price: 3999995, priceStr: "$3,999,995", type: "RV Park", source: "RVParkStore", url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl", score: 2, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "Multi-Family Trailer Park", location: "Denham Springs, LA", price: 425000, priceStr: "$425,000", type: "MHP", source: "BizBuySell", url: "https://www.bizbuysell.com/business-asset/multi-family-trailer-park-for-sale/2363104/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "45-Lot MHP - City Water & Sewer", location: "York, AL", price: 699000, priceStr: "$699,000", type: "MHP", source: "LoopNet", url: "https://www.loopnet.com/search/mobile-home-parks/al/for-sale/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Anna-Claire Rossetti Enterprises"},
-            {name: "Mobile Home Park with Real Estate", location: "Albany, GA", price: 950000, priceStr: "$950,000", type: "MHP", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/mobile-home-park-w-re/2458618/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "South Florida Glamping & Agritourism Farm", location: "Indiantown, FL", price: 975000, priceStr: "$975,000", type: "Campground", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/mobile-home-park-w-re/2458618/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "Waxahatchee Marina, Grill, RV & Dry Storage", location: "Shelby, AL", price: 1250000, priceStr: "$1,250,000", type: "Marina", source: "BizBuySell", url: "https://www.bizbuysell.com/business-opportunity/waxahatchee-marina-and-grill-rv-dry-storage-and-airb-and-b-s/2427814/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: ""},
-            {name: "Beloved Family Destination in Florida Natural Forest", location: "Central Florida, FL", price: 2999000, priceStr: "$2,999,000", type: "Campground", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 1, isNew: true, isRepeat: false, isAuction: false, priceReduced: false, contactName: "Parks & Places"},
-            {name: "Established Campground on Scenic Riverfront", location: "Florida", price: 699000, priceStr: "$699,000", type: "Campground", source: "Parks & Places", url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", score: 1, isNew: false, isRepeat: true, isAuction: false, priceReduced: false, contactName: ""}
-        ];
+function renderArchive() {
+  const list = document.getElementById('archive-list');
+  list.innerHTML = ARCHIVE_INDEX.slice().reverse().map(a => `
+    <div class="archive-item ${a.isToday ? 'today' : ''}">
+      <div>
+        <div class="archive-date">${a.isToday ? '📅 Today — ' : ''}${a.date}</div>
+        <div class="archive-meta">${a.count} listings</div>
+      </div>
+      <a class="archive-link" href="${a.file}">${a.isToday ? 'Current' : 'View →'}</a>
+    </div>`).join('');
+}
 
-        // Initialize
-        function init() {
-            updateStats();
-            renderListings();
-            renderArchive();
-            setupEventListeners();
-            loadLocalStorageState();
-        }
+function updateStats() {
+  const allActive = LISTINGS.filter(l => !dismissed.has(l.id));
+  document.getElementById('stat-new').textContent = allActive.filter(l => l.isNew).length;
+  document.getElementById('stat-hot').textContent = allActive.filter(l => l.score >= 7).length;
+  document.getElementById('stat-total').textContent = allActive.length;
+  document.getElementById('stat-seen').textContent = allActive.filter(l => l.isRepeat).length;
+}
 
-        // Update stats
-        function updateStats() {
-            const newCount = listings.filter(l => l.isNew).length;
-            const hotCount = listings.filter(l => l.score >= 7).length;
+// ─── ACTIONS ────────────────────────────────────────────────────────────────
+function dismiss(id, btn) {
+  dismissed.add(id);
+  saveState();
+  const card = btn.closest('.card');
+  card.style.opacity = '0';
+  card.style.transform = 'scale(0.95)';
+  card.style.transition = 'all 0.2s';
+  setTimeout(() => renderListings(), 220);
+}
 
-            document.getElementById('statTotal').textContent = listings.length;
-            document.getElementById('statNew').textContent = newCount;
-            document.getElementById('statHot').textContent = hotCount;
-            document.getElementById('statDate').textContent = 'Monday, Mar 9';
-        }
+function toggleBookmark(id, btn) {
+  if (bookmarks.has(id)) {
+    bookmarks.delete(id);
+    btn.classList.remove('bookmarked');
+  } else {
+    bookmarks.add(id);
+    btn.classList.add('bookmarked');
+  }
+  saveState();
+  renderBookmarks();
+}
 
-        // Get filtered listings
-        function getFilteredListings() {
-            const typeFilter = document.querySelector('.filter-btn[data-filter="type"].active')?.dataset.value || '';
-            const stateFilter = document.getElementById('stateFilter').value;
-            const searchTerm = document.getElementById('searchFilter').value.toLowerCase();
-            const scoreMin = parseInt(document.getElementById('scoreMin').value) || 0;
-            const scoreMax = parseInt(document.getElementById('scoreMax').value) || 10;
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderListings();
+}
 
-            return listings.filter(listing => {
-                const matchesType = !typeFilter || listing.type === typeFilter;
-                const matchesState = !stateFilter || listing.location.includes(stateFilter);
-                const matchesSearch = !searchTerm ||
-                    listing.name.toLowerCase().includes(searchTerm) ||
-                    listing.location.toLowerCase().includes(searchTerm);
-                const matchesScore = listing.score >= scoreMin && listing.score <= scoreMax;
+function searchListings(q) {
+  searchQuery = q;
+  renderListings();
+}
 
-                return matchesType && matchesState && matchesSearch && matchesScore;
-            });
-        }
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'bookmarks') renderBookmarks();
+  if (tab === 'archive') renderArchive();
+}
 
-        // Sort listings
-        function sortListings(listings) {
-            return listings.sort((a, b) => {
-                if (a.score !== b.score) {
-                    return b.score - a.score;
-                }
-                if (a.isNew !== b.isNew) {
-                    return a.isNew ? -1 : 1;
-                }
-                return 0;
-            });
-        }
-
-        // Render listings
-        function renderListings() {
-            const grid = document.getElementById('listingsGrid');
-            const emptyState = document.getElementById('emptyState');
-            const filtered = getFilteredListings();
-            const sorted = sortListings(filtered);
-
-            if (sorted.length === 0) {
-                grid.innerHTML = '';
-                emptyState.style.display = 'block';
-                return;
-            }
-
-            emptyState.style.display = 'none';
-            grid.innerHTML = sorted.map((listing, index) => {
-                const state = listing.location.match(/\b([A-Z]{2})\b/)?.[1] || '';
-                const scorePercent = (listing.score / 10) * 100;
-                const scoreClass = listing.score >= 7 ? 'score-7-10' : listing.score >= 4 ? 'score-4-6' : 'score-1-3';
-
-                let badges = '';
-                if (listing.isNew) badges += '<span class="badge badge-new">NEW</span>';
-                if (listing.isRepeat) badges += '<span class="badge badge-seen">SEEN BEFORE</span>';
-                if (listing.isAuction) badges += '<span class="badge badge-auction">AUCTION</span>';
-                if (listing.score >= 7) badges += '<span class="badge badge-hot">HOT DEAL</span>';
-                if (listing.priceReduced) badges += '<span class="badge badge-price-drop">PRICE DROP</span>';
-
-                return `
-                    <div class="listing-card" data-index="${index}">
-                        <div class="card-actions">
-                            <button class="action-btn bookmark-btn" title="Bookmark">⭐</button>
-                            <button class="action-btn dismiss-btn" title="Dismiss">✕</button>
-                        </div>
-
-                        <div class="badges">${badges}</div>
-
-                        <h3 class="property-name">${listing.name}</h3>
-                        <p class="property-location">${listing.location}</p>
-
-                        <p class="property-price">${listing.priceStr}</p>
-                        <span class="property-type">${listing.type}</span>
-
-                        <div class="score-section score-${scoreClass}">
-                            <div class="score-label">
-                                <span class="score-label-text">Deal Score</span>
-                                <span class="score-number">${listing.score}/10</span>
-                            </div>
-                            <div class="score-bar">
-                                <div class="score-fill" style="width: ${scorePercent}%"></div>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <div class="source-info">
-                                <div class="source-label">Source</div>
-                                <div class="source-name">${listing.source}</div>
-                            </div>
-                            ${listing.contactName ? `
-                                <div class="contact-info">
-                                    <div class="contact-label">Contact</div>
-                                    <div class="contact-value">${listing.contactName}</div>
-                                </div>
-                            ` : ''}
-                            <a href="${listing.url}" target="_blank" class="open-link">View Listing →</a>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            setupCardListeners();
-        }
-
-        // Setup card listeners
-        function setupCardListeners() {
-            document.querySelectorAll('.dismiss-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const card = btn.closest('.listing-card');
-                    const index = card.dataset.index;
-                    card.classList.add('dismissed');
-                    localStorage.setItem(`dismissed-${index}`, 'true');
-                });
-            });
-
-            document.querySelectorAll('.bookmark-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    btn.classList.toggle('bookmarked');
-                    const card = btn.closest('.listing-card');
-                    const index = card.dataset.index;
-                    const isBookmarked = btn.classList.contains('bookmarked');
-                    if (isBookmarked) {
-                        localStorage.setItem(`bookmarked-${index}`, 'true');
-                    } else {
-                        localStorage.removeItem(`bookmarked-${index}`);
-                    }
-                });
-            });
-        }
-
-        // Load localStorage state
-        function loadLocalStorageState() {
-            document.querySelectorAll('.listing-card').forEach(card => {
-                const index = card.dataset.index;
-                if (localStorage.getItem(`dismissed-${index}`) === 'true') {
-                    card.classList.add('dismissed');
-                }
-                const bookmarkBtn = card.querySelector('.bookmark-btn');
-                if (localStorage.getItem(`bookmarked-${index}`) === 'true') {
-                    bookmarkBtn.classList.add('bookmarked');
-                }
-            });
-        }
-
-        // Render archive
-        function renderArchive() {
-            const archiveList = document.getElementById('archiveList');
-            archiveList.innerHTML = ARCHIVE_INDEX.map(item => `
-                <div class="archive-item">
-                    <div class="archive-info">
-                        <div class="archive-date">${item.date}</div>
-                        <div class="archive-meta">${item.count} listings ${item.isToday ? '(Today)' : ''}</div>
-                    </div>
-                    <a href="${item.file}" class="archive-link">View →</a>
-                </div>
-            `).join('');
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Tab switching
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tab = btn.dataset.tab;
-                    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    btn.classList.add('active');
-                    document.getElementById(tab).classList.add('active');
-                });
-            });
-
-            // Type filter
-            document.querySelectorAll('.filter-btn[data-filter="type"]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-btn[data-filter="type"]').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    renderListings();
-                });
-            });
-
-            // State filter
-            document.getElementById('stateFilter').addEventListener('change', renderListings);
-
-            // Search filter
-            document.getElementById('searchFilter').addEventListener('input', renderListings);
-
-            // Score filters
-            document.getElementById('scoreMin').addEventListener('input', renderListings);
-            document.getElementById('scoreMax').addEventListener('input', renderListings);
-        }
-
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+// ─── INIT ───────────────────────────────────────────────────────────────────
+renderListings();
+renderArchive();
+</script>
 </body>
 </html>
