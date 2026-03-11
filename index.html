@@ -974,23 +974,23 @@ renderArchive();
 <script>
 // AI Analysis injection - runs after cards are rendered
 (function(){
-  var aiData = [
-    {v:"Strong Buy - Waterfront Value Play",h:["10.2% cap rate","Seller financing","Waterfront premium","55 lots expandable"],t:"Cumberland Plateau waterfront at $23.6K/lot with seller financing is rare. The 10.2% cap rate and existing amenities suggest stable cash flow with upside from lot additions."},
-    {v:"Top Pick - Scale at Discount",h:["350 lots","$4,714/lot","Owner financing","Waterfront + Interstate"],t:"350-lot Florida waterfront park at under $5K/lot with owner financing is exceptional. Interstate proximity drives transient revenue. Infrastructure already in place."},
-    {v:"Solid Cash Flow - Award Winner",h:["97 lots","Blue Ridge tourism","Price reduced","Award-winning"],t:"Award-winning Blue Ridge Mountains resort with price reduction signals motivated seller. Tourism corridor location drives premium rates and year-round demand."},
-    {v:"Hot Market - Coastal Florida",h:["Gated community","Boutique coastal","HOT deal","Florida market"],t:"Gated boutique coastal Florida park in a premium market. Limited supply of gated RV communities commands higher lot rents and attracts quality long-term tenants."},
-    {v:"Scenic Value - Riverfront Asset",h:["Riverfront","Established ops","Boat access","Natural setting"],t:"Established riverfront campground with boat access. Waterfront properties with established operations provide stable income and significant barriers to competition."},
-    {v:"Nature Premium - Forest Setting",h:["Natural forest","Family destination","FL location","Beloved brand"],t:"Beloved family destination in a natural forest setting. Strong brand recognition and repeat customer base create predictable revenue streams."},
-    {v:"Infrastructure Play - Lake Access",h:["Lake Okeechobee","FL location","Established","Infrastructure"],t:"Lake Okeechobee area property with established infrastructure. Florida RV park demand continues to grow as snowbird and full-time RV populations expand."},
-    {v:"Growth Market - Southern Gem",h:["Southern location","Growth corridor","Value pricing","Upside potential"],t:"Value-priced property in a growth corridor. Below replacement cost with operational upside through professional management and rate optimization."},
-    {v:"Turnaround Opportunity",h:["Discounted price","Fixable issues","Strong fundamentals","Market tailwinds"],t:"Priced at discount due to operational issues that are correctable with professional management. Market fundamentals are strong."},
-    {v:"Yield Play - Financing Available",h:["Seller financing","Positive leverage","Cash-on-cash upside","Low entry cost"],t:"Seller financing terms allow positive leverage from day one. The spread between cap rate and financing rate creates immediate cash-on-cash returns."},
-    {v:"Premium Asset - Location Play",h:["Prime location","High barriers","Premium rates","Strong demand"],t:"Irreplaceable location commands premium rates and attracts quality tenants. High barriers to entry protect against new competition."},
-    {v:"Cash Cow - Proven Operations",h:["Established revenue","Repeat customers","Low vacancy","Minimal capex"],t:"Proven revenue stream with loyal customer base. Minimal capital expenditure needed means most of NOI flows to returns."},
-    {v:"Development Potential",h:["Expansion ready","Favorable zoning","Growing market","Phased approach"],t:"Existing operations cover debt service while excess capacity allows phased expansion. Local market shows strong demand with limited new supply."},
-    {v:"Stable Income - Low Risk",h:["Long-term tenants","Conservative","Recession-tested","Steady NOI"],t:"Conservative underwriting with long-term tenant base provides downside protection. Property has performed through economic cycles."},
-    {v:"Opportunistic - New Listing",h:["New to market","Competitive pricing","Time-sensitive","Act fast"],t:"Recently listed with competitive pricing relative to comps. Market velocity suggests this won't last long. Quick due diligence recommended."}
-  ];
+  var aiData = {
+    "breckenridge-tn": {v:"Strong Buy - Waterfront Value Play",h:["10.2% cap rate","Seller financing","Waterfront premium","55 lots expandable"],t:"Cumberland Plateau waterfront at $23.6K/lot with seller financing is rare. The 10.2% cap rate and existing amenities suggest stable cash flow with upside from lot additions."},
+    "owner-fin-fl-350": {v:"Top Pick - Scale at Discount",h:["350 lots","$4,714/lot","Owner financing","Waterfront + Interstate"],t:"350-lot Florida waterfront park at under $5K/lot with owner financing is exceptional. Interstate proximity drives transient revenue. Infrastructure already in place."},
+    "blue-ridge-nc": {v:"Solid Cash Flow - Award Winner",h:["97 lots","Blue Ridge tourism","Price reduced","Award-winning"],t:"Award-winning Blue Ridge Mountains resort with price reduction signals motivated seller. Tourism corridor location drives premium rates and year-round demand."},
+    "coastal-fl-boutique": {v:"Hot Market - Coastal Florida",h:["Gated community","Boutique coastal","HOT deal","Florida market"],t:"Gated boutique RV park in coastal Florida is a rare find. Small lot count means manageable operations with premium per-site revenue in a high-demand market."},
+    "riverfront-fl-699": {v:"Scenic Value - Riverfront Asset",h:["Riverfront","Established ops","Boat access","Natural setting"],t:"Scenic riverfront access with established operations and boat ramps commands a premium. Low lot count keeps management simple while the natural setting drives repeat visits."},
+    "fl-natural-forest": {v:"Nature Premium - Forest Setting",h:["Natural forest","Family destination","FL location","Beloved brand"],t:"Beloved family destination in a natural forest setting. Strong brand recognition and repeat customer base create predictable revenue streams."},
+    "ga-high-occupancy": {v:"Strong Performer - High Occupancy",h:["42 lots","85%+ occupancy","Georgia tourism","Year-round demand"],t:"85%+ year-round occupancy on 42 lots in Georgia is exceptional. Near tourism corridor ensures steady demand. Call-for-price suggests negotiation opportunity."},
+    "nc-confidential-82": {v:"Scale Play - NC Corridor",h:["82 lots","North Carolina","Confidential listing","Growth market"],t:"82-lot NC park at confidential pricing signals off-market opportunity. North Carolina's growing RV tourism market provides strong tailwinds for revenue growth."},
+    "bayou-black-la": {v:"Bayou Value - Louisiana Niche",h:["37 lots","Gibson, LA","Bayou access","Niche market"],t:"Bayou Black location offers a unique niche in Louisiana's sportsman and RV market. 37 lots keep operations manageable. Call-for-price suggests motivated seller."},
+    "marys-fish-camp-fl": {v:"Waterfront Value - Fish Camp",h:["23 lots","$174K/lot","Waterfront","Spring Hill, FL"],t:"Waterfront fish camp in Spring Hill, FL at $3.99M for 23 lots. Waterfront access drives premium rates. Fish camp branding targets loyal sportsman demographic."},
+    "pine-haven-ga": {v:"Small Park - Value Entry",h:["21 lots","Baxley, GA","Low entry point","Upside potential"],t:"21-lot campground in Baxley, GA offers low-barrier entry into RV park ownership. Call-for-price suggests room to negotiate. Upside through rate optimization and amenity upgrades."},
+    "cave-spring-ga": {v:"Micro Park - Rome, GA",h:["14 lots","Rome, GA","Small-scale ops","Low overhead"],t:"14-lot RV park near Rome, GA is a micro-park opportunity. Small scale means low overhead and simple management. Cave Spring area draws weekend visitors from Atlanta metro."},
+    "fl-koa-conf": {v:"Branded Opportunity - KOA",h:["121 lots","$36K/lot","KOA franchise","Florida market"],t:"Confidential KOA-branded Florida park at $4.4M for 121 lots ($36K/lot). KOA brand recognition drives bookings and commands premium rates. Built-in reservation system reduces marketing costs."},
+    "okeechobee-motel": {v:"Mixed-Use - Lake Access",h:["Lake Okeechobee","$1.39M","Waterfront","Motel + RV + Fish Camp"],t:"Lake Okeechobee waterfront at $1.39M offers mixed-use motel, RV, and fish camp revenue streams. Waterfront lake access is the key asset. Multiple income sources diversify risk."},
+    "dew-drop-okeechobee": {v:"Lake Scale - 123 Lots",h:["123 lots","$48K/lot","Okeechobee, FL","Waterfront"],t:"123-lot waterfront park in Okeechobee at $5.9M ($48K/lot). Lake access and lot count provide scale economics. Established operations with room for rate optimization."}
+  };
 
   function injectPanels(){
     var cards = document.querySelectorAll('.card');
@@ -999,7 +999,7 @@ renderArchive();
     
     cards.forEach(function(card, i){
       if(card.querySelector('.ai-summary-toggle')) return;
-      var ai = aiData[i] || aiData[aiData.length - 1];
+      var ai = aiData[card.dataset.id]; if(!ai) return;
       var footer = card.querySelector('.card-footer');
       if(!footer) return;
 
