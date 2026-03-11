@@ -761,6 +761,7 @@ function renderListings() {
     grid.innerHTML = filtered.map(renderCard).join('');
   }
   updateStats();
+  setTimeout(function(){if(typeof window.injectPanels==='function')window.injectPanels();},50);
 }
 
 function renderBookmarks() {
@@ -994,10 +995,10 @@ renderArchive();
   function injectPanels(){
     var cards = document.querySelectorAll('.card');
     if(cards.length === 0){setTimeout(injectPanels, 200); return;}
-    // Check if already injected
-    if(document.querySelector('.ai-summary-toggle')) return;
+    // Panels re-injected after every render
     
     cards.forEach(function(card, i){
+      if(card.querySelector('.ai-summary-toggle')) return;
       var ai = aiData[i] || aiData[aiData.length - 1];
       var footer = card.querySelector('.card-footer');
       if(!footer) return;
@@ -1025,6 +1026,8 @@ renderArchive();
       }
     });
   }
+
+  window.injectPanels = injectPanels;
 
   // Toggle handler
   document.addEventListener('click', function(e){
