@@ -1079,7 +1079,7 @@ function loadDay(date) {
     currentViewDate = null;
     renderListings();
     injectPanels();
-    switchTab('deals');
+    switchTab('today', document.querySelector('.tabs').children[0]);
     var eb = document.getElementById('history-banner');
     if (eb) eb.remove();
     return;
@@ -1105,7 +1105,7 @@ function displayHistoricalData(date, listings) {
   if (!grid) return;
   grid.innerHTML = listings.map(function(l) { return renderCard(l); }).join('');
   injectPanels();
-  switchTab('deals');
+  switchTab('today', document.querySelector('.tabs').children[0]);
   updateHistoryBanner(date);
   updateStats(listings);
 }
@@ -1123,7 +1123,7 @@ function updateHistoryBanner(date) {
 }
 
 function showArchiveMessage(date, count) {
-  switchTab('deals');
+  switchTab('today', document.querySelector('.tabs').children[0]);
   var grid = document.getElementById('listings-grid');
   if (grid) {
     grid.innerHTML = '<div class="empty"><div class="empty-icon">Archive</div><h3>' + date + '</h3><p>' + count + ' listings were found on this date.</p><p style="color:var(--muted);margin-top:8px;">Historical data will be available once the daily scraper archives them.</p><button onclick="loadDay(ARCHIVE_INDEX.find(function(a){return a.isToday}).date)" style="margin-top:12px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;">Back to Today</button></div>';
