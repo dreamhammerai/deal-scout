@@ -11,6 +11,28 @@
     --green: #4fcf8e; --red: #f74f4f; --gray: #6b7280;
     --text: #e2e8f0; --muted: #94a3b8; --border: #2d3148;
   }
+  [data-theme="light"] {
+    --bg: #f0f2f5; --card: #ffffff; --card2: #f8f9fb;
+    --accent: #2563eb; --hot: #ea580c; --top: #d97706;
+    --green: #16a34a; --red: #dc2626; --gray: #6b7280;
+    --text: #1e293b; --muted: #64748b; --border: #e2e8f0;
+  }
+  [data-theme="light"] .chip { background: #e2e8f0; color: #334155; }
+  [data-theme="light"] .chip.active { background: var(--accent); color: #fff; }
+  [data-theme="light"] .tag { background: #e2e8f0; color: #334155; border-color: #cbd5e1; }
+  [data-theme="light"] .tag.hot { background: #fff7ed; color: #ea580c; border-color: #fed7aa; }
+  [data-theme="light"] .tag.new { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+  [data-theme="light"] .tag.reduced { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+  [data-theme="light"] input { background: #fff; color: #1e293b; border-color: #cbd5e1; }
+  [data-theme="light"] .score-bar-bg { background: #e2e8f0; }
+  .theme-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 100;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 12px; cursor: pointer;
+    color: var(--text); font-size: 16px; display: flex; align-items: center; gap: 6px;
+    transition: all 0.2s;
+  }
+  .theme-toggle:hover { background: var(--card2); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; }
   a { color: var(--accent); text-decoration: none; }
@@ -151,6 +173,8 @@
 </style>
 </head>
 <body>
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"><span id="theme-icon">☀️</span></button>
+
 
 <div class="header">
   <div>
@@ -220,9 +244,10 @@ const SEEN_INDEX = [
 
 // ARCHIVE_INDEX_START
 const ARCHIVE_INDEX = [
-  {date: "2026-03-08", file: "deal-scout-2026-03-08.html", count: 16, isToday: false},
-  {date: "2026-03-09", file: "deal-scout-2026-03-09.html", count: 18, isToday: false},
-  {date: "2026-03-15", file: "deal-scout.html", count: 16, isToday: true}
+  {date: "2026-03-08", count: 16, isToday: false},
+  {date: "2026-03-09", count: 18, isToday: false},
+  {date: "2026-03-10", count: 15, isToday: false},
+  {date: "2026-03-15", count: 16, isToday: true}
 ];
 // ARCHIVE_INDEX_END
 
@@ -812,16 +837,16 @@ function renderBookmarks() {
 }
 
 function renderArchive() {
-  const list = document.getElementById('archive-list');
-  list.innerHTML = ARCHIVE_INDEX.slice().reverse().map(a => `
-    <div class="archive-item ${a.isToday ? 'today' : ''}">
-      <div>
-        <div class="archive-date">${a.isToday ? '📅 Today — ' : ''}${a.date}</div>
-        <div class="archive-meta">${a.count} listings</div>
-      </div>
-      <a class="archive-link" href="${a.file}">${a.isToday ? 'Current' : 'View →'}</a>
-    </div>`).join('');
-}
+    const list = document.getElementById('archive-list');
+    list.innerHTML = ARCHIVE_INDEX.slice().reverse().map(a => `
+      <div class="archive-item ${a.isToday ? 'today' : ''}">
+        <div>
+          <div class="archive-date">${a.isToday ? '📅 Today — ' : '📁 '}${a.date}</div>
+          <div class="archive-meta">${a.count} listings</div>
+        </div>
+        <span class="archive-link">${a.isToday ? 'Current' : 'Archived'}</span>
+      </div>`).join('');
+  }
 
 function updateStats() {
   const allActive = LISTINGS.filter(l => !dismissed.has(l.id));
@@ -1091,6 +1116,24 @@ renderArchive();
   var grid = document.querySelector('.grid, .cards-container, [class*=grid]');
   if(grid) obs.observe(grid, {childList: true});
 })();
+
+  // ─── THEME TOGGLE ──────
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.getElementById('theme-icon').textContent = next === 'dark' ? '☀️' : '🌙';
+    try { localStorage.setItem('deal-scout-theme', next); } catch(e) {}
+  }
+  // Restore saved theme
+  try {
+    const saved = localStorage.getItem('deal-scout-theme');
+    if (saved === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.getElementById('theme-icon').textContent = '🌙';
+    }
+  } catch(e) {}
 </script>
 </body>
 </html>
