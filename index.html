@@ -174,7 +174,32 @@
 .btn-inquiry{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;background:linear-gradient(135deg,#065f46,#047857);color:#6ee7b7;border-radius:6px;font-size:.78rem;font-weight:600;text-decoration:none;border:1px solid rgba(110,231,183,.25);transition:all .3s ease;margin-left:8px}
 .btn-inquiry:hover{border-color:rgba(110,231,183,.5);box-shadow:0 0 12px rgba(16,185,129,.2);color:#a7f3d0}
 
-</style>
+
+  .ai-summary-toggle { display: flex; align-items: center; gap: 6px; padding: 8px 12px; margin: 0 -12px; cursor: pointer; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); transition: all 0.2s; }
+  .ai-summary-toggle:hover { color: var(--text); background: var(--card2); }
+  .ai-summary-toggle.open { color: var(--accent); }
+  .ai-summary-toggle .chevron { margin-left: auto; transition: transform 0.2s; font-size: 10px; }
+  .ai-summary-toggle.open .chevron { transform: rotate(180deg); }
+  .ai-icon { font-size: 14px; }
+  .ai-verdict-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .ai-verdict-badge.hot { background: rgba(239,68,68,0.15); color: var(--hot); }
+  .ai-verdict-badge.warm { background: rgba(234,179,8,0.15); color: var(--top); }
+  .ai-verdict-badge.cool { background: rgba(100,116,139,0.15); color: var(--gray); }
+  .ai-summary { padding: 10px 0; border-top: 1px solid var(--border); }
+  .ai-highlights { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .ai-tag { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: rgba(59,130,246,0.1); color: var(--accent); }
+  .ai-thesis { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  [data-theme="light"] .ai-tag { background: #eff6ff; color: #2563eb; }
+  [data-theme="light"] .ai-verdict-badge.hot { background: #fef2f2; color: #dc2626; }
+  [data-theme="light"] .ai-verdict-badge.warm { background: #fffbeb; color: #d97706; }
+  .history-banner { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; background: var(--accent); color: #fff; font-size: 14px; }
+  .history-banner .banner-btn { background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 4px 12px; cursor: pointer; font-size: 13px; }
+  .history-banner .banner-btn:hover { background: rgba(255,255,255,0.3); }
+  .archive-item.clickable { cursor: pointer; transition: all 0.15s; }
+  .archive-item.clickable:hover { background: var(--card2); transform: translateX(4px); }
+  .archive-stats { display: flex; gap: 16px; padding: 12px 16px; margin-bottom: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; }
+  .archive-stat { font-size: 13px; color: var(--muted); }
+  </style>
 </head>
 <body>
 <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode"><span id="theme-icon">☀️</span></button>
@@ -841,77 +866,24 @@ function renderBookmarks() {
 }
 
 function renderArchive() {
-    const list = document.getElementById('archive-list');
-    list.innerHTML = ARCHIVE_INDEX.slice().reverse().map(a => `
-      <div class="archive-item ${a.isToday ? 'today' : ''}">
-        <div>
-          <div class="archive-date">${a.isToday ? '📅 Today — ' : '📁 '}${a.date}</div>
-          <div class="archive-meta">${a.count} listings</div>
-        </div>
-        <span class="archive-link">${a.isToday ? 'Current' : 'Archived'}</span>
-      </div>`).join('');
+    var list = document.getElementById('archive-list');
+    if (!list) return;
+    var dupeInfo = '';
+    if (typeof SEEN_INDEX !== 'undefined' && Object.keys(SEEN_INDEX).length > 0) {
+      var totalSeen = Object.keys(SEEN_INDEX).length;
+      var repeatCount = LISTINGS.filter(function(l) { return l.isRepeat; }).length;
+      dupeInfo = '<div class="archive-stats"><span class="archive-stat">Total tracked: ' + totalSeen + ' unique listings</span><span class="archive-stat">Repeats today: ' + repeatCount + '</span></div>';
+    }
+    list.innerHTML = dupeInfo + ARCHIVE_INDEX.slice().reverse().map(function(a) {
+      return '<div class="archive-item ' + (a.isToday ? 'today' : '') + ' clickable" onclick="loadDay(\'' + a.date + '\')">' +
+        '<div>' +
+          '<div class="archive-date">' + (a.isToday ? 'Today - ' : '') + a.date + '</div>' +
+          '<div class="archive-meta">' + a.count + ' listings' + (HISTORY_STORE[a.date] ? ' (cached)' : '') + '</div>' +
+        '</div>' +
+        '<span class="archive-link">' + (a.isToday ? 'Current' : 'View') + '</span>' +
+      '</div>';
+    }).join('');
   }
-
-function updateStats() {
-  const allActive = LISTINGS.filter(l => !dismissed.has(l.id));
-  document.getElementById('stat-new').textContent = allActive.filter(l => l.isNew).length;
-  document.getElementById('stat-hot').textContent = allActive.filter(l => l.score >= 7).length;
-  document.getElementById('stat-total').textContent = allActive.length;
-  document.getElementById('stat-seen').textContent = allActive.filter(l => l.isRepeat).length;
-}
-
-// ─── ACTIONS ────────────────────────────────────────────────────────────────
-function dismiss(id, btn) {
-  dismissed.add(id);
-  saveState();
-  const card = btn.closest('.card');
-  card.style.opacity = '0';
-  card.style.transform = 'scale(0.95)';
-  card.style.transition = 'all 0.2s';
-  setTimeout(() => renderListings(), 220);
-}
-
-function toggleBookmark(id, btn) {
-  if (bookmarks.has(id)) {
-    bookmarks.delete(id);
-    btn.classList.remove('bookmarked');
-    btn.textContent = '☆';
-  } else {
-    bookmarks.add(id);
-    btn.classList.add('bookmarked');
-    btn.textContent = '★';
-  }
-  saveState();
-  renderBookmarks();
-}
-
-function setFilter(f, btn) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderListings();
-}
-
-function searchListings(q) {
-  searchQuery = q;
-  renderListings();
-}
-
-function switchTab(tab, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('tab-' + tab).classList.add('active');
-  if (tab === 'bookmarks') renderBookmarks();
-  if (tab === 'archive') renderArchive();
-}
-
-// ─── INIT ───────────────────────────────────────────────────────────────────
-renderListings();
-renderArchive();
-
-
-  // === Send Inquiry Workflow ===
   function sendInquiry(idx) {
     var l = LISTINGS[idx];
     if (!l) return;
@@ -1038,91 +1010,173 @@ renderArchive();
 </script>
 
 <script>
-// AI Analysis injection - runs after cards are rendered
-(function(){
-  var aiData = {
-    "breckenridge-tn": {v:"Strong Buy - Waterfront Value Play",h:["10.2% cap rate","Seller financing","Waterfront premium","55 lots expandable"],t:"Cumberland Plateau waterfront at $23.6K/lot with seller financing is rare. The 10.2% cap rate and existing amenities suggest stable cash flow with upside from lot additions."},
-    "owner-fin-fl-350": {v:"Top Pick - Scale at Discount",h:["350 lots","$4,714/lot","Owner financing","Waterfront + Interstate"],t:"350-lot Florida waterfront park at under $5K/lot with owner financing is exceptional. Interstate proximity drives transient revenue. Infrastructure already in place."},
-    "blue-ridge-nc": {v:"Solid Cash Flow - Award Winner",h:["97 lots","Blue Ridge tourism","Price reduced","Award-winning"],t:"Award-winning Blue Ridge Mountains resort with price reduction signals motivated seller. Tourism corridor location drives premium rates and year-round demand."},
-    "coastal-fl-boutique": {v:"Hot Market - Coastal Florida",h:["Gated community","Boutique coastal","HOT deal","Florida market"],t:"Gated boutique RV park in coastal Florida is a rare find. Small lot count means manageable operations with premium per-site revenue in a high-demand market."},
-    "riverfront-fl-699": {v:"Scenic Value - Riverfront Asset",h:["Riverfront","Established ops","Boat access","Natural setting"],t:"Scenic riverfront access with established operations and boat ramps commands a premium. Low lot count keeps management simple while the natural setting drives repeat visits."},
-    "fl-natural-forest": {v:"Nature Premium - Forest Setting",h:["Natural forest","Family destination","FL location","Beloved brand"],t:"Beloved family destination in a natural forest setting. Strong brand recognition and repeat customer base create predictable revenue streams."},
-    "ga-high-occupancy": {v:"Strong Performer - High Occupancy",h:["42 lots","85%+ occupancy","Georgia tourism","Year-round demand"],t:"85%+ year-round occupancy on 42 lots in Georgia is exceptional. Near tourism corridor ensures steady demand. Call-for-price suggests negotiation opportunity."},
-    "nc-confidential-82": {v:"Scale Play - NC Corridor",h:["82 lots","North Carolina","Confidential listing","Growth market"],t:"82-lot NC park at confidential pricing signals off-market opportunity. North Carolina's growing RV tourism market provides strong tailwinds for revenue growth."},
-    "bayou-black-la": {v:"Bayou Value - Louisiana Niche",h:["37 lots","Gibson, LA","Bayou access","Niche market"],t:"Bayou Black location offers a unique niche in Louisiana's sportsman and RV market. 37 lots keep operations manageable. Call-for-price suggests motivated seller."},
-    "marys-fish-camp-fl": {v:"Waterfront Value - Fish Camp",h:["23 lots","$174K/lot","Waterfront","Spring Hill, FL"],t:"Waterfront fish camp in Spring Hill, FL at $3.99M for 23 lots. Waterfront access drives premium rates. Fish camp branding targets loyal sportsman demographic."},
-    "pine-haven-ga": {v:"Small Park - Value Entry",h:["21 lots","Baxley, GA","Low entry point","Upside potential"],t:"21-lot campground in Baxley, GA offers low-barrier entry into RV park ownership. Call-for-price suggests room to negotiate. Upside through rate optimization and amenity upgrades."},
-    "cave-spring-ga": {v:"Micro Park - Rome, GA",h:["14 lots","Rome, GA","Small-scale ops","Low overhead"],t:"14-lot RV park near Rome, GA is a micro-park opportunity. Small scale means low overhead and simple management. Cave Spring area draws weekend visitors from Atlanta metro."},
-    "fl-koa-conf": {v:"Branded Opportunity - KOA",h:["121 lots","$36K/lot","KOA franchise","Florida market"],t:"Confidential KOA-branded Florida park at $4.4M for 121 lots ($36K/lot). KOA brand recognition drives bookings and commands premium rates. Built-in reservation system reduces marketing costs."},
-    "okeechobee-motel": {v:"Mixed-Use - Lake Access",h:["Lake Okeechobee","$1.39M","Waterfront","Motel + RV + Fish Camp"],t:"Lake Okeechobee waterfront at $1.39M offers mixed-use motel, RV, and fish camp revenue streams. Waterfront lake access is the key asset. Multiple income sources diversify risk."},
-    "dew-drop-okeechobee": {v:"Lake Scale - 123 Lots",h:["123 lots","$48K/lot","Okeechobee, FL","Waterfront"],t:"123-lot waterfront park in Okeechobee at $5.9M ($48K/lot). Lake access and lot count provide scale economics. Established operations with room for rate optimization."}
-  };
 
-  function injectPanels(){
-    var cards = document.querySelectorAll('.card');
-    if(cards.length === 0){setTimeout(injectPanels, 200); return;}
-    // Panels re-injected after every render
-    
-    cards.forEach(function(card, i){
-      if(card.querySelector('.ai-summary-toggle')) return;
-      var ai = aiData[card.dataset.id]; if(!ai) return;
-      var footer = card.querySelector('.card-footer');
-      if(!footer) return;
+// --- History System ---
+var HISTORY_STORE = {};
+var currentViewDate = null;
 
-      var toggle = document.createElement('div');
-      toggle.className = 'ai-summary-toggle';
-      toggle.innerHTML = '\u{1F916} AI Analysis <span class="chevron">\u25BE</span>';
-
-      var content = document.createElement('div');
-      content.className = 'ai-summary-content';
-      content.innerHTML = '<div class="ai-label">\u{1F916} AI ANALYSIS</div><strong>' + ai.v + '</strong><div class="highlight-row">' + ai.h.map(function(x){return '<span>'+x+'</span>'}).join('') + '</div><p style="margin-top:8px;margin-bottom:0">' + ai.t + '</p>';
-
-      card.insertBefore(toggle, footer);
-      card.insertBefore(content, footer);
-
-      // Add Send Inquiry button
-      var viewBtn = footer.querySelector('.view-btn');
-      if(viewBtn){
-        var inq = document.createElement('button');
-        
-        
-        inq.className = 'btn-inquiry';
-        inq.textContent = '\u{1F4E7} Send Inquiry'; inq.onclick=function(){sendInquiry(i);};
-        viewBtn.after(inq);
-      }
-    });
+function loadDay(date) {
+  var archiveEntry = ARCHIVE_INDEX.find(function(a) { return a.date === date; });
+  if (!archiveEntry) return;
+  if (archiveEntry.isToday) {
+    currentViewDate = null;
+    renderListings();
+    injectPanels();
+    switchTab('deals');
+    updateHistoryBanner(null);
+    return;
   }
-
-  window.injectPanels = injectPanels;
-
-  // Toggle handler
-  document.addEventListener('click', function(e){
-    var toggle = e.target.closest('.ai-summary-toggle');
-    if(!toggle) return;
-    toggle.classList.toggle('open');
-    var c = toggle.nextElementSibling;
-    if(c && c.classList.contains('ai-summary-content')) c.classList.toggle('show');
+  if (HISTORY_STORE[date]) {
+    displayHistoricalData(date, HISTORY_STORE[date]);
+    return;
+  }
+  var dataUrl = './data/' + date + '.json';
+  fetch(dataUrl).then(function(r) {
+    if (!r.ok) throw new Error('Not found');
+    return r.json();
+  }).then(function(data) {
+    HISTORY_STORE[date] = data;
+    displayHistoricalData(date, data);
+  }).catch(function(e) {
+    showArchiveMessage(date, archiveEntry.count);
   });
+}
 
-  // Run after existing JS renders cards
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', function(){setTimeout(injectPanels, 100);});
+function displayHistoricalData(date, listings) {
+  currentViewDate = date;
+  var grid = document.getElementById('listings-grid');
+  if (!grid) return;
+  grid.innerHTML = listings.map(function(l) { return renderCard(l); }).join('');
+  injectPanels();
+  switchTab('deals');
+  updateHistoryBanner(date);
+  updateStats(listings);
+}
+
+function updateHistoryBanner(date) {
+  var existing = document.getElementById('history-banner');
+  if (existing) existing.remove();
+  if (!date) return;
+  var banner = document.createElement('div');
+  banner.id = 'history-banner';
+  banner.className = 'history-banner';
+  banner.innerHTML = 'Viewing archive: <strong>' + date + '</strong> <button onclick="loadDay(ARCHIVE_INDEX.find(function(a){return a.isToday}).date)" class="banner-btn">Back to Today</button>';
+  var tabs = document.querySelector('.tabs');
+  if (tabs) tabs.parentNode.insertBefore(banner, tabs.nextSibling);
+}
+
+function showArchiveMessage(date, count) {
+  switchTab('deals');
+  var grid = document.getElementById('listings-grid');
+  if (grid) {
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">Archive</div><h3>' + date + '</h3><p>' + count + ' listings were found on this date.</p><p style="color:var(--muted);margin-top:8px;">Historical data will be available once the daily scraper archives them.</p><button onclick="loadDay(ARCHIVE_INDEX.find(function(a){return a.isToday}).date)" style="margin-top:12px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;">Back to Today</button></div>';
+  }
+  updateHistoryBanner(date);
+}
+
+// --- AI Analysis Generator ---
+function generateAIAnalysis(listing) {
+  var highlights = [];
+  var verdict = '';
+  var thesis = '';
+  var score = listing.score || 0;
+  var hasFinancing = listing.sellerFinancing;
+  var hasWaterfront = listing.hasWaterfront;
+  var nearI = listing.nearInterstate;
+  var nearTour = listing.nearTourism;
+  var lots = listing.lots || 0;
+  var cap = listing.capRate ? parseFloat(listing.capRate) : 0;
+  var price = listing.price || 0;
+  var ppl = (price > 0 && lots > 0) ? Math.round(price / lots) : 0;
+  var isReduced = listing.priceChanged;
+  var dom = listing.dom || 0;
+
+  if (cap >= 8) highlights.push(cap.toFixed(1) + '% cap rate');
+  if (hasFinancing) highlights.push('Seller financing available');
+  if (hasWaterfront) highlights.push('Waterfront property');
+  if (nearI) highlights.push('Interstate access');
+  if (nearTour) highlights.push('Tourism corridor');
+  if (lots >= 50) highlights.push(lots + ' lots/sites');
+  if (ppl > 0 && ppl < 10000) highlights.push('$' + ppl.toLocaleString() + '/lot');
+  if (isReduced) highlights.push('Price reduced');
+  if (dom > 180) highlights.push(dom + ' DOM - motivated seller');
+
+  if (score >= 7) {
+    verdict = 'Strong Buy';
+    if (hasFinancing) verdict += ' - Financing';
+    else if (hasWaterfront) verdict += ' - Premium Location';
+    else if (cap >= 9) verdict += ' - High Yield';
+  } else if (score >= 5) {
+    verdict = 'Buy';
+    if (isReduced) verdict += ' - Price Reduced';
+    else if (lots >= 50) verdict += ' - Scale Play';
+  } else if (score >= 3) {
+    verdict = 'Watch';
+    if (isReduced) verdict += ' - Dropping';
+    else if (dom > 180) verdict += ' - Negotiate';
   } else {
-    setTimeout(injectPanels, 100);
+    verdict = 'Pass';
+    if (price === 0) verdict += ' - No Data';
   }
 
-  // Also re-inject after any filtering (MutationObserver)
-  var obs = new MutationObserver(function(){
-    if(!document.querySelector('.ai-summary-toggle')){
-      setTimeout(injectPanels, 50);
-    }
-  });
-  var grid = document.querySelector('.grid, .cards-container, [class*=grid]');
-  if(grid) obs.observe(grid, {childList: true});
-})();
+  var types = {rv:'RV park',mhp:'mobile home park',storage:'self-storage',marina:'marina',camp:'campground'};
+  var tn = types[listing.type] || 'property';
+  var loc = listing.location || 'Unknown';
 
-  // ─── THEME TOGGLE ──────
-  function toggleTheme() {
+  if (score >= 7) {
+    thesis = loc + ' ' + tn + (ppl > 0 ? ' at $' + ppl.toLocaleString() + '/lot' : '') + ' scores well across multiple signals. ';
+    if (hasFinancing) thesis += 'Seller financing reduces entry barrier. ';
+    if (hasWaterfront) thesis += 'Waterfront premium supports appreciation. ';
+    if (nearTour) thesis += 'Tourism proximity drives revenue upside. ';
+    thesis += 'Worth pursuing quickly.';
+  } else if (score >= 4) {
+    thesis = 'This ' + tn + ' in ' + loc + ' has moderate potential. ';
+    if (highlights.length > 0) thesis += 'Key factors: ' + highlights.slice(0,3).join(', ') + '. ';
+    thesis += 'Recommend deeper due diligence.';
+  } else if (score >= 2) {
+    thesis = loc + ' ' + tn + ' shows limited signals. ';
+    if (price === 0) thesis += 'Request financials to evaluate. ';
+    else thesis += 'Below-market returns without value-add strategy. ';
+    thesis += 'Monitor for price changes.';
+  } else {
+    thesis = 'Insufficient signals for this ' + tn + ' in ' + loc + '. Missing key data points for underwriting.';
+  }
+
+  return { verdict: verdict, highlights: highlights.length > 0 ? highlights : ['Limited data'], thesis: thesis, score: score };
+}
+
+function injectPanels() {
+  var cards = document.querySelectorAll('.card');
+  var dataSource = currentViewDate && HISTORY_STORE[currentViewDate] ? HISTORY_STORE[currentViewDate] : LISTINGS;
+  cards.forEach(function(card) {
+    if (card.querySelector('.ai-summary-toggle')) return;
+    var cid = card.dataset.id;
+    var listing = dataSource.find(function(l) { return l.id === cid; });
+    if (!listing) return;
+    var ai = generateAIAnalysis(listing);
+    var footer = card.querySelector('.card-footer');
+    if (!footer) return;
+    var toggle = document.createElement('div');
+    toggle.className = 'ai-summary-toggle';
+    toggle.innerHTML = '<span class="ai-icon">AI</span> Analysis <span class="ai-verdict-badge ' + (ai.score >= 7 ? 'hot' : ai.score >= 4 ? 'warm' : 'cool') + '">' + ai.verdict + '</span> <span class="chevron">v</span>';
+    var content = document.createElement('div');
+    content.className = 'ai-summary';
+    content.style.display = 'none';
+    content.innerHTML = '<div class="ai-highlights">' + ai.highlights.map(function(h) { return '<span class="ai-tag">' + h + '</span>'; }).join('') + '</div><div class="ai-thesis">' + ai.thesis + '</div>';
+    toggle.addEventListener('click', function() {
+      var open = content.style.display !== 'none';
+      content.style.display = open ? 'none' : 'block';
+      toggle.classList.toggle('open', !open);
+    });
+    footer.parentNode.insertBefore(toggle, footer);
+    footer.parentNode.insertBefore(content, footer);
+  });
+}
+
+// Init: inject AI panels on page load
+setTimeout(injectPanels, 100);
+
+function toggleTheme() {
     const html = document.documentElement;
     const current = html.getAttribute('data-theme') || 'dark';
     const next = current === 'dark' ? 'light' : 'dark';
