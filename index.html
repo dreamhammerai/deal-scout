@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deal Scout â Sunday, March 15</title>
+<title>Deal Scout — Sunday, March 15</title>
 <style>
   :root {
     --bg: #0f1117; --card: #1a1d2e; --card2: #1e2135;
@@ -154,34 +154,34 @@
 
 <div class="header">
   <div>
-    <h1>ðï¸ Deal <span>Scout</span></h1>
-    <div class="header-meta">Sunday, March 15, 2026 Â· SE US: AL, MS, LA, GA, TN, FL, NC, VA</div>
+    <h1>🏕️ Deal <span>Scout</span></h1>
+    <div class="header-meta">Sunday, March 15, 2026 · SE US: AL, MS, LA, GA, TN, FL, NC, VA</div>
   </div>
   <div class="stats-bar">
-    <div class="stat"><div class="stat-val new" id="stat-new">â</div><div class="stat-label">New Today</div></div>
-    <div class="stat"><div class="stat-val hot" id="stat-hot">â</div><div class="stat-label">Hot (7+)</div></div>
-    <div class="stat"><div class="stat-val" id="stat-total">â</div><div class="stat-label">Total</div></div>
-    <div class="stat"><div class="stat-val" id="stat-seen">â</div><div class="stat-label">Seen Before</div></div>
+    <div class="stat"><div class="stat-val new" id="stat-new">—</div><div class="stat-label">New Today</div></div>
+    <div class="stat"><div class="stat-val hot" id="stat-hot">—</div><div class="stat-label">Hot (7+)</div></div>
+    <div class="stat"><div class="stat-val" id="stat-total">—</div><div class="stat-label">Total</div></div>
+    <div class="stat"><div class="stat-val" id="stat-seen">—</div><div class="stat-label">Seen Before</div></div>
   </div>
 </div>
 
 <div class="tabs">
   <div class="tab active" onclick="switchTab('today', this)">Today's Deals</div>
-  <div class="tab" onclick="switchTab('bookmarks', this)">â­ Bookmarks</div>
+  <div class="tab" onclick="switchTab('bookmarks', this)">⭐ Bookmarks</div>
   <div class="tab" onclick="switchTab('archive', this)">Archive</div>
 </div>
 
 <div id="tab-today" class="tab-content active">
   <div class="filter-bar">
     <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-    <button class="filter-btn hot-filter" onclick="setFilter('hot', this)">ð¥ Hot (7+)</button>
-    <button class="filter-btn" onclick="setFilter('new', this)">ð New</button>
-    <button class="filter-btn" onclick="setFilter('sf', this)">ð° Seller Fin</button>
-    <button class="filter-btn" onclick="setFilter('rv', this)">ðï¸ RV/Camp</button>
-    <button class="filter-btn" onclick="setFilter('mhp', this)">ð  MHP</button>
-    <button class="filter-btn" onclick="setFilter('storage', this)">ð¦ Storage</button>
-    <button class="filter-btn" onclick="setFilter('marina', this)">â Marina</button>
-    <input class="search-box" type="text" placeholder="Search listingsâ¦" oninput="searchListings(this.value)">
+    <button class="filter-btn hot-filter" onclick="setFilter('hot', this)">🔥 Hot (7+)</button>
+    <button class="filter-btn" onclick="setFilter('new', this)">🆕 New</button>
+    <button class="filter-btn" onclick="setFilter('sf', this)">💰 Seller Fin</button>
+    <button class="filter-btn" onclick="setFilter('rv', this)">🏕️ RV/Camp</button>
+    <button class="filter-btn" onclick="setFilter('mhp', this)">🏠 MHP</button>
+    <button class="filter-btn" onclick="setFilter('storage', this)">📦 Storage</button>
+    <button class="filter-btn" onclick="setFilter('marina', this)">⚓ Marina</button>
+    <input class="search-box" type="text" placeholder="Search listings…" oninput="searchListings(this.value)">
   </div>
   <div class="listings" id="listings-grid"></div>
 </div>
@@ -195,7 +195,7 @@
 </div>
 
 <script>
-// âââ DATA ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── DATA ────────────────────────────────────────────────────────────────────
 
 // SEEN_INDEX_START
 const SEEN_INDEX = [
@@ -203,18 +203,18 @@ const SEEN_INDEX = [
   {url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/", name: "Lake Okeechobee Motel, RV & Fish Camp", price: 1399000, firstSeen: "2026-03-08", lastSeen: "2026-03-15"},
   {url: "https://www.rvparkstore.com/rv-parks/7009854-the-dew-drop-inn-okeechobee-lake-rv-park-for-sale-in-okeechobee-fl", name: "Dew Drop Inn & Okeechobee Lake RV Park", price: 5900000, firstSeen: "2026-03-08", lastSeen: "2026-03-15"},
   {url: "https://www.rvparkstore.com/rv-parks/6940133-breckenridge-lake-rv-campground-for-sale-in-crossville-tn", name: "Breckenridge Lake RV Campground", price: 1300000, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/7011275-owner-financing-rv-park-with-infrastucture-in-place-for-sale-in-florida", name: "Owner Financing! FL RV Park â 350 Lots", price: 1650000, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/6994837-own-a-best-of-the-best-award-winning-resort-in-the-blue-ridge-mountains-for-sale-in-north-carolina", name: "Award-Winning Blue Ridge Mountains Resort â NC", price: 2800000, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/6963713-established-campground-on-a-scenic-riverfront-with-private-boat-ramp-for-sale-in-florida", name: "Established Campground â Scenic Riverfront + Boat Ramp", price: 699000, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.rvparkstore.com/rv-parks/7011275-owner-financing-rv-park-with-infrastucture-in-place-for-sale-in-florida", name: "Owner Financing! FL RV Park – 350 Lots", price: 1650000, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.rvparkstore.com/rv-parks/6994837-own-a-best-of-the-best-award-winning-resort-in-the-blue-ridge-mountains-for-sale-in-north-carolina", name: "Award-Winning Blue Ridge Mountains Resort – NC", price: 2800000, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.rvparkstore.com/rv-parks/6963713-established-campground-on-a-scenic-riverfront-with-private-boat-ramp-for-sale-in-florida", name: "Established Campground – Scenic Riverfront + Boat Ramp", price: 699000, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
   {url: "https://www.rvparkstore.com/rv-parks/7005788-mary-s-fish-camp-for-sale-in-spring-hill-fl", name: "Mary's Fish Camp", price: 3999995, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/6945178-recent-infrastructure-upgrades-and-high-year-round-occupancy-in-georgia-for-sale-in-georgia", name: "High Year-Round Occupancy RV Park â Georgia", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/7000857-pine-haven-camp-ground-for-sale-in-baxley-ga", name: "Pine Haven Camp Ground â Baxley, GA", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/7012868-confidential-north-carolina-rv-park-for-sale-in-north-carolina", name: "Confidential NC RV Park â 82 Lots", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/6930997-bayou-black-rv-park-now-for-sale-for-sale-in-gibson-la", name: "Bayou Black RV Park â Gibson, LA", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Gated Boutique Coastal FL Park â Near White Sand Beaches", price: 1599000, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/6875094-rv-park-in-cave-spring-for-sale-in-rome-ga", name: "RV Park in Cave Spring â Rome, GA", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/3353134-six-oaks-rv-park-for-sale-in-mooresburg-tn", name: "Six Oaks RV Park â Mooresburg, TN", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
-  {url: "https://www.rvparkstore.com/rv-parks/7007161-85-acre-resort-with-lazy-river-extensive-water-park-for-sale-for-sale-in-louisiana", name: "85-Acre Resort with Lazy River & Water Park â LA", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"}
+  {url: "https://www.rvparkstore.com/rv-parks/6945178-recent-infrastructure-upgrades-and-high-year-round-occupancy-in-georgia-for-sale-in-georgia", name: "High Year-Round Occupancy RV Park – Georgia", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.rvparkstore.com/rv-parks/7000857-pine-haven-camp-ground-for-sale-in-baxley-ga", name: "Pine Haven Camp Ground – Baxley, GA", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.rvparkstore.com/rv-parks/7012868-confidential-north-carolina-rv-park-for-sale-in-north-carolina", name: "Confidential NC RV Park – 82 Lots", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.rvparkstore.com/rv-parks/6930997-bayou-black-rv-park-now-for-sale-for-sale-in-gibson-la", name: "Bayou Black RV Park – Gibson, LA", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.parksandplaces.com/south-east-campgrounds-for-sale/", name: "Gated Boutique Coastal FL Park – Near White Sand Beaches", price: 1599000, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.rvparkstore.com/rv-parks/6875094-rv-park-in-cave-spring-for-sale-in-rome-ga", name: "RV Park in Cave Spring – Rome, GA", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.rvparkstore.com/rv-parks/3353134-six-oaks-rv-park-for-sale-in-mooresburg-tn", name: "Six Oaks RV Park – Mooresburg, TN", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"},
+  {url: "https://www.rvparkstore.com/rv-parks/7007161-85-acre-resort-with-lazy-river-extensive-water-park-for-sale-for-sale-in-louisiana", name: "85-Acre Resort with Lazy River & Water Park – LA", price: null, firstSeen: "2026-03-15", lastSeen: "2026-03-15"}
 ];
 // SEEN_INDEX_END
 
@@ -238,445 +238,9 @@ const YESTERDAY_URLS = new Set([
   "https://www.loopnet.com/search/rv-parks/usa/for-sale/"
 ]);
 
-const LISTINGS = [
-  // -- TOP DEALS (Score 7+) --
-  {
-    id: "52-unit-hotel--rv-park-turnkey-fl",
-    name: "52 Unit Hotel- RV Park TURNKEY",
-    location: "Fellsmere, FL",
-    type: "rv",
-    price: 0,
-    priceText: "Unpriced",
-    oldPrice: null,
-    lots: 52,
-    capRate: null,
-    dom: 550,
-    sellerFinancing: true,
-    hasWaterfront: false,
-    nearInterstate: true,
-    nearTourism: true,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 7,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/1665619/florida-52-unit-rv-park-turnkey-for-sale",
-    contact: { name: "Kayla Campbell", firm: "Crexi", phone: "904-708-4221", email: "" },
-    snippet: "Brand new 52-unit RV park, turnkey. Owner will consider financing with strong down payment. Expansion-ready with minimal added cost. Direct I-95 access + regional attractions. CBRE appraisal available. High-traffic location in Florida.",
-    tags: ["Seller Fin", "Near I-", "Near Tourism", "52 Lots", "Turnkey"]
-  },
+undefined
 
-  // -- ALL OTHER DEALS --
-  {
-    id: "lochloosa-harbor-rv-resort-fl",
-    name: "Lochloosa Harbor RV Resort",
-    location: "Hawthorne, FL",
-    type: "rv",
-    price: 0,
-    priceText: "Unpriced",
-    oldPrice: null,
-    lots: 38,
-    capRate: null,
-    dom: 59,
-    sellerFinancing: false,
-    hasWaterfront: true,
-    nearInterstate: true,
-    nearTourism: true,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 4,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/2320863/florida-lochloosa-harbor-fish-camp-rv-park",
-    contact: { name: "Mort Fetterolf", firm: "Crexi", phone: "", email: "" },
-    snippet: "Lakefront RV resort and fish camp at 15008 US-301. 38 RV pads and 24 on-site storage units. Waterfront property with boat ramp access. Listed by ComReal.",
-    tags: ["Waterfront", "Near I-", "Near Tourism", "38 Lots"]
-  },
-  {
-    id: "zephyrhills-mobile-home-park-fl",
-    name: "Zephyrhills Mobile Home Park",
-    location: "Zephyrhills, FL",
-    type: "mhp",
-    price: 1300000,
-    priceText: "$1.3M",
-    oldPrice: null,
-    lots: null,
-    capRate: "10.0%",
-    dom: 104,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 3,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/2287390/florida-zephyrhills-mobile-home-park",
-    contact: { name: "", firm: "Crexi", phone: "", email: "" },
-    snippet: "Mobile Home Park at 4233 Gall Blvd. Cap Rate ~10%, NOI $130,000. 104 days on market, updated 10 days ago. Strong cash flow MHP in growing Zephyrhills market.",
-    tags: ["10.0% CAP"]
-  },
-  {
-    id: "202-acre-lakefront---673-space-fl",
-    name: "202 Acre Lakefront - 673 Space RV Park Development",
-    location: "Hawthorne, FL",
-    type: "rv",
-    price: 0,
-    priceText: "Unpriced",
-    oldPrice: null,
-    lots: 673,
-    capRate: null,
-    dom: 177,
-    sellerFinancing: false,
-    hasWaterfront: true,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 3,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/2183150/florida-202-acre-lakefront-property---673-space-rv-park-development",
-    contact: { name: "Benny Spensieri", firm: "Crexi", phone: "", email: "" },
-    snippet: "Massive development opportunity - 202 acres lakefront with approvals for 673 RV spaces. At 7707 Holden Park Rd. Listed by CRES Corp International.",
-    tags: ["Waterfront", "673 Lots"]
-  },
-  {
-    id: "lake-okeechobee-motel,-rv-and--fl",
-    name: "Lake Okeechobee Motel, RV and Fish Camp",
-    location: "Moore Haven, FL",
-    type: "rv",
-    price: 1399000,
-    priceText: "$1.4M",
-    oldPrice: null,
-    lots: null,
-    capRate: null,
-    dom: null,
-    sellerFinancing: false,
-    hasWaterfront: true,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: true,
-    isAuction: false,
-    score: 3,
-    source: "BizBuySell",
-    url: "https://www.bizbuysell.com/business-opportunity/price-reduced-make-offer-lake-okeechobee-motel-rv-and-fish-camp/2378192/",
-    contact: { name: "", firm: "BizBuySell", phone: "", email: "" },
-    snippet: "PRICE REDUCED. Diversified waterfront hospitality business. Direct access to Lake Okeechobee through rim canal with on-site boat ramp. Motel and fish camp with RV sites. Cash flow $206,150. Established 1973. Real estate included.",
-    tags: ["Price Reduced", "Waterfront"]
-  },
-  {
-    id: "seven-sisters-campground-and-r-fl",
-    name: "Seven Sisters Campground & RV Park",
-    location: "Homosassa, FL",
-    type: "rv",
-    price: 2850000,
-    priceText: "$2.9M",
-    oldPrice: null,
-    lots: 25,
-    capRate: null,
-    dom: null,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: true,
-    isAuction: false,
-    score: 3,
-    source: "RVParkStore",
-    url: "https://www.rvparkstore.com/rv-parks/6945208-seven-sisters-campground-rv-park-for-sale-in-homosassa-fl",
-    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
-    snippet: "Price Reduced! Campground & RV park at 8544 West Miss Maggie Drive, Homosassa, FL 34448. 25 lots.",
-    tags: ["Price Reduced", "25 Lots"]
-  },
-  {
-    id: "gainesville-rv-and-storage-par-fl",
-    name: "Gainesville RV & Storage Park",
-    location: "Waldo, FL",
-    type: "rv",
-    price: 5990000,
-    priceText: "$6.0M",
-    oldPrice: null,
-    lots: null,
-    capRate: null,
-    dom: 208,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: true,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 2,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/2144031/florida-gainesville-rv-storage-park",
-    contact: { name: "Michael Nissley", firm: "Crexi", phone: "", email: "" },
-    snippet: "Significant Value-Add Opportunity in Central Florida RV & Storage Park. Located at 17500 US-301. Amenities including swimming pool, sports courts, and playground.",
-    tags: ["Near I-", "Value-Add"]
-  },
-  {
-    id: "sweetwater-campground-fl",
-    name: "Sweetwater Campground",
-    location: "Ft White, FL",
-    type: "rv",
-    price: 399000,
-    priceText: "$399,000",
-    oldPrice: null,
-    lots: 14,
-    capRate: null,
-    dom: null,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: true,
-    nearTourism: true,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 2,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/2339041/florida-sweetwater-campground",
-    contact: { name: "", firm: "Crexi", phone: "", email: "" },
-    snippet: "Fully entitled development opportunity - 14 unit campground near Ichetucknee Springs at 9429 SW US Highway 27.",
-    tags: ["Near I-", "Near Tourism"]
-  },
-  {
-    id: "great-potential-rv-park---okee-fl",
-    name: "Great Potential RV Park - Okeechobee",
-    location: "Okeechobee, FL",
-    type: "rv",
-    price: 5600000,
-    priceText: "$5.6M",
-    oldPrice: null,
-    lots: 97,
-    capRate: null,
-    dom: null,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 2,
-    source: "RVParkStore",
-    url: "https://www.rvparkstore.com/rv-parks/69659-great-potential-cant-be-duplicated-at-the-asking-price-for-sale-in-okeechobee-fl",
-    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
-    snippet: "Great potential, can't be duplicated at the asking price. 97 lots in Okeechobee, FL 34974.",
-    tags: ["97 Lots"]
-  },
-  {
-    id: "53-space-rv-park---florida-fl",
-    name: "53 Space RV Park - Florida",
-    location: "Somewhere in Florida",
-    type: "rv",
-    price: 2999000,
-    priceText: "$3.0M",
-    oldPrice: null,
-    lots: 53,
-    capRate: null,
-    dom: null,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 2,
-    source: "RVParkStore",
-    url: "https://www.rvparkstore.com/rv-parks/6935346-53-space-rv-park-for-sale-in-florida",
-    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
-    snippet: "53-space RV park for sale in Florida. Featured listing.",
-    tags: ["53 Lots"]
-  },
-  {
-    id: "okeechobee-lake-rv-park-fl",
-    name: "Okeechobee Lake RV Park",
-    location: "Okeechobee, FL",
-    type: "rv",
-    price: 3200000,
-    priceText: "$3.2M",
-    oldPrice: null,
-    lots: null,
-    capRate: null,
-    dom: 53,
-    sellerFinancing: false,
-    hasWaterfront: true,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 1,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/2326256/florida-okeechobee-lake-rv-park",
-    contact: { name: "Peter Dacko", firm: "Crexi", phone: "", email: "" },
-    snippet: "RV Park near Lake Okeechobee. Listed by Media Realty. Recently listed with 53 days on market, updated 36 days ago.",
-    tags: ["Waterfront"]
-  },
-  {
-    id: "lakeside-rv-park-fl",
-    name: "Lakeside RV Park",
-    location: "Okeechobee, FL",
-    type: "rv",
-    price: 3150000,
-    priceText: "$3.1M",
-    oldPrice: null,
-    lots: null,
-    capRate: null,
-    dom: 151,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: true,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 1,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/2213272/florida-lakeside-rv-park",
-    contact: { name: "Peter Dacko", firm: "Crexi", phone: "", email: "" },
-    snippet: "RV Park at 4074 US-441, Okeechobee. Listed by Media Realty. 151 days on market, updated 72 days ago.",
-    tags: ["Near I-"]
-  },
-  {
-    id: "quiet-mh-rv-park-in-belleview-fl",
-    name: "Quiet MH/RV Park in Belleview",
-    location: "Belleview, FL",
-    type: "rv",
-    price: 850000,
-    priceText: "$850,000",
-    oldPrice: null,
-    lots: null,
-    capRate: null,
-    dom: null,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: true,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 1,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/2312477/florida-quiet-mhrv-park-in-belleview-florida",
-    contact: { name: "", firm: "Crexi", phone: "", email: "" },
-    snippet: "Quiet Mobile Home / RV Park at 10366 US-441, Belleview. Listed by Van Akin.",
-    tags: ["Near I-"]
-  },
-  {
-    id: "mango-key-mhp-fl",
-    name: "Mango Key MHP",
-    location: "Edgewater, FL",
-    type: "mhp",
-    price: 2495000,
-    priceText: "$2.5M",
-    oldPrice: null,
-    lots: null,
-    capRate: null,
-    dom: 143,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 0,
-    source: "Crexi",
-    url: "https://www.crexi.com/properties/2228390/florida-mango-key-mhp",
-    contact: { name: "Matthew White", firm: "Crexi", phone: "", email: "" },
-    snippet: "Mobile Home Park at 210 Mango Tree Dr, Edgewater. 55+ community. Listed by Sloane Realty. 143 days on market, updated 31 days ago.",
-    tags: []
-  },
-  {
-    id: "rv-and-boat-rental-business----tn",
-    name: "RV and Boat Rental Business - Southeast TN",
-    location: "Southeast Tennessee",
-    type: "rv",
-    price: 295000,
-    priceText: "$295,000",
-    oldPrice: null,
-    lots: null,
-    capRate: null,
-    dom: null,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 0,
-    source: "BizBuySell",
-    url: "https://www.bizbuysell.com/business-opportunity/rv-and-boat-rental-business-in-southeast-tn-with-real-estate/2481069/",
-    contact: { name: "", firm: "BizBuySell", phone: "", email: "" },
-    snippet: "Unique RV and boat rental business with partner buyout opportunity. EBITDA $181,000. Real estate valued at $1,100,000 (not included in asking price). Established 2023. Room to expand on well-manicured property with many unique amenities.",
-    tags: []
-  },
-  {
-    id: "182-acres-developmental-land---fl",
-    name: "182 Acres Developmental Land - Williston",
-    location: "Williston, FL",
-    type: "rv",
-    price: 7650000,
-    priceText: "$7.7M",
-    oldPrice: null,
-    lots: null,
-    capRate: null,
-    dom: null,
-    sellerFinancing: false,
-    hasWaterfront: false,
-    nearInterstate: false,
-    nearTourism: false,
-    occupancy: null,
-    isNew: true,
-    isRepeat: false,
-    priceChanged: false,
-    isAuction: false,
-    score: 0,
-    source: "RVParkStore",
-    url: "https://www.rvparkstore.com/rv-parks/6936959-182-acres-developmental-land-for-sale-in-williston-fl",
-    contact: { name: "", firm: "RVParkStore", phone: "", email: "" },
-    snippet: "182+ acres of developmental land at 21930 U.S. 27, Williston, FL 32696. Featured listing.",
-    tags: []
-  }
-];
-
-// âââ STATE ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── STATE ──────────────────────────────────────────────────────────────────
 const dismissed = new Set(JSON.parse(localStorage.getItem('dismissed') || '[]'));
 const bookmarks = new Set(JSON.parse(localStorage.getItem('bookmarks') || '[]'));
 let currentFilter = 'all';
@@ -687,7 +251,7 @@ function saveState() {
   localStorage.setItem('bookmarks', JSON.stringify([...bookmarks]));
 }
 
-// âââ RENDER ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── RENDER ──────────────────────────────────────────────────────────────────
 function scoreColor(s) {
   if (s >= 9) return '#f7c04f';
   if (s >= 7) return '#f7934f';
@@ -717,25 +281,25 @@ function renderCard(l) {
 
   const badges = [];
   if (l.isNew) badges.push('<span class="badge badge-new">NEW</span>');
-  if (l.priceChanged) badges.push(`<span class="badge badge-price-drop">PRICE DROP â¼</span>`);
+  if (l.priceChanged) badges.push(`<span class="badge badge-price-drop">PRICE DROP ▼</span>`);
   if (l.isRepeat && !l.priceChanged) badges.push('<span class="badge badge-seen">SEEN BEFORE</span>');
   if (l.isAuction) badges.push('<span class="badge badge-auction">AUCTION</span>');
-  if (l.score >= 9) badges.push('<span class="badge badge-top">â­ TOP DEAL</span>');
-  else if (l.score >= 7) badges.push('<span class="badge badge-hot">ð¥ HOT</span>');
+  if (l.score >= 9) badges.push('<span class="badge badge-top">⭐ TOP DEAL</span>');
+  else if (l.score >= 7) badges.push('<span class="badge badge-hot">🔥 HOT</span>');
   if (l.sellerFinancing) badges.push('<span class="badge badge-sf">Seller Fin</span>');
 
   const priceBlock = l.priceChanged && l.oldPrice
-    ? `<div class="price-row"><span class="price">${l.priceText}</span><span class="old-price">${formatPrice(l.oldPrice)}</span><span class="drop-pct">â¼${Math.round((1-l.price/l.oldPrice)*100)}%</span></div>`
+    ? `<div class="price-row"><span class="price">${l.priceText}</span><span class="old-price">${formatPrice(l.oldPrice)}</span><span class="drop-pct">▼${Math.round((1-l.price/l.oldPrice)*100)}%</span></div>`
     : `<div class="price-row"><span class="price">${l.priceText}</span></div>`;
 
   const detailItems = [
-    l.location ? `<div class="detail">ð <strong>${l.location}</strong></div>` : '',
-    l.lots ? `<div class="detail">ð <strong>${l.lots} lots/sites</strong></div>` : '',
-    l.capRate ? `<div class="detail cap">ð Cap Rate: <strong>${l.capRate}</strong></div>` : '',
-    l.occupancy ? `<div class="detail">ð  Occupancy: <strong>${l.occupancy}</strong></div>` : '',
-    l.hasWaterfront ? `<div class="detail">ð§ <strong>Waterfront</strong></div>` : '',
-    l.nearTourism ? `<div class="detail">ð¯ <strong>Near Tourism</strong></div>` : '',
-    l.nearInterstate ? `<div class="detail">ð£ï¸ <strong>Near Interstate</strong></div>` : '',
+    l.location ? `<div class="detail">📍 <strong>${l.location}</strong></div>` : '',
+    l.lots ? `<div class="detail">📊 <strong>${l.lots} lots/sites</strong></div>` : '',
+    l.capRate ? `<div class="detail cap">📈 Cap Rate: <strong>${l.capRate}</strong></div>` : '',
+    l.occupancy ? `<div class="detail">🏠 Occupancy: <strong>${l.occupancy}</strong></div>` : '',
+    l.hasWaterfront ? `<div class="detail">💧 <strong>Waterfront</strong></div>` : '',
+    l.nearTourism ? `<div class="detail">🎯 <strong>Near Tourism</strong></div>` : '',
+    l.nearInterstate ? `<div class="detail">🛣️ <strong>Near Interstate</strong></div>` : '',
   ].filter(Boolean).join('');
 
   const tagHTML = l.tags.map(t => `<span class="badge badge-type">${t}</span>`).join('');
@@ -745,8 +309,8 @@ function renderCard(l) {
     <div class="card-header">
       <div class="card-title"><a href="${l.url}" target="_blank">${l.name}</a></div>
       <div class="card-actions">
-        <button class="btn-icon ${isBookmarked ? 'bookmarked' : ''}" title="${isBookmarked ? 'Remove bookmark' : 'Bookmark'}" onclick="toggleBookmark('${l.id}', this)">${isBookmarked ? 'â' : 'â'}</button>
-        <button class="btn-icon" title="Dismiss" onclick="dismiss('${l.id}', this)">â</button>
+        <button class="btn-icon ${isBookmarked ? 'bookmarked' : ''}" title="${isBookmarked ? 'Remove bookmark' : 'Bookmark'}" onclick="toggleBookmark('${l.id}', this)">${isBookmarked ? '★' : '☆'}</button>
+        <button class="btn-icon" title="Dismiss" onclick="dismiss('${l.id}', this)">✕</button>
       </div>
     </div>
     <div class="badges">${badges.join('')}</div>
@@ -759,12 +323,12 @@ function renderCard(l) {
     </div>
     <div class="badges">${tagHTML}</div>
     <div class="snippet">${l.snippet}</div>
-    ${l.contact && l.contact.name ? `<div class="contact">ð¤ <strong>${l.contact.name}</strong>${l.contact.firm ? ' Â· ' + l.contact.firm : ''}${l.contact.phone ? ' Â· ' + l.contact.phone : ''}</div>` : ''}
+    ${l.contact && l.contact.name ? `<div class="contact">👤 <strong>${l.contact.name}</strong>${l.contact.firm ? ' · ' + l.contact.firm : ''}${l.contact.phone ? ' · ' + l.contact.phone : ''}</div>` : ''}
     
     ${dateHtml}
     <div class="card-footer">
       <span class="source-tag">${l.source}</span>
-      <a class="view-btn" href="${l.url}" target="_blank">View Listing â</a>
+      <a class="view-btn" href="${l.url}" target="_blank">View Listing →</a>
     </div>
   </div>`;
 }
@@ -792,7 +356,7 @@ function renderListings() {
   const filtered = getFiltered();
   const grid = document.getElementById('listings-grid');
   if (!filtered.length) {
-    grid.innerHTML = '<div class="empty"><div class="empty-icon">ð</div><div>No listings match your filter.</div></div>';
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div>No listings match your filter.</div></div>';
   } else {
     grid.innerHTML = filtered.map(renderCard).join('');
   }
@@ -804,7 +368,7 @@ function renderBookmarks() {
   const bookmarked = LISTINGS.filter(l => bookmarks.has(l.id));
   const grid = document.getElementById('bookmarks-grid');
   if (!bookmarked.length) {
-    grid.innerHTML = '<div class="empty"><div class="empty-icon">â­</div><div>No bookmarks yet. Star listings to save them here.</div></div>';
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">⭐</div><div>No bookmarks yet. Star listings to save them here.</div></div>';
   } else {
     grid.innerHTML = bookmarked.map(renderCard).join('');
   }
@@ -815,10 +379,10 @@ function renderArchive() {
   list.innerHTML = ARCHIVE_INDEX.slice().reverse().map(a => `
     <div class="archive-item ${a.isToday ? 'today' : ''}">
       <div>
-        <div class="archive-date">${a.isToday ? 'ð Today â ' : ''}${a.date}</div>
+        <div class="archive-date">${a.isToday ? '📅 Today — ' : ''}${a.date}</div>
         <div class="archive-meta">${a.count} listings</div>
       </div>
-      <a class="archive-link" href="${a.file}">${a.isToday ? 'Current' : 'View â'}</a>
+      <a class="archive-link" href="${a.file}">${a.isToday ? 'Current' : 'View →'}</a>
     </div>`).join('');
 }
 
@@ -830,7 +394,7 @@ function updateStats() {
   document.getElementById('stat-seen').textContent = allActive.filter(l => l.isRepeat).length;
 }
 
-// âââ ACTIONS ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── ACTIONS ────────────────────────────────────────────────────────────────
 function dismiss(id, btn) {
   dismissed.add(id);
   saveState();
@@ -845,11 +409,11 @@ function toggleBookmark(id, btn) {
   if (bookmarks.has(id)) {
     bookmarks.delete(id);
     btn.classList.remove('bookmarked');
-    btn.textContent = 'â';
+    btn.textContent = '☆';
   } else {
     bookmarks.add(id);
     btn.classList.add('bookmarked');
-    btn.textContent = 'â';
+    btn.textContent = '★';
   }
   saveState();
   renderBookmarks();
@@ -876,7 +440,7 @@ function switchTab(tab, el) {
   if (tab === 'archive') renderArchive();
 }
 
-// âââ INIT âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── INIT ───────────────────────────────────────────────────────────────────
 renderListings();
 renderArchive();
 
@@ -910,7 +474,7 @@ renderArchive();
       toast.className = 'inquiry-toast';
       document.body.appendChild(toast);
     }
-    toast.innerHTML = 'ð§ Preparing inquiry for <strong>' + l.name + '</strong>...<br><small>AI is scraping listing for contact info</small>';
+    toast.innerHTML = '📧 Preparing inquiry for <strong>' + l.name + '</strong>...<br><small>AI is scraping listing for contact info</small>';
     toast.classList.add('show');
     
     // Signal via title change for AI agent detection
@@ -936,7 +500,7 @@ renderArchive();
         );
         var cc = encodeURIComponent('jace.investor@gmail.com');
         window.open('https://mail.google.com/mail/?view=cm&fs=1&cc=' + cc + '&su=' + subj + '&body=' + body, '_blank');
-        toast.innerHTML = 'âï¸ Gmail compose opened â add recipient email manually';
+        toast.innerHTML = '✉️ Gmail compose opened — add recipient email manually';
         setTimeout(function(){ toast.classList.remove('show'); }, 4000);
       }
     }, 10000);
@@ -973,7 +537,7 @@ renderArchive();
       toast.className = 'inquiry-toast';
       document.body.appendChild(toast);
     }
-    toast.innerHTML = 'ð§ Preparing inquiry for <strong>' + l.name + '</strong>...<br><small>AI is scraping listing for contact info</small>';
+    toast.innerHTML = '📧 Preparing inquiry for <strong>' + l.name + '</strong>...<br><small>AI is scraping listing for contact info</small>';
     toast.classList.add('show');
     
     // Signal via title change for AI agent detection
@@ -999,7 +563,7 @@ renderArchive();
         );
         var cc = encodeURIComponent('jace.investor@gmail.com');
         window.open('https://mail.google.com/mail/?view=cm&fs=1&cc=' + cc + '&su=' + subj + '&body=' + body, '_blank');
-        toast.innerHTML = 'âï¸ Gmail compose opened â add recipient email manually';
+        toast.innerHTML = '✉️ Gmail compose opened — add recipient email manually';
         setTimeout(function(){ toast.classList.remove('show'); }, 4000);
       }
     }, 10000);
