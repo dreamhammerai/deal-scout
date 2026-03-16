@@ -1,0 +1,1 @@
+# Deal Scout pipeline package
