@@ -1,0 +1,67 @@
+name: Deal Scout — Daily Pipeline
+
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+    inputs:
+      replay:
+        description: "Replay mode (skip scraping, use existing data/raw_listings.json)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      max_per_source:
+        description: "Max listings per source (default: 50)"
+        required: false
+        default: "50"
+
+permissions:
+  contents: write
+
+jobs:
+  run-pipeline:
+    name: Scrape - Score - Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run Deal Scout pipeline
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
+        run: |
+          REPLAY_FLAG=""
+          if [ "${{ github.event.inputs.replay }}" = "true" ]; then
+            REPLAY_FLAG="--replay"
+          fi
+          MAX_PER_SOURCE="${{ github.event.inputs.max_per_source }}"
+          MAX_PER_SOURCE="${MAX_PER_SOURCE:-50}"
+          python run.py $REPLAY_FLAG --max-per-source "$MAX_PER_SOURCE" --email
+      - name: Commit results back to repo
+        run: |
+          git config user.name "Deal Scout Bot"
+          git config user.email "actions@github.com"
+          git add index.html
+          git add data/seen_urls.json || true
+          git add data/raw_listings.json || true
+          if git diff --cached --quiet; then
+            echo "Nothing changed - skipping commit."
+          else
+            RUN_DATE=$(date +'%A, %B %-d, %Y')
+            git commit -m "Deal Scout update — ${RUN_DATE}"
+            git push
+          fi
