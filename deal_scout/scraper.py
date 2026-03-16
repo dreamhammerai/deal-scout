@@ -1,20 +1,20 @@
-"""
-HTTP-based scraper for Deal Scout.
+"""scraper.py — Deal Scout data acquisition layer.
 
-Replaces browser/MCP-based scraping so the pipeline can run
-headlessly in GitHub Actions (or any CI environment).
+Sources
+-------
+1. Crexi      — REST API (primary, most reliable in CI)
+2. BizBuySell — HTML scraping with session warm-up
+3. LoopNet    — HTML scraping with JSON-LD extraction
 
-Targets:
-  - RVParkStore.com
-  - ParksAndPlaces.com
-  - BizBuySell.com  (RV parks / campgrounds / MHP)
-  - Crexi.com       (self-storage, MHP)
+All results include a `state` key filtered to TARGET_STATES downstream.
 """
-import re
+from __future__ import annotations
+
 import json
-import time
 import logging
-from dataclasses import dataclass
+import random
+import re
+import time
 from typing import Optional
 
 import requests
@@ -22,15 +22,9 @@ from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/122.0.0.0 Safari/537.36"
-    ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9",
-}
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
 
 TARGET_STATES = {"AL", "MS", "LA", "GA", "TN", "FL", "NC", "VA"}
 
@@ -38,440 +32,648 @@ STATE_MAP = {
     "alabama": "AL", "mississippi": "MS", "louisiana": "LA",
     "georgia": "GA", "tennessee": "TN", "florida": "FL",
     "north carolina": "NC", "virginia": "VA",
-    # abbreviations
-    "al": "AL", "ms": "MS", "la": "LA", "ga": "GA",
-    "tn": "TN", "fl": "FL", "nc": "NC", "va": "VA",
 }
 
+_STATE_SLUG_TO_ABBR = {
+    "florida": "FL", "georgia": "GA", "tennessee": "TN",
+    "north-carolina": "NC", "virginia": "VA",
+    "alabama": "AL", "mississippi": "MS", "louisiana": "LA",
+    "fl": "FL", "ga": "GA", "tn": "TN",
+    "nc": "NC", "va": "VA", "al": "AL", "ms": "MS", "la": "LA",
+}
 
-def _get(url: str, timeout: int = 15) -> Optional[BeautifulSoup]:
-    try:
-        r = requests.get(url, headers=HEADERS, timeout=timeout)
-        r.raise_for_status()
-        return BeautifulSoup(r.text, "html.parser")
-    except Exception as e:
-        logger.warning(f"GET failed {url}: {e}")
-        return None
+_UA_POOL = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+]
+
+# ---------------------------------------------------------------------------
+# Shared HTTP helpers
+# ---------------------------------------------------------------------------
+
+def _new_session() -> requests.Session:
+    s = requests.Session()
+    s.headers.update({
+        "User-Agent": random.choice(_UA_POOL),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
+                  "image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+        "DNT": "1",
+        "Upgrade-Insecure-Requests": "1",
+        "Cache-Control": "max-age=0",
+    })
+    return s
 
 
-def _detect_state(text: str) -> str:
-    text_lower = text.lower()
-    for name, abbr in STATE_MAP.items():
-        if f", {name}" in text_lower or f" {name} " in text_lower or f", {abbr.lower()}" in text_lower:
-            return abbr
-    return ""
+def _jitter(lo: float = 1.0, hi: float = 3.0) -> None:
+    time.sleep(random.uniform(lo, hi))
 
 
 def _parse_price_text(text: str) -> int:
-    """Parse price string like '$1.85M', '$295,000', 'Call for Price' → int."""
     if not text:
         return 0
-    text = text.strip().replace(",", "").replace("$", "")
-    m = re.search(r"([\d.]+)\s*([MmKk])?", text)
+    text = text.upper().replace(",", "").strip()
+    m = re.search(r"\$?\s*([\d.]+)\s*([MK]?)", text)
     if not m:
         return 0
-    num = float(m.group(1))
-    suffix = (m.group(2) or "").upper()
+    val = float(m.group(1))
+    suffix = m.group(2)
     if suffix == "M":
-        num *= 1_000_000
+        val *= 1_000_000
     elif suffix == "K":
-        num *= 1_000
-    return int(num)
+        val *= 1_000
+    return int(val)
 
 
-# ─────────────────────────────────────────────
-# RVParkStore.com
-# ─────────────────────────────────────────────
+def _detect_state(text: str) -> str:
+    """Extract 2-letter state abbreviation from a location string."""
+    text_lower = text.lower()
+    for name, abbr in STATE_MAP.items():
+        if name in text_lower:
+            return abbr
+    # Handles "City, FL" or "City, FL 32801"
+    m = re.search(r",\s*([A-Za-z]{2})(?:\s|\d|$)", text)
+    if m:
+        candidate = m.group(1).upper()
+        if candidate in TARGET_STATES:
+            return candidate
+    return ""
 
-RVPS_SEARCH_URLS = [
-    "https://www.rvparkstore.com/rv-parks-for-sale?state=FL",
-    "https://www.rvparkstore.com/rv-parks-for-sale?state=GA",
-    "https://www.rvparkstore.com/rv-parks-for-sale?state=TN",
-    "https://www.rvparkstore.com/rv-parks-for-sale?state=NC",
-    "https://www.rvparkstore.com/rv-parks-for-sale?state=AL",
-    "https://www.rvparkstore.com/rv-parks-for-sale?state=LA",
-    "https://www.rvparkstore.com/rv-parks-for-sale?state=VA",
-]
+
+# ===========================================================================
+# Source 1: Crexi
+# ===========================================================================
+
+_CREXI_API = "https://api.crexi.com/assets"
+
+_CREXI_PROP_TYPES: dict[str, list[str]] = {
+    "rv_park":      ["RV Park / Campground", "Campground", "RV Park"],
+    "mhp":          ["Mobile Home Park"],
+    "self_storage": ["Self-Storage"],
+    "marina":       ["Marina"],
+}
+
+_CREXI_STATE_ABBRS = ["FL", "GA", "TN", "NC", "VA", "AL", "MS", "LA"]
 
 
-def scrape_rvparkstore() -> list[dict]:
-    results = []
-    seen_urls = set()
+def scrape_crexi(max_results: int = 50) -> list[dict]:
+    """Query Crexi's REST search API for each property type + state combo."""
+    results: list[dict] = []
+    seen_urls: set[str] = set()
 
-    for search_url in RVPS_SEARCH_URLS:
-        soup = _get(search_url)
-        if not soup:
-            continue
+    session = _new_session()
+    session.headers.update({
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "Origin": "https://www.crexi.com",
+        "Referer": "https://www.crexi.com/",
+        "x-crexi-client": "web",
+    })
 
-        # Listing cards: <div class="listing-card"> or <article>
-        cards = soup.select(".listing-card, .park-listing, article.listing")
-        if not cards:
-            # Fallback: grab all links that look like direct listing URLs
-            cards = []
-            for a in soup.find_all("a", href=True):
-                href = a["href"]
-                if re.search(r"/rv-parks/\d+", href):
-                    full_url = href if href.startswith("http") else f"https://www.rvparkstore.com{href}"
-                    if full_url not in seen_urls:
-                        seen_urls.add(full_url)
-                        detail = _scrape_rvparkstore_detail(full_url)
-                        if detail:
-                            results.append(detail)
-            time.sleep(1)
-            continue
+    # Warm up: get homepage cookies
+    try:
+        warm = requests.get(
+            "https://www.crexi.com/",
+            headers={"User-Agent": random.choice(_UA_POOL),
+                     "Accept": "text/html,*/*"},
+            timeout=12,
+        )
+        for k, v in warm.cookies.items():
+            session.cookies.set(k, v)
+        _jitter(1.0, 2.0)
+    except Exception:
+        pass
 
-        for card in cards:
-            link = card.find("a", href=True)
-            if not link:
+    for ptype, type_labels in _CREXI_PROP_TYPES.items():
+        if len(results) >= max_results:
+            break
+        try:
+            # Try bulk search across all target states first
+            payload = {
+                "filters": {
+                    "propertyTypes": type_labels,
+                    "states": _CREXI_STATE_ABBRS,
+                    "transactionType": "sale",
+                },
+                "sort": "newest",
+                "page": 1,
+                "pageSize": min(max_results, 50),
+            }
+            resp = session.post(_CREXI_API, json=payload, timeout=25)
+
+            if resp.status_code == 200:
+                data = resp.json()
+                assets = (
+                    data.get("assets") or data.get("data") or
+                    data.get("results") or data.get("items") or []
+                )
+                for asset in assets:
+                    item = _crexi_asset_to_dict(asset, ptype)
+                    if item and item["url"] not in seen_urls:
+                        seen_urls.add(item["url"])
+                        results.append(item)
+                logger.info("Crexi %s bulk: %d assets", ptype, len(assets))
+            else:
+                logger.warning("Crexi %s: HTTP %s", ptype, resp.status_code)
+                # Fallback: per-state queries
+                for state in _CREXI_STATE_ABBRS:
+                    try:
+                        payload["filters"]["states"] = [state]
+                        payload["pageSize"] = 10
+                        r2 = session.post(_CREXI_API, json=payload, timeout=20)
+                        if r2.status_code == 200:
+                            d2 = r2.json()
+                            for asset in (d2.get("assets") or d2.get("results") or []):
+                                item = _crexi_asset_to_dict(asset, ptype)
+                                if item and item["url"] not in seen_urls:
+                                    seen_urls.add(item["url"])
+                                    results.append(item)
+                        _jitter(0.5, 1.5)
+                    except Exception as e:
+                        logger.debug("Crexi per-state %s/%s: %s", ptype, state, e)
+
+            _jitter(1.0, 2.5)
+        except Exception as e:
+            logger.warning("Crexi %s error: %s", ptype, e)
+
+    # If API calls all failed, try scraping HTML search pages
+    if not results:
+        logger.info("Crexi API returned 0 — trying HTML fallback")
+        results.extend(_scrape_crexi_html(session, max_results, seen_urls))
+
+    logger.info("Crexi total: %d listings", len(results))
+    return results[:max_results]
+
+
+def _crexi_asset_to_dict(asset: dict, ptype: str) -> Optional[dict]:
+    asset_id = asset.get("id") or asset.get("assetId") or ""
+    name = asset.get("name") or asset.get("title") or ""
+    if not (name and asset_id):
+        return None
+
+    addr = asset.get("address") or {}
+    if isinstance(addr, dict):
+        city = addr.get("city", "")
+        state = addr.get("state", "") or addr.get("stateCode", "")
+        location = f"{city}, {state}".strip(", ")
+    else:
+        location = str(addr)
+        state = _detect_state(location)
+
+    state = (state or "").upper()[:2]
+
+    price_raw = (
+        asset.get("askingPrice") or asset.get("price") or
+        asset.get("listPrice") or 0
+    )
+    try:
+        price = int(float(str(price_raw).replace(",", "").replace("$", "")))
+    except Exception:
+        price = 0
+    if not price:
+        return None
+
+    cap_rate = asset.get("capRate") or 0
+    try:
+        cap_rate = float(str(cap_rate).replace("%", ""))
+    except Exception:
+        cap_rate = 0.0
+
+    lot_count = (
+        asset.get("totalUnits") or asset.get("units") or
+        asset.get("spaces") or asset.get("sites") or 0
+    )
+    try:
+        lot_count = int(lot_count)
+    except Exception:
+        lot_count = 0
+
+    broker = asset.get("broker") or {}
+
+    return {
+        "name": name,
+        "location": location or f"{state}, Southeast US",
+        "state": state,
+        "price": price,
+        "url": f"https://www.crexi.com/properties/{asset_id}",
+        "source": "Crexi",
+        "property_type": ptype,
+        "description": str(asset.get("description") or asset.get("summary") or "")[:400],
+        "days_on_market": int(asset.get("daysOnMarket") or 0),
+        "cap_rate": cap_rate,
+        "lot_count": lot_count,
+        "seller_financing": bool(asset.get("sellerFinancing") or False),
+        "price_reduced": bool(asset.get("priceReduced") or False),
+        "contact_name": broker.get("name", "") if isinstance(broker, dict) else "",
+        "contact_phone": broker.get("phone", "") if isinstance(broker, dict) else "",
+        "contact_email": broker.get("email", "") if isinstance(broker, dict) else "",
+    }
+
+
+def _scrape_crexi_html(
+    session: requests.Session,
+    max_results: int,
+    seen_urls: set,
+) -> list[dict]:
+    """Fallback: parse Crexi Next.js page data from __NEXT_DATA__ script tag."""
+    results: list[dict] = []
+    configs = [
+        ("rv-parks", "FL", "rv_park"),
+        ("mobile-home-parks", "FL", "mhp"),
+        ("rv-parks", "GA", "rv_park"),
+        ("rv-parks", "TN", "rv_park"),
+    ]
+    state_name_map = {
+        "FL": "florida", "GA": "georgia", "TN": "tennessee",
+        "NC": "north-carolina", "VA": "virginia",
+    }
+    for slug, state_abbr, ptype in configs:
+        state_name = state_name_map.get(state_abbr, state_abbr.lower())
+        url = f"https://www.crexi.com/properties/{slug}/{state_name}"
+        try:
+            resp = session.get(url, timeout=20)
+            if resp.status_code != 200:
+                _jitter(2, 4)
                 continue
-            href = link["href"]
-            if not re.search(r"/rv-parks/\d+", href):
-                continue
-            full_url = href if href.startswith("http") else f"https://www.rvparkstore.com{href}"
-            if full_url in seen_urls:
-                continue
-            seen_urls.add(full_url)
-
-            detail = _scrape_rvparkstore_detail(full_url)
-            if detail:
-                results.append(detail)
-            time.sleep(0.8)
-
-        time.sleep(1.5)
-
-    logger.info(f"RVParkStore: scraped {len(results)} listings")
+            soup = BeautifulSoup(resp.text, "html.parser")
+            script = soup.find("script", {"id": "__NEXT_DATA__"})
+            if script and script.string:
+                nd = json.loads(script.string)
+                pp = nd.get("props", {}).get("pageProps", {})
+                assets = pp.get("assets") or pp.get("listings") or pp.get("results") or []
+                for asset in assets:
+                    item = _crexi_asset_to_dict(asset, ptype)
+                    if item and item["url"] not in seen_urls:
+                        seen_urls.add(item["url"])
+                        results.append(item)
+            _jitter(2, 4)
+        except Exception as e:
+            logger.warning("Crexi HTML %s/%s: %s", slug, state_abbr, e)
+        if len(results) >= max_results:
+            break
     return results
 
 
-def _scrape_rvparkstore_detail(url: str) -> Optional[dict]:
-    soup = _get(url)
-    if not soup:
+# ===========================================================================
+# Source 2: BizBuySell
+# ===========================================================================
+
+_BBS_CONFIGS = [
+    # (url_slug, property_type, [state_prefixes])
+    ("rv-parks-campgrounds",    "rv_park",      ["fl", "ga", "tn", "nc", "va", "al"]),
+    ("mobile-home-parks",       "mhp",          ["fl", "ga", "tn", "nc"]),
+    ("self-storage-facilities", "self_storage",  ["fl", "ga", "tn"]),
+    ("marinas-boat-dealers",    "marina",        ["fl", "nc", "va"]),
+]
+
+
+def scrape_bizbuysell(max_results: int = 50) -> list[dict]:
+    results: list[dict] = []
+    seen_urls: set[str] = set()
+    session = _new_session()
+
+    # Warm up
+    try:
+        session.get("https://www.bizbuysell.com/", timeout=12)
+        _jitter(1.5, 2.5)
+    except Exception:
+        pass
+
+    for slug, ptype, states in _BBS_CONFIGS:
+        if len(results) >= max_results:
+            break
+        for state_slug in states:
+            url = f"https://www.bizbuysell.com/{state_slug}/businesses-for-sale/{slug}/"
+            try:
+                resp = session.get(url, timeout=20)
+                if resp.status_code != 200:
+                    logger.warning("BBS %s/%s: HTTP %s", slug, state_slug, resp.status_code)
+                    _jitter(2, 4)
+                    continue
+
+                soup = BeautifulSoup(resp.text, "html.parser")
+                items = _parse_bbs_page(soup, ptype, state_slug.upper())
+                added = 0
+                for item in items:
+                    if item["url"] not in seen_urls:
+                        seen_urls.add(item["url"])
+                        results.append(item)
+                        added += 1
+                logger.info("BBS %s/%s: +%d (total=%d)", slug, state_slug, added, len(results))
+                _jitter(2.0, 4.0)
+
+            except Exception as e:
+                logger.warning("BBS %s/%s error: %s", slug, state_slug, e)
+                _jitter(2, 4)
+
+    logger.info("BizBuySell total: %d listings", len(results))
+    return results[:max_results]
+
+
+def _parse_bbs_page(soup: BeautifulSoup, ptype: str, state: str) -> list[dict]:
+    results: list[dict] = []
+
+    # BBS uses several different card selectors across redesigns
+    cards = (
+        soup.select("div[class*='listingCard']") or
+        soup.select("article[class*='listing']") or
+        soup.select("div[class*='listing-card']") or
+        soup.select(".businessCard") or
+        soup.select("li[class*='result']")
+    )
+
+    for card in cards:
+        try:
+            title_el = (
+                card.select_one("h2, h3, h4") or
+                card.select_one("[class*='title']") or
+                card.select_one("[class*='name']")
+            )
+            if not title_el:
+                continue
+            name = title_el.get_text(strip=True)
+            if not name or len(name) < 4:
+                continue
+
+            link = (
+                card.select_one("a[href*='/business/']") or
+                card.select_one("a[href*='/businesses-for-sale/']") or
+                card.select_one("a[href]")
+            )
+            if not link:
+                continue
+            href = link.get("href", "")
+            url = href if href.startswith("http") else f"https://www.bizbuysell.com{href}"
+            # Skip search result pages — we want detail pages
+            if not re.search(r"/business/|/\d{5,}[/-]", url):
+                continue
+
+            price_el = card.select_one("[class*='price'], [class*='asking']")
+            price_text = price_el.get_text(strip=True) if price_el else ""
+            price = _parse_price_text(price_text)
+            if not price:
+                continue
+
+            loc_el = card.select_one(
+                "[class*='location'], [class*='city'], [class*='state'], "
+                "[class*='address']"
+            )
+            location = loc_el.get_text(strip=True) if loc_el else ""
+            detected_state = _detect_state(location) or state
+
+            desc_el = card.select_one("[class*='desc'], [class*='summary'], p")
+            description = desc_el.get_text(strip=True)[:300] if desc_el else ""
+
+            results.append({
+                "name": name,
+                "location": location or f"{detected_state}, Southeast US",
+                "state": detected_state,
+                "price": price,
+                "url": url,
+                "source": "BizBuySell",
+                "property_type": ptype,
+                "description": description,
+                "days_on_market": 0,
+                "cap_rate": 0.0,
+                "lot_count": 0,
+                "seller_financing": "seller financ" in description.lower(),
+                "price_reduced": False,
+                "contact_name": "",
+                "contact_phone": "",
+                "contact_email": "",
+            })
+        except Exception as e:
+            logger.debug("BBS card error: %s", e)
+
+    return results
+
+
+# ===========================================================================
+# Source 3: LoopNet
+# ===========================================================================
+
+_LOOPNET_CONFIGS = [
+    ("rv-parks-campgrounds-for-sale", "rv_park"),
+    ("mobile-home-parks-for-sale",    "mhp"),
+    ("self-storage-for-sale",         "self_storage"),
+]
+
+_LOOPNET_STATES = [
+    ("florida",        "FL"),
+    ("georgia",        "GA"),
+    ("tennessee",      "TN"),
+    ("north-carolina", "NC"),
+    ("virginia",       "VA"),
+]
+
+
+def scrape_loopnet(max_results: int = 30) -> list[dict]:
+    results: list[dict] = []
+    seen_urls: set[str] = set()
+    session = _new_session()
+    session.headers["Referer"] = "https://www.loopnet.com/"
+
+    try:
+        session.get("https://www.loopnet.com/", timeout=12)
+        _jitter(2, 3)
+    except Exception:
+        pass
+
+    for slug, ptype in _LOOPNET_CONFIGS:
+        if len(results) >= max_results:
+            break
+        for state_slug, state_abbr in _LOOPNET_STATES[:3]:
+            url = f"https://www.loopnet.com/{slug}/{state_slug}/"
+            try:
+                resp = session.get(url, timeout=20)
+                if resp.status_code != 200:
+                    logger.warning("LoopNet %s/%s: HTTP %s", slug, state_slug, resp.status_code)
+                    _jitter(3, 5)
+                    continue
+
+                soup = BeautifulSoup(resp.text, "html.parser")
+                added = 0
+
+                # 1) JSON-LD structured data (most reliable)
+                for script in soup.find_all("script", type="application/ld+json"):
+                    try:
+                        data = json.loads(script.string or "")
+                        items = data if isinstance(data, list) else [data]
+                        for item in items:
+                            if item.get("@type") in (
+                                "RealEstateListing", "Product", "ItemList"
+                            ):
+                                sub = item.get("itemListElement") or [item]
+                                for s in sub:
+                                    d = _loopnet_jsonld_to_dict(
+                                        s.get("item", s), ptype, state_abbr
+                                    )
+                                    if d and d["url"] not in seen_urls:
+                                        seen_urls.add(d["url"])
+                                        results.append(d)
+                                        added += 1
+                    except Exception:
+                        pass
+
+                # 2) HTML property cards fallback
+                cards = (
+                    soup.select("[class*='PropertyCard']") or
+                    soup.select("[class*='property-card']") or
+                    soup.select("article[class*='result']")
+                )
+                for card in cards[:20]:
+                    d = _loopnet_card_to_dict(card, ptype, state_abbr)
+                    if d and d["url"] not in seen_urls:
+                        seen_urls.add(d["url"])
+                        results.append(d)
+                        added += 1
+
+                logger.info("LoopNet %s/%s: +%d", slug, state_slug, added)
+                _jitter(3, 5)
+
+            except Exception as e:
+                logger.warning("LoopNet %s/%s error: %s", slug, state_slug, e)
+
+    logger.info("LoopNet total: %d listings", len(results))
+    return results[:max_results]
+
+
+def _loopnet_jsonld_to_dict(item: dict, ptype: str, state: str) -> Optional[dict]:
+    name = item.get("name") or ""
+    url = item.get("url") or ""
+    if not name or not url:
+        return None
+    url = url if url.startswith("http") else f"https://www.loopnet.com{url}"
+
+    offer = item.get("offers") or {}
+    price_raw = offer.get("price") if isinstance(offer, dict) else item.get("price", 0)
+    try:
+        price = int(float(str(price_raw).replace(",", "").replace("$", "")))
+    except Exception:
+        return None
+    if not price:
         return None
 
-    title_el = soup.find("h1") or soup.find("h2")
+    addr = item.get("address") or {}
+    if isinstance(addr, dict):
+        city = addr.get("addressLocality", "")
+        st = addr.get("addressRegion", state)
+        location = f"{city}, {st}".strip(", ")
+    else:
+        location = ""
+        st = state
+
+    detected_state = _detect_state(location) or st.upper()[:2]
+
+    return {
+        "name": name,
+        "location": location or f"{detected_state}, Southeast US",
+        "state": detected_state,
+        "price": price,
+        "url": url,
+        "source": "LoopNet",
+        "property_type": ptype,
+        "description": str(item.get("description") or "")[:300],
+        "days_on_market": 0,
+        "cap_rate": 0.0,
+        "lot_count": 0,
+        "seller_financing": False,
+        "price_reduced": False,
+        "contact_name": "",
+        "contact_phone": "",
+        "contact_email": "",
+    }
+
+
+def _loopnet_card_to_dict(card, ptype: str, state: str) -> Optional[dict]:
+    title_el = (
+        card.select_one("h4, h3, h2") or
+        card.select_one("[class*='title'], [class*='name']")
+    )
     name = title_el.get_text(strip=True) if title_el else ""
     if not name:
         return None
 
-    # Price
-    price_el = soup.find(class_=re.compile(r"price|asking", re.I)) or \
-               soup.find(string=re.compile(r"\$[\d,]+|\$\d+\.\d+[MmKk]"))
-    price_text = price_el.get_text(strip=True) if hasattr(price_el, "get_text") else str(price_el or "")
+    link = card.select_one("a[href]")
+    if not link:
+        return None
+    href = link.get("href", "")
+    url = href if href.startswith("http") else f"https://www.loopnet.com{href}"
+
+    price_el = card.select_one("[class*='price'], [class*='Price']")
+    price_text = price_el.get_text(strip=True) if price_el else ""
     price = _parse_price_text(price_text)
+    if not price:
+        return None
 
-    # Location / state
-    loc_el = soup.find(class_=re.compile(r"location|city|address", re.I))
+    loc_el = card.select_one(
+        "[class*='location'], [class*='address'], [class*='city']"
+    )
     location = loc_el.get_text(strip=True) if loc_el else ""
-    state = _detect_state(location or name or url)
-    if state not in TARGET_STATES:
-        return None
-
-    # Description
-    desc_el = soup.find(class_=re.compile(r"description|details|summary", re.I))
-    description = desc_el.get_text(" ", strip=True)[:600] if desc_el else ""
-
-    # Lot count
-    lot_match = re.search(r"(\d+)\s*(lots?|sites?|spaces?|pads?)", description, re.I)
-    lot_count = int(lot_match.group(1)) if lot_match else 0
-
-    # Days on market
-    dom_el = soup.find(string=re.compile(r"days? on market|DOM", re.I))
-    dom_text = dom_el.find_next(string=re.compile(r"\d+")) if dom_el else None
-    dom_match = re.search(r"(\d+)", str(dom_text or ""))
-    days_on_market = int(dom_match.group(1)) if dom_match else 0
-
-    # Property type
-    ptype = "rv_park"
-    if re.search(r"campground|camp ground", name + description, re.I):
-        ptype = "campground"
+    detected_state = _detect_state(location) or state
 
     return {
         "name": name,
-        "url": url,
-        "source": "RVParkStore",
-        "property_type": ptype,
-        "location": location,
-        "state": state,
+        "location": location or f"{detected_state}, Southeast US",
+        "state": detected_state,
         "price": price,
-        "description": description,
-        "lot_count": lot_count,
-        "days_on_market": days_on_market,
-        "cap_rate": 0.0,
-        "seller_financing": bool(re.search(r"seller financ", description, re.I)),
-        "price_reduced": bool(re.search(r"price (reduc|improv)|make offer", description, re.I)),
-        "contact_name": "",
-        "contact_email": "",
-        "contact_phone": "",
-    }
-
-
-# ─────────────────────────────────────────────
-# ParksAndPlaces.com
-# ─────────────────────────────────────────────
-
-PNPLACES_URLS = [
-    "https://www.parksandplaces.com/rv-parks-campgrounds-for-sale/",
-    "https://www.parksandplaces.com/rv-parks-campgrounds-for-sale/page/2/",
-    "https://www.parksandplaces.com/rv-parks-campgrounds-for-sale/page/3/",
-]
-
-SE_STATES_KEYWORDS = ["Florida", "Georgia", "Tennessee", "Alabama", "Louisiana",
-                       "Mississippi", "North Carolina", "Virginia", " FL", " GA",
-                       " TN", " AL", " LA", " MS", " NC", " VA"]
-
-
-def scrape_parksandplaces() -> list[dict]:
-    results = []
-    seen_urls = set()
-
-    for page_url in PNPLACES_URLS:
-        soup = _get(page_url)
-        if not soup:
-            continue
-
-        for a in soup.find_all("a", href=True):
-            href = a["href"]
-            # ParksAndPlaces listing URLs contain a long numeric suffix
-            if not re.search(r"parksandplaces\.com/[^/]+-\d{5,}/?$", href):
-                continue
-            full_url = href if href.startswith("http") else f"https://www.parksandplaces.com{href}"
-            if full_url in seen_urls:
-                continue
-
-            # Quick SE-state check from link text before full fetch
-            link_text = a.get_text(" ", strip=True)
-            parent_text = (a.parent.get_text(" ", strip=True) if a.parent else "")
-            combined = (link_text + " " + parent_text)[:400]
-            if not any(k in combined for k in SE_STATES_KEYWORDS):
-                continue
-
-            seen_urls.add(full_url)
-            detail = _scrape_pnp_detail(full_url)
-            if detail:
-                results.append(detail)
-            time.sleep(0.8)
-
-        time.sleep(1.5)
-
-    logger.info(f"ParksAndPlaces: scraped {len(results)} listings")
-    return results
-
-
-def _scrape_pnp_detail(url: str) -> Optional[dict]:
-    soup = _get(url)
-    if not soup:
-        return None
-
-    name = ""
-    h1 = soup.find("h1")
-    if h1:
-        name = h1.get_text(strip=True)
-    if not name:
-        return None
-
-    # State filter
-    full_text = soup.get_text(" ", strip=True)
-    state = _detect_state(full_text)
-    if state not in TARGET_STATES:
-        return None
-
-    # Price
-    price_el = soup.find(string=re.compile(r"\$[\d,]+|\$[\d.]+[MmKk]"))
-    price = _parse_price_text(str(price_el or ""))
-
-    # Description
-    desc_el = (soup.find(class_=re.compile(r"description|content|entry", re.I)) or
-               soup.find("article") or soup.find("main"))
-    description = desc_el.get_text(" ", strip=True)[:600] if desc_el else full_text[:400]
-
-    lot_match = re.search(r"(\d+)\s*(lots?|sites?|spaces?|pads?|units?)", description, re.I)
-    lot_count = int(lot_match.group(1)) if lot_match else 0
-
-    ptype = "rv_park"
-    name_desc = (name + " " + description).lower()
-    if re.search(r"campground|camp ground", name_desc):
-        ptype = "campground"
-    elif re.search(r"mobile home|mhp|manufactured", name_desc):
-        ptype = "mhp"
-
-    # Location string
-    loc_el = soup.find(class_=re.compile(r"location|address|city", re.I))
-    location = loc_el.get_text(strip=True) if loc_el else name
-
-    return {
-        "name": name,
         "url": url,
-        "source": "ParksAndPlaces",
+        "source": "LoopNet",
         "property_type": ptype,
-        "location": location,
-        "state": state,
-        "price": price,
-        "description": description,
-        "lot_count": lot_count,
+        "description": "",
         "days_on_market": 0,
         "cap_rate": 0.0,
-        "seller_financing": bool(re.search(r"seller financ", description, re.I)),
-        "price_reduced": bool(re.search(r"price (reduc|improv)|make offer", description, re.I)),
+        "lot_count": 0,
+        "seller_financing": False,
+        "price_reduced": False,
         "contact_name": "",
-        "contact_email": "",
         "contact_phone": "",
+        "contact_email": "",
     }
 
 
-# ─────────────────────────────────────────────
-# BizBuySell.com
-# ─────────────────────────────────────────────
-
-BBS_SEARCH_URLS = [
-    # RV Parks / Campgrounds
-    "https://www.bizbuysell.com/rv-parks-and-campgrounds-for-sale/?q=l-AL",
-    "https://www.bizbuysell.com/rv-parks-and-campgrounds-for-sale/?q=l-FL",
-    "https://www.bizbuysell.com/rv-parks-and-campgrounds-for-sale/?q=l-GA",
-    "https://www.bizbuysell.com/rv-parks-and-campgrounds-for-sale/?q=l-TN",
-    "https://www.bizbuysell.com/rv-parks-and-campgrounds-for-sale/?q=l-NC",
-    "https://www.bizbuysell.com/rv-parks-and-campgrounds-for-sale/?q=l-LA",
-    "https://www.bizbuysell.com/rv-parks-and-campgrounds-for-sale/?q=l-VA",
-    # Mobile Home Parks
-    "https://www.bizbuysell.com/mobile-home-parks-for-sale/?q=l-FL",
-    "https://www.bizbuysell.com/mobile-home-parks-for-sale/?q=l-GA",
-    "https://www.bizbuysell.com/mobile-home-parks-for-sale/?q=l-AL",
-]
-
-
-def scrape_bizbuysell() -> list[dict]:
-    results = []
-    seen_urls = set()
-
-    for search_url in BBS_SEARCH_URLS:
-        soup = _get(search_url)
-        if not soup:
-            continue
-
-        # BizBuySell listing links: /business-opportunity/.../NNNNNN/
-        for a in soup.find_all("a", href=True):
-            href = a["href"]
-            if not re.search(r"/business-(opportunity|for-sale|franchise)/[^/]+/\d+", href):
-                continue
-            full_url = href if href.startswith("http") else f"https://www.bizbuysell.com{href}"
-            if full_url in seen_urls:
-                continue
-            seen_urls.add(full_url)
-
-            detail = _scrape_bbs_detail(full_url)
-            if detail:
-                results.append(detail)
-            time.sleep(0.8)
-
-        time.sleep(1.5)
-
-    logger.info(f"BizBuySell: scraped {len(results)} listings")
-    return results
-
-
-def _scrape_bbs_detail(url: str) -> Optional[dict]:
-    soup = _get(url)
-    if not soup:
-        return None
-
-    name_el = soup.find("h1") or soup.find(class_=re.compile(r"title|heading", re.I))
-    name = name_el.get_text(strip=True) if name_el else ""
-    if not name:
-        return None
-
-    full_text = soup.get_text(" ", strip=True)
-    state = _detect_state(full_text)
-    if state not in TARGET_STATES:
-        return None
-
-    # Price — look for "Asking Price" label
-    price_el = soup.find(string=re.compile(r"asking price", re.I))
-    if price_el:
-        sibling = price_el.find_next(string=re.compile(r"\$[\d,]"))
-        price_text = str(sibling or "")
-    else:
-        price_text = ""
-    price = _parse_price_text(price_text)
-
-    # Cash flow / cap rate hint
-    cap_rate = 0.0
-    cf_el = soup.find(string=re.compile(r"cash flow", re.I))
-    if cf_el:
-        cf_text = cf_el.find_next(string=re.compile(r"\$[\d,]")) or ""
-        cf_val = _parse_price_text(str(cf_text))
-        if cf_val > 0 and price > 0:
-            cap_rate = round((cf_val / price) * 100, 1)
-
-    # Description
-    desc_el = soup.find(id="businessDescription") or \
-              soup.find(class_=re.compile(r"description|details", re.I))
-    description = desc_el.get_text(" ", strip=True)[:600] if desc_el else full_text[:400]
-
-    lot_match = re.search(r"(\d+)\s*(lots?|sites?|spaces?|pads?|units?)", description, re.I)
-    lot_count = int(lot_match.group(1)) if lot_match else 0
-
-    name_lower = name.lower()
-    ptype = "rv_park"
-    if re.search(r"campground|fish camp|camp", name_lower):
-        ptype = "campground"
-    elif re.search(r"mobile home|mhp|manufactured", name_lower + description.lower()):
-        ptype = "mhp"
-    elif re.search(r"self.?storage|storage unit", name_lower + description.lower()):
-        ptype = "self_storage"
-
-    loc_el = soup.find(class_=re.compile(r"location|address|city|state", re.I))
-    location = loc_el.get_text(strip=True) if loc_el else ""
-
-    return {
-        "name": name,
-        "url": url,
-        "source": "BizBuySell",
-        "property_type": ptype,
-        "location": location,
-        "state": state,
-        "price": price,
-        "description": description,
-        "lot_count": lot_count,
-        "days_on_market": 0,
-        "cap_rate": cap_rate,
-        "seller_financing": bool(re.search(r"seller financ", description, re.I)),
-        "price_reduced": bool(re.search(r"price (reduc|improv|drop)|make offer", description, re.I)),
-        "contact_name": "",
-        "contact_email": "",
-        "contact_phone": "",
-    }
-
-
-# ─────────────────────────────────────────────
-# Main scrape entry point
-# ─────────────────────────────────────────────
+# ===========================================================================
+# Public entry point
+# ===========================================================================
 
 def run_scraper(max_per_source: int = 30) -> list[dict]:
     """
     Run all scrapers and return a combined deduplicated list of raw listing dicts.
-    Call this from run.py to populate raw_listings.json.
+    Called from run.py to populate raw_listings.json.
     """
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
-    all_raw = []
-    seen = set()
+    all_raw: list[dict] = []
+    seen: set[str] = set()
 
     sources = [
-        ("RVParkStore", scrape_rvparkstore),
-        ("ParksAndPlaces", scrape_parksandplaces),
+        ("Crexi",      scrape_crexi),
         ("BizBuySell", scrape_bizbuysell),
+        ("LoopNet",    scrape_loopnet),
     ]
 
     for source_name, fn in sources:
         try:
-            items = fn()[:max_per_source]
+            logger.info("=== Scraping %s ===", source_name)
+            items = fn(max_per_source)
             before = len(all_raw)
             for item in items:
                 url = item.get("url", "")
                 if url and url not in seen:
                     seen.add(url)
                     all_raw.append(item)
-            logger.info(f"{source_name}: added {len(all_raw) - before} unique listings")
+            logger.info(
+                "%s: added %d unique (total=%d)",
+                source_name, len(all_raw) - before, len(all_raw),
+            )
         except Exception as e:
-            logger.error(f"{source_name} scraper failed: {e}")
+            logger.error("%s scraper crashed: %s", source_name, e)
 
-    logger.info(f"Total raw listings: {len(all_raw)}")
+    logger.info("=== Total raw listings: %d ===", len(all_raw))
     return all_raw
