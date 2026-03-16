@@ -192,6 +192,9 @@
   [data-theme="light"] .ai-tag { background: #eff6ff; color: #2563eb; }
   [data-theme="light"] .ai-verdict-badge.hot { background: #fef2f2; color: #dc2626; }
   [data-theme="light"] .ai-verdict-badge.warm { background: #fffbeb; color: #d97706; }
+  [data-theme="light"] .ai-summary-toggle { background: linear-gradient(135deg, #e8f4fd, #dbeafe); color: #1e40af; border: 1px solid rgba(30,64,175,0.2); }
+  [data-theme="light"] .ai-summary-toggle:hover { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+  [data-theme="light"] .ai-summary-toggle.open { color: #1d4ed8; }
   .history-banner { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; background: var(--accent); color: #fff; font-size: 14px; }
   .history-banner .banner-btn { background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 4px 12px; cursor: pointer; font-size: 13px; }
   .history-banner .banner-btn:hover { background: rgba(255,255,255,0.3); }
@@ -758,15 +761,16 @@ function formatPrice(p) {
 
 function renderCard(l) {
   const isBookmarked = bookmarks.has(l.id);
-    const seenEntry = SEEN_INDEX.find(s => s.name === l.name);
-    const firstSeen = seenEntry ? seenEntry.firstSeen : null;
     let dateHtml = '';
-    if (firstSeen) {
-      const fs = new Date(firstSeen + 'T00:00:00');
-      const today = new Date(); today.setHours(0,0,0,0);
-      const dom = Math.round((today - fs) / 86400000);
-      const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][fs.getMonth()];
-      dateHtml = `<div class="listing-date">Listed: ${mo} ${fs.getDate()}, ${fs.getFullYear()}${dom > 0 ? ` <span class="dom">${dom} day${dom!==1?'s':''} on market</span>` : ' <span class="dom">NEW TODAY</span>'}</div>`;
+    if (l.dom !== undefined) {
+      const dom = l.dom;
+      dateHtml = '<div class="listing-date">';
+      if (dom > 0) {
+        dateHtml += '<span class="dom">' + dom + ' day' + (dom !== 1 ? 's' : '') + ' on market</span>';
+      } else {
+        dateHtml += '<span class="dom">NEW TODAY</span>';
+      }
+      dateHtml += '</div>';
     }
   const cardClass = ['card', l.score >= 9 ? 'top-deal' : l.score >= 7 ? 'hot-deal' : '', dismissed.has(l.id) ? 'dismissed' : '', isBookmarked ? 'bookmarked' : ''].filter(Boolean).join(' ');
 
