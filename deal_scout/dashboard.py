@@ -1,5 +1,6 @@
 """Dashboard generator — injects new listings into existing index.html template."""
 import json
+import os
 import re
 import pathlib
 import datetime
@@ -64,7 +65,7 @@ def _listing_to_js(l: Listing) -> dict:
         "score": l.score,
         "source": l.source,
         "url": l.url,
-        "contact":{
+        "contact": {
             "name": l.contact_name,
             "firm": l.source,
             "phone": l.contact_phone,
@@ -73,3 +74,55 @@ def _listing_to_js(l: Listing) -> dict:
         "snippet": (l.description or "")[:300],
         "tags": _make_tags(l),
     }
+
+
+def generate_dashboard(listings: list, run_date, output_dir: str) -> str:
+    """Inject scored listings into index.html and write to output_dir/index.html.
+
+    Args:
+        listings:   list of Listing dataclass instances
+        run_date:   datetime.date of the pipeline run
+        output_dir: directory to write index.html (repo root for GitHub Pages)
+
+    Returns:
+        Absolute path to the written index.html
+    """
+    # Read the living index.html from the repo root (serves as our template)
+    html = _INDEX_HTML.read_text(encoding="utf-8")
+
+    # Convert Listing objects to plain JS-serialisable dicts
+    js_listings = [_listing_to_js(l) for l in listings]
+    json_str = json.dumps(js_listings, indent=2, ensure_ascii=False)
+
+    # Swap out the static LISTINGS array with fresh pipeline data
+    new_block = f"const LISTINGS = {json_str};"
+    html_out, n_subs = re.subn(
+        r"const LISTINGS\s*=\s*\[.*?\];",
+        new_block,
+        html,
+        flags=re.DOTALL,
+    )
+    if n_subs == 0:
+        logger.warning("generate_dashboard: LISTINGS block not found — appending script tag")
+        html_out = html + f"\n<script>\n{new_block}\n</script>\n"
+
+    # Update the run-date stamp in the page <title> / visible header
+    if run_date:
+        try:
+            date_str = run_date.strftime("%-d %B %Y") if hasattr(run_date, "strftime") else str(run_date)
+        except Exception:
+            date_str = str(run_date)
+        html_out = re.sub(
+            r"(Deal Scout\s*[—–\-]\s*)[^<"'\n]+?(\d{4})",
+            lambda m: m.group(1) + date_str,
+            html_out,
+        )
+
+    # Write result; output_dir == REPO_ROOT in normal pipeline runs
+    os.makedirs(output_dir, exist_ok=True)
+    out_path = os.path.join(output_dir, "index.html")
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(html_out)
+
+    logger.info("generate_dashboard: wrote %s (%d listings)", out_path, len(listings))
+    return out_path
