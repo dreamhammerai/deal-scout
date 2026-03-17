@@ -84,8 +84,15 @@ def generate_dashboard(listings: list, run_date, output_dir: str) -> str:
         output_dir: directory to write index.html (repo root for GitHub Pages)
 
     Returns:
-        Absolute path to the written index.html
+        Absolute path to index.html
     """
+    # Guard: if scrapers returned nothing, preserve the existing dashboard as-is
+    if not listings:
+        logger.warning(
+            "generate_dashboard: 0 listings scraped — keeping existing index.html unchanged"
+        )
+        return str(_INDEX_HTML)
+
     html = _INDEX_HTML.read_text(encoding="utf-8")
 
     js_listings = [_listing_to_js(l) for l in listings]
