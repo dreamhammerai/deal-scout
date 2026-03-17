@@ -459,10 +459,10 @@
         <div class="header-content">
             <div class="header-left">
                 <div class="header-title">
-                    <span class="header-logo">âº</span>
+                    <span class="header-logo">&#9978;</span>
                     <h1>Deal Scout</h1>
                 </div>
-                <div class="header-subtitle">Tuesday, March 17, 2026 Â· SE US: AL, MS, LA, GA, TN, FL, NC, VA</div>
+                <div class="header-subtitle">Tuesday, March 17, 2026 &#183; SE US: AL, MS, LA, GA, TN, FL, NC, VA</div>
                 <div class="header-stats">
                     <div class="stat stat-new">
                         <div class="stat-number" id="stat-new-count">13</div>
@@ -488,20 +488,20 @@
     <!-- Tabs -->
     <div class="tabs">
         <button class="tab active" data-tab="today">Today's Deals</button>
-        <button class="tab" data-tab="bookmarks">â­ Bookmarks</button>
+        <button class="tab" data-tab="bookmarks">&#11088; Bookmarks</button>
         <button class="tab" data-tab="archive">Archive</button>
     </div>
 
     <!-- Controls -->
     <div class="controls">
         <button class="filter-chip active" data-filter="all">All</button>
-        <button class="filter-chip" data-filter="hot">ð¥ Hot (7+)</button>
-        <button class="filter-chip" data-filter="new">ð New</button>
-        <button class="filter-chip" data-filter="seller-fin">ð° Seller Fin</button>
-        <button class="filter-chip" data-filter="rv">âº RV/Camp</button>
-        <button class="filter-chip" data-filter="mhp">ð  MHP</button>
-        <button class="filter-chip" data-filter="storage">ð¦ Storage</button>
-        <button class="filter-chip" data-filter="marina">â Marina</button>
+        <button class="filter-chip" data-filter="hot">&#128293; Hot (7+)</button>
+        <button class="filter-chip" data-filter="new">&#127381; New</button>
+        <button class="filter-chip" data-filter="seller-fin">&#128176; Seller Fin</button>
+        <button class="filter-chip" data-filter="rv">&#9978; RV/Camp</button>
+        <button class="filter-chip" data-filter="mhp">&#127968; MHP</button>
+        <button class="filter-chip" data-filter="storage">&#128230; Storage</button>
+        <button class="filter-chip" data-filter="marina">&#9875; Marina</button>
         <input type="text" class="search-input" id="search-input" placeholder="Search listings...">
     </div>
 
@@ -528,12 +528,12 @@
         // Helper functions
         function getPropertyTypeEmoji(propertyType) {
             const emojis = {
-                'rv_park': 'âº',
-                'mhp': 'ð ',
-                'campground': 'âº',
-                'self_storage': 'ð¦',
+                'rv_park': '&#9978;',
+                'mhp': '&#127968;',
+                'campground': '&#9978;',
+                'self_storage': '&#128230;',
             };
-            return emojis[propertyType] || 'ð';
+            return emojis[propertyType] || '&#128205;';
         }
 
         function truncateDescription(text, maxChars = 150) {
@@ -619,7 +619,7 @@
 
                 const isBookmarked = state.bookmarkedIds.has(listing.name);
                 const bookmarkClass = isBookmarked ? 'bookmarked' : '';
-                const contactInfo = listing.contact_name ? listing.contact_name + ' Â· ' : '';
+                const contactInfo = listing.contact_name ? listing.contact_name + ' &#183; ' : '';
 
                 card.innerHTML = `
                     <div class="card-header">
@@ -630,13 +630,13 @@
                             <div class="card-badges">${badges}</div>
                         </div>
                         <div class="card-actions">
-                            <button class="card-btn bookmark-btn ${bookmarkClass}" data-listing="${listing.name}" title="Bookmark">â­</button>
-                            <button class="card-btn dismiss-btn" data-listing="${listing.name}" title="Dismiss">â</button>
+                            <button class="card-btn bookmark-btn ${bookmarkClass}" data-listing="${listing.name}" title="Bookmark">&#11088;</button>
+                            <button class="card-btn dismiss-btn" data-listing="${listing.name}" title="Dismiss">&#10005;</button>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="card-location">
-                            <span class="card-location-icon">ð</span>
+                            <span class="card-location-icon">&#128205;</span>
                             <span>${listing.location}, ${listing.state}</span>
                         </div>
                         <div class="card-score-row">
@@ -654,8 +654,8 @@
                     </div>
                     <div class="card-ai-section">
                         <button class="card-ai-toggle" data-listing="${listing.name}">
-                            <span>ð AI Analysis</span>
-                            <span class="toggle-icon">â¶</span>
+                            <span>&#128202; AI Analysis</span>
+                            <span class="toggle-icon">&#9654;</span>
                         </button>
                         <div class="card-ai-content">
                             <p><strong>Property Type:</strong> ${listing.property_type.replace(/_/g, ' ')}</p>
@@ -666,7 +666,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="${listing.url}" target="_blank" class="cta-button">Contact Listing â</a>
+                        <a href="${listing.url}" target="_blank" class="cta-button">Contact Listing &#8594;</a>
                     </div>
                 `;
 
@@ -730,7 +730,7 @@
                     const content = btn.parentElement.nextElementSibling;
                     content.classList.toggle('open');
                     const icon = btn.querySelector('.toggle-icon');
-                    icon.textContent = content.classList.contains('open') ? 'â¼' : 'â¶';
+                    icon.textContent = content.classList.contains('open') ? '&#9660;' : '&#9654;';
                 });
             });
         }
