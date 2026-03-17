@@ -847,7 +847,7 @@ function renderCard(l) {
 
 
   return `
-  <div class="${cardClass}" data-id="${l.id}" data-type="${l.type}" data-new="${l.isNew}" data-sf="${l.sellerFinancing}" data-score="${l.score}" data-name="${l.name.toLowerCase()} ${l.location.toLowerCase()}">
+  <div class="${cardClass}" data-id="${l.id}" data-type="${l.type}" data-new="${l.isNew}" data-sf="${l.sellerFinancing}" data-score="${l.score}" data-name="${l.name.toLowerCase()} ${l.location.toLowerCase()}" data-contact-name="${(l.contact&&l.contact.name)||''}" data-contact-phone="${(l.contact&&l.contact.phone)||''}" data-contact-email="${(l.contact&&l.contact.email)||''}" data-url="${l.url}">
     <div class="card-header">
       <div class="card-title"><a href="${l.url}" target="_blank">${l.name}</a></div>
       <div class="card-actions">
@@ -870,7 +870,7 @@ function renderCard(l) {
     ${dateHtml}
     <div class="card-footer">
       <span class="source-tag">${l.source}</span>
-      <a class="view-btn" href="${l.url}" target="_blank">Contact Listing →</a>
+      <button class="view-btn" onclick="openContactModal(this.closest('[data-id]').dataset)">Contact Listing →</button>
     </div>
   </div>`;
 }
@@ -1330,6 +1330,50 @@ function toggleTheme() {
     }
   } catch(e) {}
 </script>
+
+  <!-- Contact Modal -->
+  <div id="contact-modal" class="contact-modal-overlay" onclick="if(event.target===this)closeContactModal()">
+    <div class="contact-modal-box">
+      <button class="modal-close" onclick="closeContactModal()">&#x2715;</button>
+      <div class="modal-listing-name" id="modal-listing-name"></div>
+      <div class="modal-source-loc" id="modal-source-loc"></div>
+      <div id="modal-contact-rows"></div>
+      <a class="modal-view-full" id="modal-view-full" href="#" target="_blank">View Full Listing &#x2192;</a>
+    </div>
+  </div>
+
+  <script>
+  function openContactModal(ds) {
+    var name  = ds.contactName  || '';
+    var phone = ds.contactPhone || '';
+    var email = ds.contactEmail || '';
+    var url   = ds.url          || '#';
+    // Get listing name + source from the card
+    var card = document.querySelector('[data-url="'+url+'"]');
+    var listingName = card ? (card.querySelector('.card-title a') || card.querySelector('.card-title')||{}).textContent||'' : '';
+    var source      = card ? (card.querySelector('.source-tag')||{}).textContent||'' : '';
+    var loc         = card ? (card.querySelector('.detail strong')||{}).textContent||'' : '';
+
+    document.getElementById('modal-listing-name').textContent = listingName.trim();
+    document.getElementById('modal-source-loc').textContent   = [source, loc].filter(Boolean).join(' · ');
+    document.getElementById('modal-view-full').href           = url;
+
+    var rows = '';
+    if (name)  rows += '<div class="modal-contact-row"><span class="icon">&#x1F464;</span><strong>'+name+'</strong></div>';
+    if (phone) rows += '<div class="modal-contact-row"><span class="icon">&#x1F4DE;</span><a href="tel:'+phone+'">'+phone+'</a></div>';
+    if (email) rows += '<div class="modal-contact-row"><span class="icon">&#x2709;&#xFE0F;</span><a href="mailto:'+email+'">'+email+'</a></div>';
+    if (!name && !phone && !email) {
+      rows = '<div class="modal-no-contact">No direct contact on file &#x2014; click below to reach broker on the listing page.</div>';
+    }
+    document.getElementById('modal-contact-rows').innerHTML = rows;
+    document.getElementById('contact-modal').classList.add('open');
+  }
+  function closeContactModal() {
+    document.getElementById('contact-modal').classList.remove('open');
+  }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeContactModal(); });
+  </script>
+
 </body>
 </html>
 
